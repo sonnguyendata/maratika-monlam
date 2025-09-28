@@ -18,6 +18,16 @@ CREATE TABLE IF NOT EXISTS public.submissions (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- Add idempotency_key column if it doesn't exist
+DO $$ 
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                   WHERE table_name = 'submissions' 
+                   AND column_name = 'idempotency_key') THEN
+        ALTER TABLE public.submissions ADD COLUMN idempotency_key UUID;
+    END IF;
+END $$;
+
 -- Idempotency keys table to prevent duplicate submissions
 CREATE TABLE IF NOT EXISTS public.idempotency_keys (
   key UUID PRIMARY KEY,
