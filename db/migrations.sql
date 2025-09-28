@@ -42,7 +42,12 @@ CREATE INDEX IF NOT EXISTS idx_submissions_flagged ON public.submissions (flagge
 CREATE INDEX IF NOT EXISTS idx_submissions_idempotency ON public.submissions (idempotency_key);
 
 -- Views for reporting
-CREATE OR REPLACE VIEW public.v_totals_by_day AS
+-- Drop existing views if they exist
+DROP VIEW IF EXISTS public.v_totals_by_day;
+DROP VIEW IF EXISTS public.v_top10;
+DROP VIEW IF EXISTS public.v_summary;
+
+CREATE VIEW public.v_totals_by_day AS
 SELECT 
   DATE(ts_server) as date,
   SUM(quantity) as total
@@ -51,7 +56,7 @@ WHERE flagged = FALSE
 GROUP BY DATE(ts_server)
 ORDER BY DATE(ts_server);
 
-CREATE OR REPLACE VIEW public.v_top10 AS
+CREATE VIEW public.v_top10 AS
 SELECT 
   attendee_id,
   attendee_name,
@@ -64,7 +69,7 @@ ORDER BY total DESC
 LIMIT 10;
 
 -- Summary view for dashboard
-CREATE OR REPLACE VIEW public.v_summary AS
+CREATE VIEW public.v_summary AS
 SELECT 
   COUNT(DISTINCT attendee_id) as unique_participants,
   SUM(quantity) as total_count,
