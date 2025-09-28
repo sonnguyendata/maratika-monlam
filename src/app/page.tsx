@@ -9,8 +9,8 @@ import { v4 as uuidv4 } from 'uuid';
 export default function HomePage() {
   const { messages, loading } = useLanguage();
   const [formData, setFormData] = useState<SubmissionData>({
-    id: '',
-    name: '',
+    attendee_id: '',
+    attendee_name: '',
     quantity: 1,
     note: '',
     idempotency_key: uuidv4()
@@ -23,8 +23,8 @@ export default function HomePage() {
     const savedId = localStorage.getItem('attendee_id');
     const savedName = localStorage.getItem('attendee_name');
     
-    if (savedId) setFormData(prev => ({ ...prev, id: savedId }));
-    if (savedName) setFormData(prev => ({ ...prev, name: savedName }));
+    if (savedId) setFormData(prev => ({ ...prev, attendee_id: savedId }));
+    if (savedName) setFormData(prev => ({ ...prev, attendee_name: savedName }));
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -48,8 +48,8 @@ export default function HomePage() {
 
       if (result.ok) {
         // Save to localStorage
-        localStorage.setItem('attendee_id', formData.id);
-        localStorage.setItem('attendee_name', formData.name);
+        localStorage.setItem('attendee_id', formData.attendee_id);
+        localStorage.setItem('attendee_name', formData.attendee_name);
         
         setSubmitResult({
           success: true,
@@ -117,8 +117,8 @@ export default function HomePage() {
               <input
                 type="text"
                 id="attendee_id"
-                value={formData.id}
-                onChange={(e) => setFormData(prev => ({ ...prev, id: e.target.value }))}
+                value={formData.attendee_id}
+                onChange={(e) => setFormData(prev => ({ ...prev, attendee_id: e.target.value }))}
                 placeholder={messages.form.attendee_id_placeholder}
                 className="input"
                 required
@@ -132,8 +132,8 @@ export default function HomePage() {
               <input
                 type="text"
                 id="attendee_name"
-                value={formData.name}
-                onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                value={formData.attendee_name}
+                onChange={(e) => setFormData(prev => ({ ...prev, attendee_name: e.target.value }))}
                 placeholder={messages.form.attendee_name_placeholder}
                 className="input"
                 required
