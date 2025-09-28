@@ -1,6 +1,6 @@
 # Túc Số Monlam
 
-A bilingual web application for recording and reporting túc số counts for the Monlam Dharma Festival (October 29 - November 2, 2025).
+A bilingual web application for recording and reporting túc số counts for the Monlam Dharma Festival 2025 at Ha Noi (October 29 - November 2, 2025).
 
 ## Features
 
@@ -10,6 +10,7 @@ A bilingual web application for recording and reporting túc số counts for the
 - **Admin Dashboard**: Full administrative interface with filtering and export
 - **Performance Optimized**: Redis rate limiting and queue system for high concurrency
 - **Security**: IP/UA hashing, idempotency keys, anomaly detection
+- **Sacred Buddhist Theme**: Monastic red, golden colors, lotus animations
 
 ## Tech Stack
 
@@ -32,14 +33,14 @@ A bilingual web application for recording and reporting túc số counts for the
 
 1. **Clone and install dependencies**:
    ```bash
-   git clone <repository-url>
-   cd tuc-so-monlam
+   git clone https://github.com/sonnguyendata/maratika-monlam.git
+   cd maratika-monlam
    npm install
    ```
 
 2. **Set up environment variables**:
    ```bash
-   cp env.example .env.local
+   cp env.production .env.local
    ```
    
    Fill in your environment variables:
