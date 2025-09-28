@@ -19,7 +19,10 @@
     "close": "Close",
     "confirm": "Confirm",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "total": "total",
+    "page": "Page",
+    "of": "of"
   },
   "navigation": {
     "home": "Home",

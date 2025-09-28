@@ -19,7 +19,10 @@
     "close": "Đóng",
     "confirm": "Xác nhận",
     "yes": "Có",
-    "no": "Không"
+    "no": "Không",
+    "total": "tổng cộng",
+    "page": "Trang",
+    "of": "của"
   },
   "navigation": {
     "home": "Trang chủ",

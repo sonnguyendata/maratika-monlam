@@ -90,6 +90,9 @@ export interface I18nMessages {
     confirm: string;
     yes: string;
     no: string;
+    total: string;
+    page: string;
+    of: string;
   };
   navigation: {
     home: string;
