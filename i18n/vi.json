@@ -1,0 +1,136 @@
+{
+  "common": {
+    "loading": "Đang tải...",
+    "error": "Lỗi",
+    "success": "Thành công",
+    "submit": "Gửi",
+    "cancel": "Hủy",
+    "save": "Lưu",
+    "edit": "Sửa",
+    "delete": "Xóa",
+    "view": "Xem",
+    "export": "Xuất",
+    "filter": "Lọc",
+    "search": "Tìm kiếm",
+    "refresh": "Làm mới",
+    "back": "Quay lại",
+    "next": "Tiếp theo",
+    "previous": "Trước",
+    "close": "Đóng",
+    "confirm": "Xác nhận",
+    "yes": "Có",
+    "no": "Không"
+  },
+  "navigation": {
+    "home": "Trang chủ",
+    "submit": "Ghi nhận",
+    "report": "Báo cáo",
+    "admin": "Quản trị",
+    "language": "Ngôn ngữ"
+  },
+  "app": {
+    "title": "Pháp Hội Monlam 2025",
+    "subtitle": "Túc số ghi nhận trực tiếp | Direct túc số recording",
+    "event_dates": "29/10 – 02/11/2025"
+  },
+  "form": {
+    "attendee_id": "Mã số tham dự",
+    "attendee_id_placeholder": "Nhập mã số tham dự của bạn",
+    "attendee_name": "Tên / Pháp danh",
+    "attendee_name_placeholder": "Nhập tên hoặc pháp danh",
+    "quantity": "Số lượng túc số",
+    "quantity_placeholder": "Nhập số lượng",
+    "note": "Ghi chú (tùy chọn)",
+    "note_placeholder": "Thêm ghi chú nếu cần",
+    "required": "Trường này là bắt buộc",
+    "min_quantity": "Số lượng phải lớn hơn 0",
+    "invalid_quantity": "Vui lòng nhập số hợp lệ"
+  },
+  "submission": {
+    "success": "Ghi nhận thành công!",
+    "success_message": "Bạn đã ghi nhận thành công! | Submission recorded successfully!",
+    "daily_total": "Tổng số hôm nay của bạn",
+    "duplicate_warning": "Bạn đã ghi nhận với khóa này rồi",
+    "error_message": "Có lỗi xảy ra khi ghi nhận. Vui lòng thử lại."
+  },
+  "report": {
+    "title": "Thống kê Túc Số | Túc Số Report",
+    "kpis": {
+      "total_all_time": "Tổng cộng toàn sự kiện",
+      "total_today": "Tổng số hôm nay",
+      "unique_participants": "Số người tham dự",
+      "last_updated": "Cập nhật lần cuối"
+    },
+    "chart": {
+      "title": "Biểu đồ túc số theo ngày",
+      "x_axis": "Ngày",
+      "y_axis": "Tổng số túc số"
+    },
+    "leaderboard": {
+      "title": "Top 10 người ghi nhận nhiều nhất",
+      "rank": "Hạng",
+      "name": "Tên",
+      "total": "Tổng số",
+      "submissions": "Lần ghi nhận"
+    }
+  },
+  "admin": {
+    "title": "Bảng quản trị",
+    "login": {
+      "title": "Đăng nhập quản trị",
+      "username": "Tên đăng nhập",
+      "password": "Mật khẩu",
+      "login_button": "Đăng nhập",
+      "invalid_credentials": "Tên đăng nhập hoặc mật khẩu không đúng"
+    },
+    "dashboard": {
+      "title": "Tổng quan",
+      "records_table": "Bảng ghi nhận",
+      "filters": "Bộ lọc",
+      "actions": "Hành động"
+    },
+    "table": {
+      "timestamp": "Thời gian",
+      "attendee_id": "Mã số",
+      "attendee_name": "Tên",
+      "quantity": "Số lượng",
+      "note": "Ghi chú",
+      "ip_hash": "IP Hash",
+      "ua_hash": "UA Hash",
+      "flagged": "Đã đánh dấu",
+      "flag_reason": "Lý do đánh dấu",
+      "actions": "Hành động"
+    },
+    "filters": {
+      "date_from": "Từ ngày",
+      "date_to": "Đến ngày",
+      "attendee_id": "Mã số tham dự",
+      "attendee_name": "Tên",
+      "quantity_min": "Số lượng tối thiểu",
+      "quantity_max": "Số lượng tối đa",
+      "flagged_only": "Chỉ hiển thị đã đánh dấu",
+      "apply": "Áp dụng",
+      "clear": "Xóa bộ lọc"
+    },
+    "flags": {
+      "BurstByID": "Quá nhiều ghi nhận trong thời gian ngắn",
+      "SpikeByQty": "Số lượng bất thường lớn",
+      "DupKey": "Khóa trùng lặp",
+      "MultiAccountSameIP": "Nhiều tài khoản từ cùng IP"
+    },
+    "actions": {
+      "export_csv": "Xuất CSV",
+      "mark_reviewed": "Đánh dấu đã xem",
+      "flag": "Đánh dấu",
+      "unflag": "Bỏ đánh dấu"
+    }
+  },
+  "errors": {
+    "network": "Lỗi kết nối mạng",
+    "server": "Lỗi máy chủ",
+    "validation": "Dữ liệu không hợp lệ",
+    "unauthorized": "Không có quyền truy cập",
+    "not_found": "Không tìm thấy",
+    "rate_limit": "Quá nhiều yêu cầu, vui lòng thử lại sau"
+  }
+}

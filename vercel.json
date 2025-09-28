@@ -1,0 +1,18 @@
+{
+  "functions": {
+    "src/app/api/**/*.ts": {
+      "maxDuration": 30
+    }
+  },
+  "env": {
+    "DATABASE_URL": "@database_url",
+    "SUPABASE_URL": "@supabase_url", 
+    "SUPABASE_ANON_KEY": "@supabase_anon_key",
+    "REDIS_URL": "@redis_url",
+    "ADMIN_USER": "@admin_user",
+    "ADMIN_PASS": "@admin_pass",
+    "HASH_SALT": "@hash_salt",
+    "EVENT_START": "@event_start",
+    "EVENT_END": "@event_end"
+  }
+}
