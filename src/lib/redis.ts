@@ -4,12 +4,13 @@ if (!process.env.REDIS_URL) {
   throw new Error('REDIS_URL environment variable is required');
 }
 
-// Parse Redis URL to extract token
+// Parse Redis URL to extract token and convert to HTTPS
 const redisUrl = new URL(process.env.REDIS_URL);
 const token = redisUrl.password;
+const httpsUrl = `https://${redisUrl.hostname}${redisUrl.port ? ':' + redisUrl.port : ''}`;
 
 export const redis = new Redis({
-  url: process.env.REDIS_URL,
+  url: httpsUrl,
   token: token
 });
 
