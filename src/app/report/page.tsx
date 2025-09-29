@@ -197,7 +197,10 @@ export default function ReportPage() {
                       className="w-32 h-32 mx-auto"
                       onError={(e) => {
                         e.currentTarget.style.display = 'none';
-                        e.currentTarget.nextElementSibling.style.display = 'block';
+                        const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
+                        if (nextElement) {
+                          nextElement.style.display = 'block';
+                        }
                       }}
                     />
                     <div className="w-32 h-32 bg-gray-100 flex items-center justify-center text-gray-500 text-xs border-2 border-dashed border-gray-300" style={{display: 'none'}}>
