@@ -118,6 +118,11 @@ export interface I18nMessages {
     submit: string;
     success: string;
     todayTotal: string;
+    quick_add: {
+      add_7: string;
+      add_21: string;
+      add_108: string;
+    };
   };
   report: {
     title: string;
