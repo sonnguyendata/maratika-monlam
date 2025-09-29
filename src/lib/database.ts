@@ -1,15 +1,13 @@
 import { createClient } from '@supabase/supabase-js';
 import { SubmissionData, AdminRecord, AdminFilters, AdminResponse, ReportSummary } from '@/types';
 
-if (!process.env.DATABASE_URL) {
-  throw new Error('DATABASE_URL environment variable is required');
+if (!process.env.SUPABASE_URL || !process.env.SUPABASE_ANON_KEY) {
+  throw new Error('SUPABASE_URL and SUPABASE_ANON_KEY environment variables are required');
 }
 
-// For this implementation, we'll use a direct PostgreSQL connection
-// In production, you would use Supabase client or another PostgreSQL client
 export const supabase = createClient(
-  process.env.SUPABASE_URL || 'https://your-project.supabase.co',
-  process.env.SUPABASE_ANON_KEY || 'your-anon-key'
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_ANON_KEY
 );
 
 export async function submitTucSo(data: SubmissionData, ipHash: string, uaHash: string) {
