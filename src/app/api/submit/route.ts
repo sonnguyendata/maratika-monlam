@@ -27,9 +27,17 @@ const submitSchema = z.object({
 export async function POST(request: NextRequest) {
   try {
     console.log('Submit API called');
+    console.log('Environment check:', {
+      NODE_ENV: process.env.NODE_ENV,
+      EVENT_START: process.env.EVENT_START,
+      EVENT_END: process.env.EVENT_END
+    });
     
     // Check if event is active
-    if (!validateEventDates()) {
+    const isEventActive = validateEventDates();
+    console.log('Event validation result:', isEventActive);
+    
+    if (!isEventActive) {
       console.log('Event dates validation failed');
       return NextResponse.json(
         { ok: false, error: 'Event is not currently active' },
@@ -102,6 +110,7 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     console.error('Submit error:', error);
+    console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace');
     
     if (error instanceof z.ZodError) {
       console.log('Zod validation error:', error.errors);
@@ -112,7 +121,12 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json(
-      { ok: false, error: 'Internal server error', details: error instanceof Error ? error.message : 'Unknown error' },
+      { 
+        ok: false, 
+        error: 'Internal server error', 
+        details: error instanceof Error ? error.message : 'Unknown error',
+        stack: process.env.NODE_ENV === 'development' ? (error instanceof Error ? error.stack : undefined) : undefined
+      },
       { status: 500 }
     );
   }

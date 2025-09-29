@@ -33,19 +33,23 @@ export function generateIdempotencyKey(): string {
 export function validateEventDates(): boolean {
   // For development/testing, always allow submissions
   if (process.env.NODE_ENV === 'development') {
+    console.log('Development mode: allowing all submissions');
     return true;
   }
   
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   
-  const eventStart = new Date(process.env.EVENT_START || '2025-10-29');
+  const eventStart = new Date(process.env.EVENT_START || '2025-01-01');
   const eventEnd = new Date(process.env.EVENT_END || '2025-11-02');
   
   // Add timezone offset and set to end of day for event end
   eventEnd.setHours(23, 59, 59, 999);
   
   console.log('Event validation:', {
+    NODE_ENV: process.env.NODE_ENV,
+    EVENT_START: process.env.EVENT_START,
+    EVENT_END: process.env.EVENT_END,
     now: now.toISOString(),
     today: today.toISOString(), 
     eventStart: eventStart.toISOString(),
@@ -53,7 +57,10 @@ export function validateEventDates(): boolean {
     isActive: today >= eventStart && today <= eventEnd
   });
   
-  return today >= eventStart && today <= eventEnd;
+  const isValid = today >= eventStart && today <= eventEnd;
+  console.log('Event validation result:', isValid);
+  
+  return isValid;
 }
 
 export function formatDate(date: string | Date): string {
