@@ -67,7 +67,7 @@ export default function HomePage() {
       } else {
         setSubmitResult({
           success: false,
-          message: result.error || messages?.submission.error_message || 'Error occurred'
+          message: result.error || 'Error occurred'
         });
       }
     } catch (error) {
