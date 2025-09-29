@@ -78,52 +78,74 @@ export async function getDailyTotalForUser(attendeeId: string): Promise<number> 
 }
 
 export async function getReportSummary(): Promise<ReportSummary> {
-  // Get totals
-  const { data: summaryData, error: summaryError } = await supabase
-    .from('v_summary')
-    .select('*')
-    .single();
+  console.log('Getting report summary...');
+  
+  try {
+    // Get totals
+    console.log('Fetching summary data...');
+    const { data: summaryData, error: summaryError } = await supabase
+      .from('v_summary')
+      .select('*')
+      .single();
 
-  if (summaryError) {
-    throw new Error(`Database error: ${summaryError.message}`);
+    if (summaryError) {
+      console.error('Summary error:', summaryError);
+      throw new Error(`Database error: ${summaryError.message}`);
+    }
+
+    console.log('Summary data:', summaryData);
+
+    // Get daily breakdown
+    console.log('Fetching daily data...');
+    const { data: dailyData, error: dailyError } = await supabase
+      .from('v_totals_by_day')
+      .select('*')
+      .order('date');
+
+    if (dailyError) {
+      console.error('Daily error:', dailyError);
+      throw new Error(`Database error: ${dailyError.message}`);
+    }
+
+    console.log('Daily data:', dailyData);
+
+    // Get top 10
+    console.log('Fetching top10 data...');
+    const { data: top10Data, error: top10Error } = await supabase
+      .from('v_top10')
+      .select('*');
+
+    if (top10Error) {
+      console.error('Top10 error:', top10Error);
+      throw new Error(`Database error: ${top10Error.message}`);
+    }
+
+    console.log('Top10 data:', top10Data);
+
+    const result = {
+      totals: {
+        all_time: summaryData?.total_count || 0,
+        today: summaryData?.today_count || 0,
+        unique_ids: summaryData?.unique_participants || 0
+      },
+      by_day: (dailyData || []).map(d => ({
+        date: d.date,
+        total: d.total
+      })),
+      top10: (top10Data || []).map((d, index) => ({
+        id: d.attendee_id,
+        name: d.attendee_name,
+        total: d.total,
+        submission_count: d.submission_count
+      }))
+    };
+
+    console.log('Final result:', result);
+    return result;
+  } catch (error) {
+    console.error('getReportSummary error:', error);
+    throw error;
   }
-
-  // Get daily breakdown
-  const { data: dailyData, error: dailyError } = await supabase
-    .from('v_totals_by_day')
-    .select('*')
-    .order('date');
-
-  if (dailyError) {
-    throw new Error(`Database error: ${dailyError.message}`);
-  }
-
-  // Get top 10
-  const { data: top10Data, error: top10Error } = await supabase
-    .from('v_top10')
-    .select('*');
-
-  if (top10Error) {
-    throw new Error(`Database error: ${top10Error.message}`);
-  }
-
-  return {
-    totals: {
-      all_time: summaryData.total_count || 0,
-      today: summaryData.today_count || 0,
-      unique_ids: summaryData.unique_participants || 0
-    },
-    by_day: dailyData.map(d => ({
-      date: d.date,
-      total: d.total
-    })),
-    top10: top10Data.map((d, index) => ({
-      id: d.attendee_id,
-      name: d.attendee_name,
-      total: d.total,
-      submission_count: d.submission_count
-    }))
-  };
 }
 
 export async function getAdminRecords(filters: AdminFilters): Promise<AdminResponse> {

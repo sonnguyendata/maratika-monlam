@@ -58,6 +58,33 @@ export default function ReportPage() {
           <p className="text-sm text-earthy-500">
             Cập nhật lần cuối: {lastUpdated.toLocaleString()}
           </p>
+          
+          {/* QR Code Section */}
+          <div className="mt-8 p-6 bg-gradient-to-r from-lotus-50 to-sky-50 rounded-2xl border-2 border-lotus-200">
+            <h3 className="text-lg font-serif font-semibold text-monastic-700 mb-4">
+              Quét mã QR để ghi nhận túc số
+            </h3>
+            <p className="text-sm text-earthy-600 mb-4">
+              Scan QR code to submit your mantra count
+            </p>
+            <div className="flex justify-center">
+              <div className="bg-white p-4 rounded-lg shadow-lg">
+                <div className="w-48 h-48 bg-gray-100 flex items-center justify-center text-gray-500 text-sm border-2 border-dashed border-gray-300">
+                  <div className="text-center">
+                    <div className="text-4xl mb-2">📱</div>
+                    <div className="text-xs">QR Code Placeholder</div>
+                    <div className="text-xs mt-1">Add qr-code.png to public folder</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p className="text-xs text-earthy-500 mt-3">
+              Hướng dẫn: Mở camera điện thoại và quét mã QR
+            </p>
+            <p className="text-xs text-earthy-500">
+              Instructions: Open phone camera and scan QR code
+            </p>
+          </div>
         </div>
 
         {loadingReport ? (
