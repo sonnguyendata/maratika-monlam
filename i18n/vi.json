@@ -32,7 +32,7 @@
   },
   "app": {
     "title": "Pháp Hội Monlam 2025",
-    "subtitle": "Túc số ghi nhận trực tiếp | Direct túc số recording",
+    "subtitle": "Ghi nhận túc số | Mantra recording",
     "event_dates": "29/10 – 02/11/2025"
   },
   "record": {
@@ -41,7 +41,7 @@
     "id_placeholder": "Nhập ID / Enter your ID",
     "name": "Tên / Pháp danh",
     "name_placeholder": "Name / Dharma Name",
-    "quantity": "Số lượng (≥1)",
+    "quantity": "Số túc số (≥1)",
     "quantity_placeholder": "Quantity (≥1)",
     "note": "Ghi chú (không bắt buộc)",
     "note_placeholder": "Note (optional)",
