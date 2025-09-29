@@ -47,7 +47,12 @@
     "note_placeholder": "Note (optional)",
     "submit": "Submit",
     "success": "Recorded successfully!",
-    "todayTotal": "Your total today: {{n}}"
+    "todayTotal": "Your total today: {{n}}",
+    "quick_add": {
+      "add_7": "+7",
+      "add_21": "+21",
+      "add_108": "+108 Mala · +108 Chuỗi"
+    }
   },
   "report": {
     "title": "Túc số Report",

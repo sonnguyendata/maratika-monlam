@@ -47,7 +47,12 @@
     "note_placeholder": "Note (optional)",
     "submit": "Ghi nhận",
     "success": "Đã ghi nhận!",
-    "todayTotal": "Hôm nay của bạn: {{n}}"
+    "todayTotal": "Hôm nay của bạn: {{n}}",
+    "quick_add": {
+      "add_7": "+7",
+      "add_21": "+21",
+      "add_108": "+108 Mala · +108 Chuỗi"
+    }
   },
   "report": {
     "title": "Báo cáo túc số",

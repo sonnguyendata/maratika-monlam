@@ -172,6 +172,31 @@ export default function HomePage() {
                   +
                 </button>
               </div>
+              
+              {/* Quick-add chips */}
+              <div className="mt-3 flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={() => setFormData(prev => ({ ...prev, quantity: prev.quantity + 7 }))}
+                  className="px-3 py-1.5 text-sm font-medium bg-gradient-to-r from-lotus-100 to-sky-100 text-lotus-700 rounded-full border border-lotus-200 hover:from-lotus-200 hover:to-sky-200 transition-all duration-200 shadow-sm"
+                >
+                  {messages.record.quick_add.add_7}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setFormData(prev => ({ ...prev, quantity: prev.quantity + 21 }))}
+                  className="px-3 py-1.5 text-sm font-medium bg-gradient-to-r from-golden-100 to-amber-100 text-golden-700 rounded-full border border-golden-200 hover:from-golden-200 hover:to-amber-200 transition-all duration-200 shadow-sm"
+                >
+                  {messages.record.quick_add.add_21}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setFormData(prev => ({ ...prev, quantity: prev.quantity + 108 }))}
+                  className="px-3 py-1.5 text-sm font-medium bg-gradient-to-r from-monastic-100 to-red-100 text-monastic-700 rounded-full border border-monastic-200 hover:from-monastic-200 hover:to-red-200 transition-all duration-200 shadow-sm"
+                >
+                  {messages.record.quick_add.add_108}
+                </button>
+              </div>
             </div>
 
             <div>
