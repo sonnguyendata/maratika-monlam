@@ -24,58 +24,56 @@
     "page": "Page",
     "of": "of"
   },
-  "navigation": {
-    "home": "Home",
-    "submit": "Submit",
+  "nav": {
+    "record": "Record",
     "report": "Report",
-    "admin": "Admin",
-    "language": "Language"
+    "schedule": "Schedule",
+    "info": "Info"
   },
   "app": {
     "title": "Monlam Dharma Festival 2025",
     "subtitle": "Direct túc số recording | Ghi nhận túc số trực tiếp",
     "event_dates": "October 29 – November 2, 2025"
   },
-  "form": {
-    "attendee_id": "Attendee ID",
-    "attendee_id_placeholder": "Enter your attendee ID",
-    "attendee_name": "Name / Dharma Name",
-    "attendee_name_placeholder": "Enter your name or dharma name",
-    "quantity": "Túc số Count",
-    "quantity_placeholder": "Enter quantity",
+  "record": {
+    "title": "Tally your recitation",
+    "id": "ID",
+    "id_placeholder": "Enter your ID",
+    "name": "Name / Dharma Name",
+    "name_placeholder": "Name / Dharma Name",
+    "quantity": "Quantity (≥1)",
+    "quantity_placeholder": "Quantity (≥1)",
     "note": "Note (optional)",
-    "note_placeholder": "Add a note if needed",
-    "required": "This field is required",
-    "min_quantity": "Quantity must be greater than 0",
-    "invalid_quantity": "Please enter a valid number"
-  },
-  "submission": {
-    "success": "Submission successful!",
-    "success_message": "Thank you for recording your túc số count.",
-    "daily_total": "Your total for today",
-    "duplicate_warning": "You have already submitted with this key",
-    "error_message": "An error occurred while submitting. Please try again."
+    "note_placeholder": "Note (optional)",
+    "submit": "Submit",
+    "success": "Recorded successfully!",
+    "todayTotal": "Your total today: {{n}}"
   },
   "report": {
     "title": "Túc số Report",
-    "kpis": {
-      "total_all_time": "Total All Time",
-      "total_today": "Total Today",
-      "unique_participants": "Unique Participants",
-      "last_updated": "Last Updated"
-    },
-    "chart": {
-      "title": "Daily Túc số Counts",
-      "x_axis": "Date",
-      "y_axis": "Total Count"
-    },
-    "leaderboard": {
-      "title": "Top 10 Contributors",
-      "rank": "Rank",
-      "name": "Name",
-      "total": "Total",
-      "submissions": "Submissions"
-    }
+    "kpi_total": "Total count",
+    "kpi_today": "Today",
+    "kpi_unique": "Unique participants",
+    "daily_chart": "Daily totals",
+    "top10": "Top 10 practitioners",
+    "rank": "Rank",
+    "name": "Name",
+    "total": "Total"
+  },
+  "schedule": {
+    "title": "Schedule",
+    "day1": "Oct 29 - Opening",
+    "day2": "Oct 30 - Practice",
+    "day3": "Oct 31 - Practice",
+    "day4": "Nov 1 - Practice",
+    "day5": "Nov 2 - Closing"
+  },
+  "info": {
+    "title": "Monlam Dharma Festival 2025",
+    "purpose": "Collective recitation of Guru Padmasambhava's Three Kāyas mantra, dedicated to world peace.",
+    "dates_place": "Oct 29 – Nov 2, 2025 · Phap Van Pagoda, 1299 Giai Phong, Hanoi",
+    "contact": "Contact",
+    "register": "Register"
   },
   "admin": {
     "title": "Admin Dashboard",
@@ -86,46 +84,22 @@
       "login_button": "Login",
       "invalid_credentials": "Invalid username or password"
     },
-    "dashboard": {
-      "title": "Overview",
-      "records_table": "Records Table",
-      "filters": "Filters",
-      "actions": "Actions"
-    },
-    "table": {
-      "timestamp": "Timestamp",
-      "attendee_id": "ID",
-      "attendee_name": "Name",
-      "quantity": "Quantity",
-      "note": "Note",
-      "ip_hash": "IP Hash",
-      "ua_hash": "UA Hash",
-      "flagged": "Flagged",
-      "flag_reason": "Flag Reason",
-      "actions": "Actions"
-    },
     "filters": {
-      "date_from": "From Date",
-      "date_to": "To Date",
-      "attendee_id": "Attendee ID",
-      "attendee_name": "Name",
-      "quantity_min": "Min Quantity",
-      "quantity_max": "Max Quantity",
-      "flagged_only": "Show Flagged Only",
-      "apply": "Apply",
-      "clear": "Clear Filters"
+      "by_date": "By date",
+      "by_id": "By ID",
+      "by_name": "By Name",
+      "qty_range": "Qty range",
+      "flags_only": "Flags only"
     },
     "flags": {
-      "BurstByID": "Too many submissions in short time",
-      "SpikeByQty": "Extremely large quantity",
-      "DupKey": "Duplicate idempotency key",
-      "MultiAccountSameIP": "Multiple IDs from same IP/UA"
+      "spike": "Spike",
+      "burst": "Burst",
+      "duplicate": "Idempotent dup",
+      "same_ip": "Same IP/UA multiple IDs"
     },
     "actions": {
       "export_csv": "Export CSV",
-      "mark_reviewed": "Mark as Reviewed",
-      "flag": "Flag",
-      "unflag": "Unflag"
+      "mark_reviewed": "Mark reviewed"
     }
   },
   "errors": {

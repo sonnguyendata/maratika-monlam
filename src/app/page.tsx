@@ -53,7 +53,7 @@ export default function HomePage() {
         
         setSubmitResult({
           success: true,
-          message: messages?.submission.success_message || 'Success!',
+          message: messages?.record.success || 'Success!',
           dailyTotal: result.daily_total
         });
         
@@ -98,7 +98,7 @@ export default function HomePage() {
       <main className="max-w-2xl mx-auto px-4 py-12">
         <div className="text-center mb-12">
           <h1 className="hero-title">
-            {messages.app.title}
+            {messages.record.title}
           </h1>
           <p className="hero-subtitle">
             {messages.app.subtitle}
@@ -112,14 +112,14 @@ export default function HomePage() {
           <form onSubmit={handleSubmit} className="space-y-8">
             <div>
               <label htmlFor="attendee_id" className="block text-sm font-medium text-earthy-700 mb-3">
-                {messages.form.attendee_id} *
+                {messages.record.id} — {messages.record.id_placeholder}
               </label>
               <input
                 type="text"
                 id="attendee_id"
                 value={formData.attendee_id}
                 onChange={(e) => setFormData(prev => ({ ...prev, attendee_id: e.target.value }))}
-                placeholder={messages.form.attendee_id_placeholder}
+                placeholder={messages.record.id_placeholder}
                 className="input"
                 required
               />
@@ -127,14 +127,14 @@ export default function HomePage() {
 
             <div>
               <label htmlFor="attendee_name" className="block text-sm font-medium text-earthy-700 mb-3">
-                {messages.form.attendee_name} *
+                {messages.record.name}
               </label>
               <input
                 type="text"
                 id="attendee_name"
                 value={formData.attendee_name}
                 onChange={(e) => setFormData(prev => ({ ...prev, attendee_name: e.target.value }))}
-                placeholder={messages.form.attendee_name_placeholder}
+                placeholder={messages.record.name_placeholder}
                 className="input"
                 required
               />
@@ -142,7 +142,7 @@ export default function HomePage() {
 
             <div>
               <label htmlFor="quantity" className="block text-sm font-medium text-earthy-700 mb-3">
-                {messages.form.quantity} *
+                {messages.record.quantity}
               </label>
               <div className="flex items-center space-x-3">
                 <button
@@ -158,7 +158,7 @@ export default function HomePage() {
                   id="quantity"
                   value={formData.quantity}
                   onChange={(e) => setFormData(prev => ({ ...prev, quantity: parseInt(e.target.value) || 1 }))}
-                  placeholder={messages.form.quantity_placeholder}
+                  placeholder={messages.record.quantity_placeholder}
                   className="input text-center flex-1"
                   min="1"
                   required
@@ -176,13 +176,13 @@ export default function HomePage() {
 
             <div>
               <label htmlFor="note" className="block text-sm font-medium text-earthy-700 mb-3">
-                {messages.form.note}
+                {messages.record.note}
               </label>
               <textarea
                 id="note"
                 value={formData.note}
                 onChange={(e) => setFormData(prev => ({ ...prev, note: e.target.value }))}
-                placeholder={messages.form.note_placeholder}
+                placeholder={messages.record.note_placeholder}
                 className="input"
                 rows={4}
               />
@@ -199,7 +199,7 @@ export default function HomePage() {
                   <span>{messages.common.loading}</span>
                 </div>
               ) : (
-                messages.common.submit
+                messages.record.submit
               )}
             </button>
           </form>
@@ -223,9 +223,11 @@ export default function HomePage() {
                 </div>
               )}
               {submitResult.success && submitResult.dailyTotal && (
-                <p className="text-sm text-earthy-600">
-                  {messages.submission.daily_total}: <span className="font-bold text-golden-600">{submitResult.dailyTotal}</span>
-                </p>
+                <div className="mt-4 p-3 bg-golden-50 rounded-lg border border-golden-200">
+                  <p className="text-sm text-earthy-600">
+                    {messages.record.todayTotal.replace('{{n}}', submitResult.dailyTotal.toString())}
+                  </p>
+                </div>
               )}
             </div>
           )}

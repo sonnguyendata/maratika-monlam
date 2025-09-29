@@ -55,3 +55,4 @@ Don't forget to run the database migration in Supabase:
 - **Password**: `M@ratika2025`
 
 The Túc Số Monlam app should now deploy successfully! 🙏
+

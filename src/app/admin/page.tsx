@@ -217,17 +217,17 @@ export default function AdminPage() {
       <main className="max-w-7xl mx-auto px-4 py-8">
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-gray-900">
-            {messages.admin.dashboard.title}
+            {messages.admin.title}
           </h1>
         </div>
 
         {/* Filters */}
         <div className="card mb-6">
-          <h2 className="text-lg font-semibold mb-4">{messages.admin.dashboard.filters}</h2>
+          <h2 className="text-lg font-semibold mb-4">Bộ lọc · Filters</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                {messages.admin.filters.date_from}
+                {messages.admin.filters.by_date}
               </label>
               <input
                 type="date"
@@ -239,7 +239,7 @@ export default function AdminPage() {
             
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                {messages.admin.filters.date_to}
+                {messages.admin.filters.by_date}
               </label>
               <input
                 type="date"
@@ -251,7 +251,7 @@ export default function AdminPage() {
             
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                {messages.admin.filters.attendee_id}
+                {messages.admin.filters.by_id}
               </label>
               <input
                 type="text"
@@ -264,7 +264,7 @@ export default function AdminPage() {
             
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                {messages.admin.filters.attendee_name}
+                {messages.admin.filters.by_name}
               </label>
               <input
                 type="text"
@@ -277,7 +277,7 @@ export default function AdminPage() {
             
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                {messages.admin.filters.quantity_min}
+                {messages.admin.filters.qty_range}
               </label>
               <input
                 type="number"
@@ -290,7 +290,7 @@ export default function AdminPage() {
             
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                {messages.admin.filters.quantity_max}
+                {messages.admin.filters.qty_range}
               </label>
               <input
                 type="number"
@@ -310,7 +310,7 @@ export default function AdminPage() {
                 onChange={(e) => handleFilterChange('flagged_only', e.target.checked)}
                 className="mr-2"
               />
-              {messages.admin.filters.flagged_only}
+              {messages.admin.filters.flags_only}
             </label>
             
             <button onClick={applyFilters} className="btn btn-primary">
@@ -324,13 +324,17 @@ export default function AdminPage() {
             <button onClick={exportCSV} className="btn btn-success">
               {messages.admin.actions.export_csv}
             </button>
+            
+            <button onClick={() => {}} className="btn btn-info">
+              {messages.admin.actions.mark_reviewed}
+            </button>
           </div>
         </div>
 
         {/* Records Table */}
         <div className="card">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold">{messages.admin.dashboard.records_table}</h2>
+            <h2 className="text-lg font-semibold">Bảng ghi nhận · Records Table</h2>
             <div className="text-sm text-gray-500">
               {pagination.total} {messages.common.total || 'total'} records
             </div>
@@ -348,25 +352,25 @@ export default function AdminPage() {
                   <thead className="bg-gray-50">
                     <tr>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {messages.admin.table.timestamp}
+                        Thời gian · Time
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {messages.admin.table.attendee_id}
+                        ID
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {messages.admin.table.attendee_name}
+                        Tên · Name
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {messages.admin.table.quantity}
+                        Số lượng · Qty
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {messages.admin.table.note}
+                        Ghi chú · Note
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {messages.admin.table.flagged}
+                        Nghi vấn · Flag
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {messages.admin.table.actions}
+                        Hành động · Actions
                       </th>
                     </tr>
                   </thead>
@@ -391,7 +395,11 @@ export default function AdminPage() {
                         <td className="px-6 py-4 whitespace-nowrap text-sm">
                           {record.flagged ? (
                             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                              {record.flag_reason}
+                              {record.flag_reason === 'BurstByID' ? messages.admin.flags.burst :
+                               record.flag_reason === 'SpikeByQty' ? messages.admin.flags.spike :
+                               record.flag_reason === 'DupKey' ? messages.admin.flags.duplicate :
+                               record.flag_reason === 'MultiAccountSameIP' ? messages.admin.flags.same_ip :
+                               record.flag_reason}
                             </span>
                           ) : (
                             <span className="text-gray-400">-</span>
@@ -402,7 +410,7 @@ export default function AdminPage() {
                             onClick={() => updateFlag(record.id, !record.flagged, record.flagged ? undefined : 'Manual flag')}
                             className={`btn btn-sm ${record.flagged ? 'btn-success' : 'btn-danger'}`}
                           >
-                            {record.flagged ? messages.admin.actions.unflag : messages.admin.actions.flag}
+                            {record.flagged ? 'Bỏ đánh dấu' : 'Đánh dấu'}
                           </button>
                         </td>
                       </tr>

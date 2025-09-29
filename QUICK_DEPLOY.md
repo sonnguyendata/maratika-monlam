@@ -88,3 +88,4 @@ EVENT_END=2025-11-02
 4. Verify environment variables
 
 **Your sacred Buddhist-themed Monlam app is ready to serve the community! 🙏**
+

@@ -31,21 +31,35 @@ export function Header() {
                 href="/" 
                 className="text-earthy-600 hover:text-monastic-600 transition-colors font-medium relative group"
               >
-                {messages.navigation.submit}
+                {messages.nav.record}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-golden-500 transition-all duration-300 group-hover:w-full"></span>
               </Link>
               <Link 
                 href="/report" 
                 className="text-earthy-600 hover:text-monastic-600 transition-colors font-medium relative group"
               >
-                {messages.navigation.report}
+                {messages.nav.report}
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-golden-500 transition-all duration-300 group-hover:w-full"></span>
+              </Link>
+              <Link 
+                href="/schedule" 
+                className="text-earthy-600 hover:text-monastic-600 transition-colors font-medium relative group"
+              >
+                {messages.nav.schedule}
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-golden-500 transition-all duration-300 group-hover:w-full"></span>
+              </Link>
+              <Link 
+                href="/info" 
+                className="text-earthy-600 hover:text-monastic-600 transition-colors font-medium relative group"
+              >
+                {messages.nav.info}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-golden-500 transition-all duration-300 group-hover:w-full"></span>
               </Link>
               <Link 
                 href="/admin" 
                 className="text-earthy-600 hover:text-monastic-600 transition-colors font-medium relative group"
               >
-                {messages.navigation.admin}
+                Admin
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-golden-500 transition-all duration-300 group-hover:w-full"></span>
               </Link>
             </nav>

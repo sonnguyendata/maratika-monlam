@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;500;600;700&family=Noto+Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,7 +7,7 @@
 
 @layer base {
   html {
-    font-family: 'Noto Sans', system-ui, sans-serif;
+    font-family: 'Inter', 'Noto Sans', system-ui, sans-serif;
   }
   
   body {
@@ -17,7 +18,7 @@
   }
   
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Noto Serif', serif;
+    font-family: 'Playfair Display', 'Noto Serif', serif;
   }
 }
 
@@ -91,6 +92,7 @@
   .hero-title {
     @apply text-4xl md:text-5xl font-serif font-bold text-monastic-600 mb-4;
     text-shadow: 0 2px 4px rgba(220, 38, 38, 0.1);
+    font-family: 'Playfair Display', 'Noto Serif', serif;
   }
   
   .hero-subtitle {
@@ -143,5 +145,13 @@
   
   .quantity-stepper-btn {
     @apply w-10 h-10 flex items-center justify-center text-golden-600 hover:text-golden-700 hover:bg-golden-50 text-xl font-bold rounded-lg border-2 border-golden-200 hover:border-golden-300 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-golden-300;
+  }
+  
+  .btn-info {
+    @apply bg-gradient-to-r from-sky-500 to-lotus-500 text-white hover:from-sky-600 hover:to-lotus-600 focus:ring-sky-500 shadow-sacred;
+  }
+  
+  .btn-sm {
+    @apply px-3 py-1.5 text-sm min-h-[32px];
   }
 }

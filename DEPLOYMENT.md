@@ -161,3 +161,4 @@ Set these in your Vercel project dashboard:
 - Update dependencies monthly
 - Review security settings
 - Monitor performance metrics
+

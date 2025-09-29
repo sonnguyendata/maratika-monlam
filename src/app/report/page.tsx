@@ -71,21 +71,21 @@ export default function ReportPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
               <div className="kpi-card">
                 <div className="kpi-value">{reportData.totals.all_time.toLocaleString()}</div>
-                <div className="kpi-label">{messages.report.kpis.total_all_time}</div>
+                <div className="kpi-label">{messages.report.kpi_total}</div>
               </div>
               <div className="kpi-card">
                 <div className="kpi-value">{reportData.totals.today.toLocaleString()}</div>
-                <div className="kpi-label">{messages.report.kpis.total_today}</div>
+                <div className="kpi-label">{messages.report.kpi_today}</div>
               </div>
               <div className="kpi-card">
                 <div className="kpi-value">{reportData.totals.unique_ids.toLocaleString()}</div>
-                <div className="kpi-label">{messages.report.kpis.unique_participants}</div>
+                <div className="kpi-label">{messages.report.kpi_unique}</div>
               </div>
             </div>
 
             {/* Chart */}
             <div className="card mb-12">
-              <h2 className="text-2xl font-serif font-semibold mb-6 text-monastic-600">{messages.report.chart.title}</h2>
+              <h2 className="text-2xl font-serif font-semibold mb-6 text-monastic-600">{messages.report.daily_chart}</h2>
               <div className="h-80">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={reportData.by_day}>
@@ -124,22 +124,19 @@ export default function ReportPage() {
 
             {/* Leaderboard */}
             <div className="card">
-              <h2 className="text-2xl font-serif font-semibold mb-6 text-monastic-600">{messages.report.leaderboard.title}</h2>
+              <h2 className="text-2xl font-serif font-semibold mb-6 text-monastic-600">{messages.report.top10}</h2>
               <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-earthy-200">
                   <thead className="table-header">
                     <tr>
                       <th className="px-6 py-4 text-left text-sm font-semibold text-earthy-700 uppercase tracking-wider">
-                        {messages.report.leaderboard.rank}
+                        {messages.report.rank}
                       </th>
                       <th className="px-6 py-4 text-left text-sm font-semibold text-earthy-700 uppercase tracking-wider">
-                        {messages.report.leaderboard.name}
+                        {messages.report.name}
                       </th>
                       <th className="px-6 py-4 text-left text-sm font-semibold text-earthy-700 uppercase tracking-wider">
-                        {messages.report.leaderboard.total}
-                      </th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-earthy-700 uppercase tracking-wider">
-                        {messages.report.leaderboard.submissions}
+                        {messages.report.total}
                       </th>
                     </tr>
                   </thead>
@@ -161,9 +158,6 @@ export default function ReportPage() {
                           <span className={index === 0 ? 'text-golden-600' : 'text-monastic-600'}>
                             {participant.total.toLocaleString()}
                           </span>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-earthy-500">
-                          {participant.submission_count}
                         </td>
                       </tr>
                     ))}
