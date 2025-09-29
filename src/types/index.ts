@@ -94,58 +94,56 @@ export interface I18nMessages {
     page: string;
     of: string;
   };
-  navigation: {
-    home: string;
-    submit: string;
+  nav: {
+    record: string;
     report: string;
-    admin: string;
-    language: string;
+    schedule: string;
+    info: string;
   };
   app: {
     title: string;
     subtitle: string;
     event_dates: string;
   };
-  form: {
-    attendee_id: string;
-    attendee_id_placeholder: string;
-    attendee_name: string;
-    attendee_name_placeholder: string;
+  record: {
+    title: string;
+    id: string;
+    id_placeholder: string;
+    name: string;
+    name_placeholder: string;
     quantity: string;
     quantity_placeholder: string;
     note: string;
     note_placeholder: string;
-    required: string;
-    min_quantity: string;
-    invalid_quantity: string;
-  };
-  submission: {
+    submit: string;
     success: string;
-    success_message: string;
-    daily_total: string;
-    duplicate_warning: string;
-    error_message: string;
+    todayTotal: string;
   };
   report: {
     title: string;
-    kpis: {
-      total_all_time: string;
-      total_today: string;
-      unique_participants: string;
-      last_updated: string;
-    };
-    chart: {
-      title: string;
-      x_axis: string;
-      y_axis: string;
-    };
-    leaderboard: {
-      title: string;
-      rank: string;
-      name: string;
-      total: string;
-      submissions: string;
-    };
+    kpi_total: string;
+    kpi_today: string;
+    kpi_unique: string;
+    daily_chart: string;
+    top10: string;
+    rank: string;
+    name: string;
+    total: string;
+  };
+  schedule: {
+    title: string;
+    day1: string;
+    day2: string;
+    day3: string;
+    day4: string;
+    day5: string;
+  };
+  info: {
+    title: string;
+    purpose: string;
+    dates_place: string;
+    contact: string;
+    register: string;
   };
   admin: {
     title: string;
@@ -156,46 +154,22 @@ export interface I18nMessages {
       login_button: string;
       invalid_credentials: string;
     };
-    dashboard: {
-      title: string;
-      records_table: string;
-      filters: string;
-      actions: string;
-    };
-    table: {
-      timestamp: string;
-      attendee_id: string;
-      attendee_name: string;
-      quantity: string;
-      note: string;
-      ip_hash: string;
-      ua_hash: string;
-      flagged: string;
-      flag_reason: string;
-      actions: string;
-    };
     filters: {
-      date_from: string;
-      date_to: string;
-      attendee_id: string;
-      attendee_name: string;
-      quantity_min: string;
-      quantity_max: string;
-      flagged_only: string;
-      apply: string;
-      clear: string;
+      by_date: string;
+      by_id: string;
+      by_name: string;
+      qty_range: string;
+      flags_only: string;
     };
     flags: {
-      BurstByID: string;
-      SpikeByQty: string;
-      DupKey: string;
-      MultiAccountSameIP: string;
+      spike: string;
+      burst: string;
+      duplicate: string;
+      same_ip: string;
     };
     actions: {
       export_csv: string;
       mark_reviewed: string;
-      flag: string;
-      unflag: string;
     };
   };
   errors: {
