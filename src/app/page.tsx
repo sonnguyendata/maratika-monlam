@@ -144,33 +144,33 @@ export default function HomePage() {
               <label htmlFor="quantity" className="block text-sm font-medium text-earthy-700 mb-3">
                 {messages.form.quantity} *
               </label>
-              <div className="relative">
+              <div className="flex items-center space-x-3">
+                <button
+                  type="button"
+                  onClick={() => setFormData(prev => ({ ...prev, quantity: Math.max(1, prev.quantity - 1) }))}
+                  className="quantity-stepper-btn"
+                  aria-label="Decrease quantity"
+                >
+                  −
+                </button>
                 <input
                   type="number"
                   id="quantity"
                   value={formData.quantity}
                   onChange={(e) => setFormData(prev => ({ ...prev, quantity: parseInt(e.target.value) || 1 }))}
                   placeholder={messages.form.quantity_placeholder}
-                  className="input pr-16"
+                  className="input text-center flex-1"
                   min="1"
                   required
                 />
-                <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex flex-col">
-                  <button
-                    type="button"
-                    onClick={() => setFormData(prev => ({ ...prev, quantity: Math.max(1, prev.quantity + 1) }))}
-                    className="w-6 h-6 flex items-center justify-center text-golden-600 hover:text-golden-700 text-lg font-bold"
-                  >
-                    +
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setFormData(prev => ({ ...prev, quantity: Math.max(1, prev.quantity - 1) }))}
-                    className="w-6 h-6 flex items-center justify-center text-golden-600 hover:text-golden-700 text-lg font-bold"
-                  >
-                    −
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  onClick={() => setFormData(prev => ({ ...prev, quantity: Math.max(1, prev.quantity + 1) }))}
+                  className="quantity-stepper-btn"
+                  aria-label="Increase quantity"
+                >
+                  +
+                </button>
               </div>
             </div>
 
