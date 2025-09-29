@@ -56,7 +56,7 @@ export default function ReportPage() {
             {messages.report.title}
           </h1>
           <p className="text-sm text-earthy-500">
-            {messages.report.kpis.last_updated}: {lastUpdated.toLocaleString()}
+            Cập nhật lần cuối: {lastUpdated.toLocaleString()}
           </p>
         </div>
 
