@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Header } from '@/components/Header';
 import { useLanguage } from '@/components/LanguageProvider';
 import { AdminRecord, AdminFilters, AdminResponse } from '@/types';
@@ -45,7 +45,7 @@ export default function AdminPage() {
     }
   };
 
-  const fetchRecords = async () => {
+  const fetchRecords = useCallback(async () => {
     setLoadingRecords(true);
     try {
       const params = new URLSearchParams();
@@ -75,7 +75,7 @@ export default function AdminPage() {
     } finally {
       setLoadingRecords(false);
     }
-  };
+  }, [filters, credentials.username, credentials.password]);
 
   const handleFilterChange = (key: keyof AdminFilters, value: any) => {
     setFilters(prev => ({ ...prev, [key]: value, page: 1 }));
@@ -143,7 +143,7 @@ export default function AdminPage() {
     if (isAuthenticated) {
       fetchRecords();
     }
-  }, [filters.page, filters.limit]);
+  }, [isAuthenticated, fetchRecords]);
 
   if (loading || !messages) {
     return (
