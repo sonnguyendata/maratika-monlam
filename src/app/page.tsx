@@ -11,7 +11,7 @@ export default function HomePage() {
   const [formData, setFormData] = useState<SubmissionData>({
     attendee_id: '',
     attendee_name: '',
-    quantity: 1,
+    quantity: 0,
     note: '',
     idempotency_key: uuidv4()
   });
@@ -60,7 +60,7 @@ export default function HomePage() {
         // Reset form
         setFormData(prev => ({
           ...prev,
-          quantity: 1,
+          quantity: 0,
           note: '',
           idempotency_key: uuidv4()
         }));
@@ -147,7 +147,7 @@ export default function HomePage() {
               <div className="flex items-center space-x-3">
                 <button
                   type="button"
-                  onClick={() => setFormData(prev => ({ ...prev, quantity: Math.max(1, prev.quantity - 1) }))}
+                  onClick={() => setFormData(prev => ({ ...prev, quantity: Math.max(0, prev.quantity - 1) }))}
                   className="quantity-stepper-btn"
                   aria-label="Decrease quantity"
                 >
@@ -157,15 +157,15 @@ export default function HomePage() {
                   type="number"
                   id="quantity"
                   value={formData.quantity}
-                  onChange={(e) => setFormData(prev => ({ ...prev, quantity: parseInt(e.target.value) || 1 }))}
+                  onChange={(e) => setFormData(prev => ({ ...prev, quantity: parseInt(e.target.value) || 0 }))}
                   placeholder={messages.record.quantity_placeholder}
                   className="input text-center flex-1"
-                  min="1"
+                  min="0"
                   required
                 />
                 <button
                   type="button"
-                  onClick={() => setFormData(prev => ({ ...prev, quantity: Math.max(1, prev.quantity + 1) }))}
+                  onClick={() => setFormData(prev => ({ ...prev, quantity: Math.max(0, prev.quantity + 1) }))}
                   className="quantity-stepper-btn"
                   aria-label="Increase quantity"
                 >
