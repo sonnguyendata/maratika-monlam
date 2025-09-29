@@ -17,8 +17,8 @@ import {
 } from '@/lib/utils';
 
 const submitSchema = z.object({
-  id: z.string().min(1, 'ID is required'),
-  name: z.string().min(1, 'Name is required'),
+  attendee_id: z.string().min(1, 'ID is required'),
+  attendee_name: z.string().min(1, 'Name is required'),
   quantity: z.number().int().min(1, 'Quantity must be at least 1'),
   note: z.string().optional(),
   idempotency_key: z.string().uuid('Invalid idempotency key')
@@ -26,8 +26,11 @@ const submitSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
+    console.log('Submit API called');
+    
     // Check if event is active
     if (!validateEventDates()) {
+      console.log('Event dates validation failed');
       return NextResponse.json(
         { ok: false, error: 'Event is not currently active' },
         { status: 400 }
@@ -51,7 +54,9 @@ export async function POST(request: NextRequest) {
 
     // Parse and validate request body
     const body = await request.json();
+    console.log('Request body:', body);
     const validatedData = submitSchema.parse(body);
+    console.log('Validated data:', validatedData);
 
     // Check idempotency
     const isDuplicate = await checkIdempotencyKey(validatedData.idempotency_key);
@@ -63,7 +68,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Check burst submission
-    const burstAllowed = await checkBurstSubmission(validatedData.id);
+    const burstAllowed = await checkBurstSubmission(validatedData.attendee_id);
     if (!burstAllowed) {
       return NextResponse.json(
         { ok: false, error: 'Too many submissions in short time' },
@@ -74,8 +79,8 @@ export async function POST(request: NextRequest) {
     // Submit to database
     const result = await submitTucSo(
       {
-        attendee_id: validatedData.id,
-        attendee_name: validatedData.name,
+        attendee_id: validatedData.attendee_id,
+        attendee_name: validatedData.attendee_name,
         quantity: validatedData.quantity,
         note: validatedData.note,
         idempotency_key: validatedData.idempotency_key
@@ -88,7 +93,7 @@ export async function POST(request: NextRequest) {
     await storeIdempotencyKey(validatedData.idempotency_key, result.id);
 
     // Get user's daily total
-    const dailyTotal = await getDailyTotalForUser(validatedData.id);
+    const dailyTotal = await getDailyTotalForUser(validatedData.attendee_id);
 
     return NextResponse.json({
       ok: true,
@@ -99,6 +104,7 @@ export async function POST(request: NextRequest) {
     console.error('Submit error:', error);
     
     if (error instanceof z.ZodError) {
+      console.log('Zod validation error:', error.errors);
       return NextResponse.json(
         { ok: false, error: 'Invalid data', details: error.errors },
         { status: 400 }
@@ -106,7 +112,7 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json(
-      { ok: false, error: 'Internal server error' },
+      { ok: false, error: 'Internal server error', details: error.message },
       { status: 500 }
     );
   }
