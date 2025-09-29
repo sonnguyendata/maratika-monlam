@@ -31,11 +31,29 @@ export function generateIdempotencyKey(): string {
 }
 
 export function validateEventDates(): boolean {
+  // For development/testing, always allow submissions
+  if (process.env.NODE_ENV === 'development') {
+    return true;
+  }
+  
   const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  
   const eventStart = new Date(process.env.EVENT_START || '2025-10-29');
   const eventEnd = new Date(process.env.EVENT_END || '2025-11-02');
   
-  return now >= eventStart && now <= eventEnd;
+  // Add timezone offset and set to end of day for event end
+  eventEnd.setHours(23, 59, 59, 999);
+  
+  console.log('Event validation:', {
+    now: now.toISOString(),
+    today: today.toISOString(), 
+    eventStart: eventStart.toISOString(),
+    eventEnd: eventEnd.toISOString(),
+    isActive: today >= eventStart && today <= eventEnd
+  });
+  
+  return today >= eventStart && today <= eventEnd;
 }
 
 export function formatDate(date: string | Date): string {
