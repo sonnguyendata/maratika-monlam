@@ -314,11 +314,11 @@ export default function AdminPage() {
             </label>
             
             <button onClick={applyFilters} className="btn btn-primary">
-              {messages.admin.filters.apply}
+              Áp dụng
             </button>
             
             <button onClick={clearFilters} className="btn btn-secondary">
-              {messages.admin.filters.clear}
+              Xóa bộ lọc
             </button>
             
             <button onClick={exportCSV} className="btn btn-success">
