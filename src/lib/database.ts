@@ -60,14 +60,18 @@ export async function storeIdempotencyKey(key: string, submissionId: number) {
 }
 
 export async function getDailyTotalForUser(attendeeId: string): Promise<number> {
-  const today = new Date().toISOString().split('T')[0];
+  // Get today in GMT+7 (Asia/Ho_Chi_Minh timezone)
+  const now = new Date();
+  const gmt7Offset = 7 * 60; // GMT+7 in minutes
+  const localTime = new Date(now.getTime() + (gmt7Offset * 60 * 1000));
+  const today = localTime.toISOString().split('T')[0];
   
   const { data, error } = await supabase
     .from('submissions')
     .select('quantity')
     .eq('attendee_id', attendeeId)
-    .gte('ts_server', `${today}T00:00:00`)
-    .lt('ts_server', `${today}T23:59:59`)
+    .gte('ts_server', `${today}T00:00:00+07:00`)
+    .lt('ts_server', `${today}T23:59:59+07:00`)
     .eq('flagged', false);
 
   if (error) {

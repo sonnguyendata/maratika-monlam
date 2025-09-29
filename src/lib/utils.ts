@@ -37,13 +37,17 @@ export function validateEventDates(): boolean {
     return true;
   }
   
+  // Get current time in GMT+7
   const now = new Date();
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const gmt7Offset = 7 * 60; // GMT+7 in minutes
+  const localTime = new Date(now.getTime() + (gmt7Offset * 60 * 1000));
+  const today = new Date(localTime.getFullYear(), localTime.getMonth(), localTime.getDate());
   
+  // Parse event dates in GMT+7
   const eventStart = new Date(process.env.EVENT_START || '2025-01-01');
   const eventEnd = new Date(process.env.EVENT_END || '2025-11-02');
   
-  // Add timezone offset and set to end of day for event end
+  // Set to end of day for event end
   eventEnd.setHours(23, 59, 59, 999);
   
   console.log('Event validation:', {
@@ -68,7 +72,8 @@ export function formatDate(date: string | Date): string {
   return d.toLocaleDateString('vi-VN', {
     year: 'numeric',
     month: '2-digit',
-    day: '2-digit'
+    day: '2-digit',
+    timeZone: 'Asia/Ho_Chi_Minh'
   });
 }
 
@@ -80,7 +85,8 @@ export function formatDateTime(date: string | Date): string {
     day: '2-digit',
     hour: '2-digit',
     minute: '2-digit',
-    second: '2-digit'
+    second: '2-digit',
+    timeZone: 'Asia/Ho_Chi_Minh'
   });
 }
 
