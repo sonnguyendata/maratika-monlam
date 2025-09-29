@@ -98,7 +98,7 @@ export default function ReportPage() {
                     <YAxis tick={{ fontSize: 12, fill: '#57534e' }} />
                     <Tooltip 
                       labelFormatter={(value) => new Date(value).toLocaleDateString('vi-VN')}
-                      formatter={(value: number) => [value.toLocaleString(), messages.report.chart.y_axis]}
+                      formatter={(value: number) => [value.toLocaleString(), 'Tổng số']}
                       contentStyle={{
                         backgroundColor: '#fefdfb',
                         border: '2px solid #f59e0b',
