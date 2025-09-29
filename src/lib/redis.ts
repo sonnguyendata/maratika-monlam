@@ -7,7 +7,15 @@ if (!process.env.REDIS_URL) {
 // Parse Redis URL to extract token and convert to HTTPS
 const redisUrl = new URL(process.env.REDIS_URL);
 const token = redisUrl.password;
-const httpsUrl = `https://${redisUrl.hostname}${redisUrl.port ? ':' + redisUrl.port : ''}`;
+const httpsUrl = `https://${redisUrl.hostname}`;
+
+console.log('Redis configuration:', {
+  originalUrl: process.env.REDIS_URL,
+  hostname: redisUrl.hostname,
+  httpsUrl,
+  hasToken: !!token,
+  tokenLength: token?.length
+});
 
 export const redis = new Redis({
   url: httpsUrl,
@@ -15,23 +23,41 @@ export const redis = new Redis({
 });
 
 export async function rateLimit(key: string, limit: number, window: number): Promise<boolean> {
-  const current = await redis.incr(key);
-  
-  if (current === 1) {
-    await redis.expire(key, window);
+  try {
+    const current = await redis.incr(key);
+    
+    if (current === 1) {
+      await redis.expire(key, window);
+    }
+    
+    return current <= limit;
+  } catch (error) {
+    console.error('Redis rate limit error:', error);
+    // Allow request if Redis fails
+    return true;
   }
-  
-  return current <= limit;
 }
 
 export async function checkBurstSubmission(attendeeId: string, timeWindow: number = 300): Promise<boolean> {
-  const key = `burst:${attendeeId}`;
-  return await rateLimit(key, 10, timeWindow); // Max 10 submissions per 5 minutes
+  try {
+    const key = `burst:${attendeeId}`;
+    return await rateLimit(key, 10, timeWindow); // Max 10 submissions per 5 minutes
+  } catch (error) {
+    console.error('Redis burst check error:', error);
+    // Allow request if Redis fails
+    return true;
+  }
 }
 
 export async function checkIPRateLimit(ipHash: string, timeWindow: number = 60): Promise<boolean> {
-  const key = `ip:${ipHash}`;
-  return await rateLimit(key, 50, timeWindow); // Max 50 requests per minute per IP
+  try {
+    const key = `ip:${ipHash}`;
+    return await rateLimit(key, 50, timeWindow); // Max 50 requests per minute per IP
+  } catch (error) {
+    console.error('Redis IP rate limit error:', error);
+    // Allow request if Redis fails
+    return true;
+  }
 }
 
 export async function queueSubmission(data: any): Promise<void> {
