@@ -32,7 +32,7 @@
   },
   "app": {
     "title": "Monlam Dharma Festival 2025",
-    "subtitle": "Direct túc số recording | Ghi nhận túc số trực tiếp",
+    "subtitle": "Mantra recording",
     "event_dates": "October 29 – November 2, 2025"
   },
   "record": {
@@ -41,13 +41,14 @@
     "id_placeholder": "Enter your ID",
     "name": "Name / Dharma Name",
     "name_placeholder": "Name / Dharma Name",
-    "quantity": "Quantity (≥1)",
-    "quantity_placeholder": "Quantity (≥1)",
+    "quantity": "Quantity (≥0)",
+    "quantity_placeholder": "Quantity (≥0)",
     "note": "Note (optional)",
     "note_placeholder": "Note (optional)",
     "submit": "Submit",
     "success": "Recorded successfully!",
     "todayTotal": "Your total today: {{n}}",
+    "totalCount": "Your total count: {{n}}",
     "quick_add": {
       "add_7": "+7",
       "add_21": "+21",
@@ -55,7 +56,7 @@
     }
   },
   "report": {
-    "title": "Túc số Report",
+    "title": "Mantra Counting Report",
     "kpi_total": "Total count",
     "kpi_today": "Today",
     "kpi_unique": "Unique participants",

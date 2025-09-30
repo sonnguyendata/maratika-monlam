@@ -88,6 +88,20 @@ export async function getDailyTotalForUser(attendeeId: string): Promise<number> 
   return data.reduce((sum, record) => sum + record.quantity, 0);
 }
 
+export async function getTotalCountForUser(attendeeId: string): Promise<number> {
+  const { data, error } = await supabase
+    .from('submissions')
+    .select('quantity')
+    .eq('attendee_id', attendeeId)
+    .eq('flagged', false);
+
+  if (error) {
+    throw new Error(`Database error: ${error.message}`);
+  }
+
+  return data.reduce((sum, record) => sum + record.quantity, 0);
+}
+
 export async function getReportSummary(): Promise<ReportSummary> {
   console.log('Getting report summary...');
   

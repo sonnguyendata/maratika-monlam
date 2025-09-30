@@ -11,12 +11,12 @@ export default function HomePage() {
   const [formData, setFormData] = useState<SubmissionData>({
     attendee_id: '',
     attendee_name: '',
-    quantity: 0,
+    quantity: 1,
     note: '',
     idempotency_key: uuidv4()
   });
   const [submitting, setSubmitting] = useState(false);
-  const [submitResult, setSubmitResult] = useState<{ success: boolean; message: string; dailyTotal?: number } | null>(null);
+  const [submitResult, setSubmitResult] = useState<{ success: boolean; message: string; dailyTotal?: number; totalCount?: number } | null>(null);
 
   useEffect(() => {
     // Load saved data from localStorage
@@ -54,13 +54,14 @@ export default function HomePage() {
         setSubmitResult({
           success: true,
           message: messages?.record.success || 'Success!',
-          dailyTotal: result.daily_total
+          dailyTotal: result.daily_total,
+          totalCount: result.total_count
         });
         
         // Reset form
         setFormData(prev => ({
           ...prev,
-          quantity: 0,
+          quantity: 1,
           note: '',
           idempotency_key: uuidv4()
         }));
@@ -147,7 +148,7 @@ export default function HomePage() {
               <div className="flex items-center space-x-3">
                 <button
                   type="button"
-                  onClick={() => setFormData(prev => ({ ...prev, quantity: Math.max(0, prev.quantity - 1) }))}
+                  onClick={() => setFormData(prev => ({ ...prev, quantity: Math.max(1, prev.quantity - 1) }))}
                   className="quantity-stepper-btn"
                   aria-label="Decrease quantity"
                 >
@@ -157,15 +158,15 @@ export default function HomePage() {
                   type="number"
                   id="quantity"
                   value={formData.quantity}
-                  onChange={(e) => setFormData(prev => ({ ...prev, quantity: parseInt(e.target.value) || 0 }))}
+                  onChange={(e) => setFormData(prev => ({ ...prev, quantity: parseInt(e.target.value) || 1 }))}
                   placeholder={messages.record.quantity_placeholder}
                   className="input text-center flex-1"
-                  min="0"
+                  min="1"
                   required
                 />
                 <button
                   type="button"
-                  onClick={() => setFormData(prev => ({ ...prev, quantity: Math.max(0, prev.quantity + 1) }))}
+                  onClick={() => setFormData(prev => ({ ...prev, quantity: Math.max(1, prev.quantity + 1) }))}
                   className="quantity-stepper-btn"
                   aria-label="Increase quantity"
                 >
@@ -247,11 +248,22 @@ export default function HomePage() {
                   <p className="font-semibold text-lg">{submitResult.message}</p>
                 </div>
               )}
-              {submitResult.success && submitResult.dailyTotal && (
-                <div className="mt-4 p-3 bg-golden-50 rounded-lg border border-golden-200">
-                  <p className="text-sm text-earthy-600">
-                    {messages.record.todayTotal.replace('{{n}}', submitResult.dailyTotal.toString())}
-                  </p>
+              {submitResult.success && (submitResult.dailyTotal !== undefined || submitResult.totalCount !== undefined) && (
+                <div className="mt-4 space-y-2">
+                  {submitResult.dailyTotal !== undefined && (
+                    <div className="p-3 bg-golden-50 rounded-lg border border-golden-200">
+                      <p className="text-sm text-earthy-600">
+                        {messages.record.todayTotal.replace('{{n}}', submitResult.dailyTotal.toString())}
+                      </p>
+                    </div>
+                  )}
+                  {submitResult.totalCount !== undefined && (
+                    <div className="p-3 bg-lotus-50 rounded-lg border border-lotus-200">
+                      <p className="text-sm text-earthy-600">
+                        {messages.record.totalCount.replace('{{n}}', submitResult.totalCount.toString())}
+                      </p>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

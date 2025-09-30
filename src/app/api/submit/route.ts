@@ -5,7 +5,8 @@ import {
   submitTucSo, 
   checkIdempotencyKey, 
   storeIdempotencyKey, 
-  getDailyTotalForUser 
+  getDailyTotalForUser,
+  getTotalCountForUser
 } from '@/lib/database';
 import { checkBurstSubmission, checkIPRateLimit } from '@/lib/redis';
 import { 
@@ -100,12 +101,16 @@ export async function POST(request: NextRequest) {
     // Store idempotency key
     await storeIdempotencyKey(validatedData.idempotency_key, result.id);
 
-    // Get user's daily total
-    const dailyTotal = await getDailyTotalForUser(validatedData.attendee_id);
+    // Get user's daily total and total count
+    const [dailyTotal, totalCount] = await Promise.all([
+      getDailyTotalForUser(validatedData.attendee_id),
+      getTotalCountForUser(validatedData.attendee_id)
+    ]);
 
     return NextResponse.json({
       ok: true,
-      daily_total: dailyTotal
+      daily_total: dailyTotal,
+      total_count: totalCount
     });
 
   } catch (error) {

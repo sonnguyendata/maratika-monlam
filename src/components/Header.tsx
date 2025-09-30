@@ -12,7 +12,13 @@ export function Header() {
   if (!messages) return null;
 
   const toggleLanguage = () => {
-    setLanguage(language === 'vi' ? 'en' : 'vi');
+    if (language === 'vi') {
+      setLanguage('en');
+    } else if (language === 'en') {
+      setLanguage('zh');
+    } else {
+      setLanguage('vi');
+    }
   };
 
   const toggleMobileMenu = () => {
@@ -97,7 +103,7 @@ export function Header() {
               onClick={toggleLanguage}
               className="language-toggle"
             >
-              {language === 'vi' ? 'EN' : 'VN'}
+              {language === 'vi' ? 'EN' : language === 'en' ? '中文' : 'VN'}
             </button>
           </div>
         </div>

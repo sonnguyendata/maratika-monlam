@@ -1,4 +1,4 @@
-export type Language = 'vi' | 'en';
+export type Language = 'vi' | 'en' | 'zh';
 
 export interface SubmissionData {
   attendee_id: string;
@@ -11,6 +11,7 @@ export interface SubmissionData {
 export interface SubmissionResponse {
   ok: boolean;
   daily_total?: number;
+  total_count?: number;
   error?: string;
 }
 
@@ -118,6 +119,7 @@ export interface I18nMessages {
     submit: string;
     success: string;
     todayTotal: string;
+    totalCount: string;
     quick_add: {
       add_7: string;
       add_21: string;

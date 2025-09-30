@@ -4,14 +4,16 @@ let messages: Record<Language, I18nMessages> | null = null;
 
 export async function loadMessages(language: Language): Promise<I18nMessages> {
   if (!messages) {
-    const [viMessages, enMessages] = await Promise.all([
+    const [viMessages, enMessages, zhMessages] = await Promise.all([
       import('../../i18n/vi.json'),
-      import('../../i18n/en.json')
+      import('../../i18n/en.json'),
+      import('../../i18n/zh.json')
     ]);
     
     messages = {
       vi: viMessages.default,
-      en: enMessages.default
+      en: enMessages.default,
+      zh: zhMessages.default
     };
   }
   
@@ -22,7 +24,7 @@ export function getLanguageFromStorage(): Language {
   if (typeof window === 'undefined') return 'vi';
   
   const stored = localStorage.getItem('language');
-  return (stored === 'en' || stored === 'vi') ? stored : 'vi';
+  return (stored === 'en' || stored === 'vi' || stored === 'zh') ? stored : 'vi';
 }
 
 export function saveLanguageToStorage(language: Language): void {
@@ -37,6 +39,10 @@ export function getLanguageFromHeader(acceptLanguage?: string): Language {
   // Simple language detection - prioritize Vietnamese
   if (acceptLanguage.includes('vi') || acceptLanguage.includes('vn')) {
     return 'vi';
+  }
+  
+  if (acceptLanguage.includes('zh') || acceptLanguage.includes('cn')) {
+    return 'zh';
   }
   
   return 'en';
