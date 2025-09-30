@@ -19,61 +19,67 @@
     "close": "Đóng",
     "confirm": "Xác nhận",
     "yes": "Có",
-    "no": "Không"
+    "no": "Không",
+    "total": "Tổng cộng",
+    "page": "Trang",
+    "of": "của"
   },
-  "navigation": {
-    "home": "Trang chủ",
-    "submit": "Ghi nhận",
+  "nav": {
+    "record": "Ghi nhận",
     "report": "Báo cáo",
-    "admin": "Quản trị",
-    "language": "Ngôn ngữ"
+    "schedule": "Lịch trình",
+    "info": "Thông tin"
   },
   "app": {
     "title": "Pháp Hội Monlam 2025",
-    "subtitle": "Túc số ghi nhận trực tiếp | Direct túc số recording",
+    "subtitle": "Túc số ghi nhận trực tiếp",
     "event_dates": "29/10 – 02/11/2025"
   },
-  "form": {
-    "attendee_id": "Mã số tham dự",
-    "attendee_id_placeholder": "Nhập mã số tham dự của bạn",
-    "attendee_name": "Tên / Pháp danh",
-    "attendee_name_placeholder": "Nhập tên hoặc pháp danh",
-    "quantity": "Số lượng túc số",
-    "quantity_placeholder": "Nhập số lượng",
+  "record": {
+    "title": "Ghi nhận túc số của bạn",
+    "id": "Mã số",
+    "id_placeholder": "Nhập mã số của bạn",
+    "name": "Tên / Pháp danh",
+    "name_placeholder": "Tên / Pháp danh",
+    "quantity": "Số lượng (≥0)",
+    "quantity_placeholder": "Số lượng (≥0)",
     "note": "Ghi chú (tùy chọn)",
-    "note_placeholder": "Thêm ghi chú nếu cần",
-    "required": "Trường này là bắt buộc",
-    "min_quantity": "Số lượng phải lớn hơn 0",
-    "invalid_quantity": "Vui lòng nhập số hợp lệ"
-  },
-  "submission": {
+    "note_placeholder": "Ghi chú (tùy chọn)",
+    "submit": "Gửi",
     "success": "Ghi nhận thành công!",
-    "success_message": "Bạn đã ghi nhận thành công! | Submission recorded successfully!",
-    "daily_total": "Tổng số hôm nay của bạn",
-    "total_count": "Tổng số của bạn",
-    "duplicate_warning": "Bạn đã ghi nhận với khóa này rồi",
-    "error_message": "Có lỗi xảy ra khi ghi nhận. Vui lòng thử lại."
+    "todayTotal": "Tổng số hôm nay của bạn: {{n}}",
+    "totalCount": "Tổng số của bạn: {{n}}",
+    "quick_add": {
+      "add_7": "+7",
+      "add_21": "+21",
+      "add_108": "+108"
+    }
   },
   "report": {
-    "title": "Thống kê Túc Số | Túc Số Report",
-    "kpis": {
-      "total_all_time": "Tổng cộng toàn sự kiện",
-      "total_today": "Tổng số hôm nay",
-      "unique_participants": "Số người tham dự",
-      "last_updated": "Cập nhật lần cuối"
-    },
-    "chart": {
-      "title": "Biểu đồ túc số theo ngày",
-      "x_axis": "Ngày",
-      "y_axis": "Tổng số túc số"
-    },
-    "leaderboard": {
-      "title": "Top 10 người ghi nhận nhiều nhất",
-      "rank": "Hạng",
-      "name": "Tên",
-      "total": "Tổng số",
-      "submissions": "Lần ghi nhận"
-    }
+    "title": "Báo cáo túc số",
+    "kpi_total": "Tổng số",
+    "kpi_today": "Hôm nay",
+    "kpi_unique": "Người tham dự",
+    "daily_chart": "Tổng số hàng ngày",
+    "top10": "Top 10 người thực hành",
+    "rank": "Hạng",
+    "name": "Tên",
+    "total": "Tổng số"
+  },
+  "schedule": {
+    "title": "Lịch trình",
+    "day1": "29/10 - Khai mạc",
+    "day2": "30/10 - Thực hành",
+    "day3": "31/10 - Thực hành",
+    "day4": "01/11 - Thực hành",
+    "day5": "02/11 - Bế mạc"
+  },
+  "info": {
+    "title": "Pháp Hội Monlam 2025",
+    "purpose": "Tụng niệm tập thể thần chú Tam Thân của Đức Liên Hoa Sinh, cầu nguyện cho hòa bình thế giới.",
+    "dates_place": "29/10 – 02/11/2025 · Chùa Pháp Vân, 1299 Giải Phóng, Hà Nội",
+    "contact": "Liên hệ",
+    "register": "Đăng ký"
   },
   "admin": {
     "title": "Bảng quản trị",
@@ -84,53 +90,29 @@
       "login_button": "Đăng nhập",
       "invalid_credentials": "Tên đăng nhập hoặc mật khẩu không đúng"
     },
-    "dashboard": {
-      "title": "Tổng quan",
-      "records_table": "Bảng ghi nhận",
-      "filters": "Bộ lọc",
-      "actions": "Hành động"
-    },
-    "table": {
-      "timestamp": "Thời gian",
-      "attendee_id": "Mã số",
-      "attendee_name": "Tên",
-      "quantity": "Số lượng",
-      "note": "Ghi chú",
-      "ip_hash": "IP Hash",
-      "ua_hash": "UA Hash",
-      "flagged": "Đã đánh dấu",
-      "flag_reason": "Lý do đánh dấu",
-      "actions": "Hành động"
-    },
     "filters": {
-      "date_from": "Từ ngày",
-      "date_to": "Đến ngày",
-      "attendee_id": "Mã số tham dự",
-      "attendee_name": "Tên",
-      "quantity_min": "Số lượng tối thiểu",
-      "quantity_max": "Số lượng tối đa",
-      "flagged_only": "Chỉ hiển thị đã đánh dấu",
-      "apply": "Áp dụng",
-      "clear": "Xóa bộ lọc"
+      "by_date": "Theo ngày",
+      "by_id": "Theo mã số",
+      "by_name": "Theo tên",
+      "qty_range": "Phạm vi số lượng",
+      "flags_only": "Chỉ có cờ"
     },
     "flags": {
-      "BurstByID": "Quá nhiều ghi nhận trong thời gian ngắn",
-      "SpikeByQty": "Số lượng bất thường lớn",
-      "DupKey": "Khóa trùng lặp",
-      "MultiAccountSameIP": "Nhiều tài khoản từ cùng IP"
+      "spike": "Tăng đột biến",
+      "burst": "Bùng nổ",
+      "duplicate": "Trùng lặp",
+      "same_ip": "Cùng IP nhiều tài khoản"
     },
     "actions": {
       "export_csv": "Xuất CSV",
-      "mark_reviewed": "Đánh dấu đã xem",
-      "flag": "Đánh dấu",
-      "unflag": "Bỏ đánh dấu"
+      "mark_reviewed": "Đánh dấu đã xem"
     }
   },
   "errors": {
-    "network": "Lỗi kết nối mạng",
+    "network": "Lỗi mạng",
     "server": "Lỗi máy chủ",
     "validation": "Dữ liệu không hợp lệ",
-    "unauthorized": "Không có quyền truy cập",
+    "unauthorized": "Truy cập không được phép",
     "not_found": "Không tìm thấy",
     "rate_limit": "Quá nhiều yêu cầu, vui lòng thử lại sau"
   }
