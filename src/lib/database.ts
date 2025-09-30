@@ -11,6 +11,12 @@ export const supabase = createClient(
 );
 
 export async function submitTucSo(data: SubmissionData, ipHash: string, uaHash: string) {
+  // Create timestamp in GMT+7 timezone
+  const now = new Date();
+  const gmt7Offset = 7 * 60; // GMT+7 in minutes
+  const localTime = new Date(now.getTime() + (gmt7Offset * 60 * 1000));
+  const tsServer = localTime.toISOString().replace('Z', '+07:00');
+  
   const { data: result, error } = await supabase
     .from('submissions')
     .insert({
@@ -20,7 +26,8 @@ export async function submitTucSo(data: SubmissionData, ipHash: string, uaHash: 
       note: data.note,
       idempotency_key: data.idempotency_key,
       ip_hash: ipHash,
-      ua_hash: uaHash
+      ua_hash: uaHash,
+      ts_server: tsServer
     })
     .select('id')
     .single();

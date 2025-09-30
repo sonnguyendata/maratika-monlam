@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS public.submissions (
   attendee_name TEXT NOT NULL,
   quantity INTEGER NOT NULL CHECK (quantity >= 1),
   note TEXT,
-  ts_server TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  ts_server TIMESTAMPTZ NOT NULL DEFAULT (NOW() AT TIME ZONE 'Asia/Ho_Chi_Minh'),
   ip_hash TEXT,
   ua_hash TEXT,
   flagged BOOLEAN NOT NULL DEFAULT FALSE,
