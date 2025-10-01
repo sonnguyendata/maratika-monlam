@@ -276,7 +276,7 @@ export default function HomePage() {
                     <button
                       type="button"
                       onClick={() => setFormData(prev => ({ ...prev, quantity: Math.max(0, prev.quantity - 1) }))}
-                      className="w-12 h-12 flex items-center justify-center text-golden-600 hover:text-golden-700 hover:bg-golden-50 text-2xl font-bold rounded-lg border-2 border-golden-200 hover:border-golden-300 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-golden-300"
+                      className="w-12 h-14 flex items-center justify-center text-golden-600 hover:text-golden-700 hover:bg-golden-50 text-2xl font-bold rounded-lg border-2 border-golden-200 hover:border-golden-300 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-golden-300"
                       aria-label="Decrease quantity"
                     >
                       −
@@ -287,7 +287,7 @@ export default function HomePage() {
                       value={formData.quantity}
                       onChange={(e) => setFormData(prev => ({ ...prev, quantity: parseInt(e.target.value) || 0 }))}
                       placeholder={messages.record.quantity_placeholder}
-                      className="input text-center w-32"
+                      className="input text-center w-32 h-14"
                       min="0"
                       required
                     />
