@@ -1,11 +1,16 @@
 export type Language = 'vi' | 'en' | 'zh';
 
+export type InputMode = 'direct' | 'mala';
+
 export interface SubmissionData {
   attendee_id: string;
   attendee_name: string;
   quantity: number;
   note?: string;
   idempotency_key: string;
+  input_mode?: InputMode;
+  mala_count?: number;
+  mala_type?: number;
 }
 
 export interface SubmissionResponse {
@@ -110,10 +115,17 @@ export interface I18nMessages {
     title: string;
     id: string;
     id_placeholder: string;
+    phone: string;
+    phone_placeholder: string;
     name: string;
     name_placeholder: string;
     quantity: string;
     quantity_placeholder: string;
+    input_mode: string;
+    direct_input: string;
+    mala_input: string;
+    select_mala_type: string;
+    mala_count_placeholder: string;
     note: string;
     note_placeholder: string;
     submit: string;

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Header } from '@/components/Header';
 import { useLanguage } from '@/components/LanguageProvider';
-import { SubmissionData } from '@/types';
+import { SubmissionData, InputMode } from '@/types';
 import { v4 as uuidv4 } from 'uuid';
 
 export default function HomePage() {
@@ -13,8 +13,14 @@ export default function HomePage() {
     attendee_name: '',
     quantity: 1,
     note: '',
-    idempotency_key: uuidv4()
+    idempotency_key: uuidv4(),
+    input_mode: 'direct',
+    mala_count: 1,
+    mala_type: 108
   });
+  const [inputMode, setInputMode] = useState<InputMode>('direct');
+  const [malaType, setMalaType] = useState<number>(108);
+  const [malaCount, setMalaCount] = useState<number>(1);
   const [submitting, setSubmitting] = useState(false);
   const [submitResult, setSubmitResult] = useState<{ success: boolean; message: string; dailyTotal?: number; totalCount?: number } | null>(null);
 
@@ -26,6 +32,88 @@ export default function HomePage() {
     if (savedId) setFormData(prev => ({ ...prev, attendee_id: savedId }));
     if (savedName) setFormData(prev => ({ ...prev, attendee_name: savedName }));
   }, []);
+
+  // Function to normalize phone number
+  const normalizePhoneNumber = (phone: string): string => {
+    // Remove all non-digit characters
+    const digits = phone.replace(/\D/g, '');
+    
+    // Handle Vietnamese phone numbers
+    if (digits.startsWith('84')) {
+      return digits;
+    } else if (digits.startsWith('0')) {
+      return '84' + digits.substring(1);
+    } else if (digits.length >= 9) {
+      return '84' + digits;
+    }
+    
+    return digits;
+  };
+
+  // Function to load name by phone number
+  const loadNameByPhone = async (phone: string) => {
+    if (!phone || phone.length < 9) return;
+    
+    const normalizedPhone = normalizePhoneNumber(phone);
+    
+    try {
+      // Check localStorage first
+      const savedName = localStorage.getItem(`name_${normalizedPhone}`);
+      if (savedName) {
+        setFormData(prev => ({ ...prev, attendee_name: savedName }));
+        return;
+      }
+
+      // TODO: Add API call to fetch name by phone number
+      // For now, we'll just use localStorage
+    } catch (error) {
+      console.error('Error loading name:', error);
+    }
+  };
+
+  // Handle phone number change
+  const handlePhoneChange = (phone: string) => {
+    setFormData(prev => ({ ...prev, attendee_id: phone }));
+    loadNameByPhone(phone);
+  };
+
+  // Handle input mode change
+  const handleInputModeChange = (mode: InputMode) => {
+    setInputMode(mode);
+    setFormData(prev => ({ ...prev, input_mode: mode }));
+    
+    if (mode === 'mala') {
+      const totalQuantity = malaCount * malaType;
+      setFormData(prev => ({ 
+        ...prev, 
+        quantity: totalQuantity,
+        mala_count: malaCount,
+        mala_type: malaType
+      }));
+    }
+  };
+
+  // Handle mala type change
+  const handleMalaTypeChange = (type: number) => {
+    setMalaType(type);
+    setFormData(prev => ({ ...prev, mala_type: type }));
+    
+    if (inputMode === 'mala') {
+      const totalQuantity = malaCount * type;
+      setFormData(prev => ({ ...prev, quantity: totalQuantity }));
+    }
+  };
+
+  // Handle mala count change
+  const handleMalaCountChange = (count: number) => {
+    setMalaCount(count);
+    setFormData(prev => ({ ...prev, mala_count: count }));
+    
+    if (inputMode === 'mala') {
+      const totalQuantity = count * malaType;
+      setFormData(prev => ({ ...prev, quantity: totalQuantity }));
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,6 +139,12 @@ export default function HomePage() {
         localStorage.setItem('attendee_id', formData.attendee_id);
         localStorage.setItem('attendee_name', formData.attendee_name);
         
+        // Save phone number and name mapping
+        const normalizedPhone = normalizePhoneNumber(formData.attendee_id);
+        if (normalizedPhone && formData.attendee_name) {
+          localStorage.setItem(`name_${normalizedPhone}`, formData.attendee_name);
+        }
+        
         setSubmitResult({
           success: true,
           message: messages?.record.success || 'Success!',
@@ -61,7 +155,7 @@ export default function HomePage() {
         // Reset form
         setFormData(prev => ({
           ...prev,
-          quantity: 1,
+          quantity: inputMode === 'mala' ? malaCount * malaType : 1,
           note: '',
           idempotency_key: uuidv4()
         }));
@@ -113,14 +207,14 @@ export default function HomePage() {
           <form onSubmit={handleSubmit} className="space-y-8">
             <div>
               <label htmlFor="attendee_id" className="block text-sm font-medium text-earthy-700 mb-3">
-                {messages.record.id} — {messages.record.id_placeholder}
+                {messages.record.phone} — {messages.record.phone_placeholder}
               </label>
               <input
-                type="text"
+                type="tel"
                 id="attendee_id"
                 value={formData.attendee_id}
-                onChange={(e) => setFormData(prev => ({ ...prev, attendee_id: e.target.value }))}
-                placeholder={messages.record.id_placeholder}
+                onChange={(e) => handlePhoneChange(e.target.value)}
+                placeholder={messages.record.phone_placeholder}
                 className="input"
                 required
               />
@@ -142,62 +236,186 @@ export default function HomePage() {
             </div>
 
             <div>
-              <label htmlFor="quantity" className="block text-sm font-medium text-earthy-700 mb-3">
-                {messages.record.quantity}
+              <label className="block text-sm font-medium text-earthy-700 mb-3">
+                {messages.record.input_mode}
               </label>
-              <div className="flex items-center space-x-3">
-                <button
-                  type="button"
-                  onClick={() => setFormData(prev => ({ ...prev, quantity: Math.max(1, prev.quantity - 1) }))}
-                  className="quantity-stepper-btn"
-                  aria-label="Decrease quantity"
-                >
-                  −
-                </button>
-                <input
-                  type="number"
-                  id="quantity"
-                  value={formData.quantity}
-                  onChange={(e) => setFormData(prev => ({ ...prev, quantity: parseInt(e.target.value) || 1 }))}
-                  placeholder={messages.record.quantity_placeholder}
-                  className="input text-center flex-1"
-                  min="1"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setFormData(prev => ({ ...prev, quantity: Math.max(1, prev.quantity + 1) }))}
-                  className="quantity-stepper-btn"
-                  aria-label="Increase quantity"
-                >
-                  +
-                </button>
-              </div>
               
-              {/* Quick-add chips */}
-              <div className="mt-3 flex flex-wrap gap-2">
+              {/* Input Mode Selection */}
+              <div className="flex space-x-2 mb-4">
                 <button
                   type="button"
-                  onClick={() => setFormData(prev => ({ ...prev, quantity: prev.quantity + 7 }))}
-                  className="px-3 py-1.5 text-sm font-medium bg-gradient-to-r from-lotus-100 to-sky-100 text-lotus-700 rounded-full border border-lotus-200 hover:from-lotus-200 hover:to-sky-200 transition-all duration-200 shadow-sm"
+                  onClick={() => handleInputModeChange('direct')}
+                  className={`flex-1 py-2 px-4 rounded-lg border-2 transition-all duration-200 ${
+                    inputMode === 'direct'
+                      ? 'border-golden-500 bg-golden-50 text-golden-700'
+                      : 'border-earthy-200 bg-parchment-50 text-earthy-600 hover:border-golden-300'
+                  }`}
                 >
-                  {messages.record.quick_add.add_7}
+                  {messages.record.direct_input}
                 </button>
                 <button
                   type="button"
-                  onClick={() => setFormData(prev => ({ ...prev, quantity: prev.quantity + 21 }))}
-                  className="px-3 py-1.5 text-sm font-medium bg-gradient-to-r from-golden-100 to-amber-100 text-golden-700 rounded-full border border-golden-200 hover:from-golden-200 hover:to-amber-200 transition-all duration-200 shadow-sm"
+                  onClick={() => handleInputModeChange('mala')}
+                  className={`flex-1 py-2 px-4 rounded-lg border-2 transition-all duration-200 ${
+                    inputMode === 'mala'
+                      ? 'border-golden-500 bg-golden-50 text-golden-700'
+                      : 'border-earthy-200 bg-parchment-50 text-earthy-600 hover:border-golden-300'
+                  }`}
                 >
-                  {messages.record.quick_add.add_21}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setFormData(prev => ({ ...prev, quantity: prev.quantity + 108 }))}
-                  className="px-3 py-1.5 text-sm font-medium bg-gradient-to-r from-monastic-100 to-red-100 text-monastic-700 rounded-full border border-monastic-200 hover:from-monastic-200 hover:to-red-200 transition-all duration-200 shadow-sm"
-                >
-                  {messages.record.quick_add.add_108}
+                  {messages.record.mala_input}
                 </button>
               </div>
+
+              {inputMode === 'direct' ? (
+                <div>
+                  <label htmlFor="quantity" className="block text-sm font-medium text-earthy-700 mb-3">
+                    {messages.record.quantity}
+                  </label>
+                  <div className="flex items-center space-x-3">
+                    <button
+                      type="button"
+                      onClick={() => setFormData(prev => ({ ...prev, quantity: Math.max(1, prev.quantity - 1) }))}
+                      className="quantity-stepper-btn"
+                      aria-label="Decrease quantity"
+                    >
+                      −
+                    </button>
+                    <input
+                      type="number"
+                      id="quantity"
+                      value={formData.quantity}
+                      onChange={(e) => setFormData(prev => ({ ...prev, quantity: parseInt(e.target.value) || 1 }))}
+                      placeholder={messages.record.quantity_placeholder}
+                      className="input text-center flex-1"
+                      min="1"
+                      required
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setFormData(prev => ({ ...prev, quantity: Math.max(1, prev.quantity + 1) }))}
+                      className="quantity-stepper-btn"
+                      aria-label="Increase quantity"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {/* Mala Type Selection */}
+                  <div>
+                    <label className="block text-sm font-medium text-earthy-700 mb-3">
+                      {messages.record.select_mala_type}
+                    </label>
+                    <div className="flex space-x-2">
+                      <button
+                        type="button"
+                        onClick={() => handleMalaTypeChange(21)}
+                        className={`flex-1 py-3 px-4 rounded-lg border-2 transition-all duration-200 ${
+                          malaType === 21
+                            ? 'border-golden-500 bg-golden-50 text-golden-700'
+                            : 'border-earthy-200 bg-parchment-50 text-earthy-600 hover:border-golden-300'
+                        }`}
+                      >
+                        21
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleMalaTypeChange(54)}
+                        className={`flex-1 py-3 px-4 rounded-lg border-2 transition-all duration-200 ${
+                          malaType === 54
+                            ? 'border-golden-500 bg-golden-50 text-golden-700'
+                            : 'border-earthy-200 bg-parchment-50 text-earthy-600 hover:border-golden-300'
+                        }`}
+                      >
+                        54
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleMalaTypeChange(108)}
+                        className={`flex-1 py-3 px-4 rounded-lg border-2 transition-all duration-200 ${
+                          malaType === 108
+                            ? 'border-golden-500 bg-golden-50 text-golden-700'
+                            : 'border-earthy-200 bg-parchment-50 text-earthy-600 hover:border-golden-300'
+                        }`}
+                      >
+                        108
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Mala Count Input */}
+                  <div>
+                    <label htmlFor="mala_count" className="block text-sm font-medium text-earthy-700 mb-3">
+                      {messages.record.mala_count_placeholder}
+                    </label>
+                    <div className="flex items-center space-x-3">
+                      <button
+                        type="button"
+                        onClick={() => handleMalaCountChange(Math.max(1, malaCount - 1))}
+                        className="quantity-stepper-btn"
+                        aria-label="Decrease mala count"
+                      >
+                        −
+                      </button>
+                      <input
+                        type="number"
+                        id="mala_count"
+                        value={malaCount}
+                        onChange={(e) => handleMalaCountChange(parseInt(e.target.value) || 1)}
+                        className="input text-center flex-1"
+                        min="1"
+                        required
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleMalaCountChange(Math.max(1, malaCount + 1))}
+                        className="quantity-stepper-btn"
+                        aria-label="Increase mala count"
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Total Quantity Display */}
+                  <div className="p-4 bg-golden-50 rounded-lg border border-golden-200">
+                    <p className="text-sm text-earthy-600 mb-1">
+                      {messages.record.quantity}:
+                    </p>
+                    <p className="text-2xl font-bold text-golden-700">
+                      {formData.quantity} = {malaCount} × {malaType}
+                    </p>
+                  </div>
+                </div>
+              )}
+              
+              {/* Quick-add chips - only show in direct input mode */}
+              {inputMode === 'direct' && (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setFormData(prev => ({ ...prev, quantity: prev.quantity + 7 }))}
+                    className="px-3 py-1.5 text-sm font-medium bg-gradient-to-r from-lotus-100 to-sky-100 text-lotus-700 rounded-full border border-lotus-200 hover:from-lotus-200 hover:to-sky-200 transition-all duration-200 shadow-sm"
+                  >
+                    {messages.record.quick_add.add_7}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setFormData(prev => ({ ...prev, quantity: prev.quantity + 21 }))}
+                    className="px-3 py-1.5 text-sm font-medium bg-gradient-to-r from-golden-100 to-amber-100 text-golden-700 rounded-full border border-golden-200 hover:from-golden-200 hover:to-amber-200 transition-all duration-200 shadow-sm"
+                  >
+                    {messages.record.quick_add.add_21}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setFormData(prev => ({ ...prev, quantity: prev.quantity + 108 }))}
+                    className="px-3 py-1.5 text-sm font-medium bg-gradient-to-r from-monastic-100 to-red-100 text-monastic-700 rounded-full border border-monastic-200 hover:from-monastic-200 hover:to-red-200 transition-all duration-200 shadow-sm"
+                  >
+                    {messages.record.quick_add.add_108}
+                  </button>
+                </div>
+              )}
             </div>
 
             <div>
