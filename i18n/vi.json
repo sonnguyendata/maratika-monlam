@@ -36,7 +36,7 @@
     "event_dates": "29/10 – 02/11/2025"
   },
   "record": {
-    "title": "Ghi nhận túc số của bạn",
+    "title": "Ghi nhận túc số",
     "id": "Mã số",
     "id_placeholder": "Nhập mã số của bạn",
     "phone": "Số điện thoại",
@@ -75,11 +75,225 @@
   },
   "schedule": {
     "title": "Lịch trình",
-    "day1": "29/10 - Khai mạc",
-    "day2": "30/10 - Thực hành",
-    "day3": "31/10 - Thực hành",
-    "day4": "01/11 - Thực hành",
-    "day5": "02/11 - Bế mạc"
+    "subtitle": "Pháp Hội Monlam Cầu Nguyện Hòa Bình Thế Giới",
+    "description": "Trì tụng 100 triệu biến chân ngôn Liên Hoa Sinh Tam Thân",
+    "location": "Chùa Pháp Vân, Hà Nội, Việt Nam",
+    "days": {
+      "day1": {
+        "date": "29/10/2025",
+        "time": "8:00 - 18:00",
+        "title": "Ngày khai mạc",
+        "activities": [
+          {
+            "time": "8:00 - 10:00",
+            "activity": "Chuẩn bị quán đảnh",
+            "highlight": false
+          },
+          {
+            "time": "Nghỉ giải lao",
+            "activity": "Nghỉ giải lao",
+            "highlight": false
+          },
+          {
+            "time": "10:30 - 12:00",
+            "activity": "Quán đảnh Liên Hoa Sanh Tam Thân",
+            "highlight": true
+          },
+          {
+            "time": "Nghỉ trưa",
+            "activity": "Nghỉ trưa",
+            "highlight": false
+          },
+          {
+            "time": "14:00 - 15:30",
+            "activity": "Tinh túc số Cầu nguyện Hoà Bình Thế Giới",
+            "highlight": false
+          },
+          {
+            "time": "Nghỉ giải lao",
+            "activity": "Nghỉ giải lao",
+            "highlight": false
+          },
+          {
+            "time": "16:00 - 18:00",
+            "activity": "Tinh túc số Cầu nguyện Hoà Bình Thế Giới",
+            "highlight": false
+          }
+        ]
+      },
+      "day2": {
+        "date": "30/10/2025",
+        "time": "8:00 - 18:00",
+        "title": "Ngày thực hành",
+        "activities": [
+          {
+            "time": "8:00 - 10:00",
+            "activity": "Tinh túc số Cầu nguyện Hoà Bình Thế Giới",
+            "highlight": false
+          },
+          {
+            "time": "Nghỉ giải lao",
+            "activity": "Nghỉ giải lao",
+            "highlight": false
+          },
+          {
+            "time": "10:30 - 12:00",
+            "activity": "Tinh túc số Cầu nguyện Hoà Bình Thế Giới",
+            "highlight": false
+          },
+          {
+            "time": "Nghỉ trưa",
+            "activity": "Nghỉ trưa",
+            "highlight": false
+          },
+          {
+            "time": "14:00 - 15:30",
+            "activity": "Tinh túc số Cầu nguyện Hoà Bình Thế Giới",
+            "highlight": false
+          },
+          {
+            "time": "Nghỉ giải lao",
+            "activity": "Nghỉ giải lao",
+            "highlight": false
+          },
+          {
+            "time": "16:00 - 18:00",
+            "activity": "Tinh túc số Cầu nguyện Hoà Bình Thế Giới",
+            "highlight": false
+          }
+        ]
+      },
+      "day3": {
+        "date": "31/10/2025",
+        "time": "8:00 - 18:00",
+        "title": "Ngày thực hành",
+        "activities": [
+          {
+            "time": "8:00 - 10:00",
+            "activity": "Tinh túc số Cầu nguyện Hoà Bình Thế Giới",
+            "highlight": false
+          },
+          {
+            "time": "Nghỉ giải lao",
+            "activity": "Nghỉ giải lao",
+            "highlight": false
+          },
+          {
+            "time": "10:30 - 12:00",
+            "activity": "Tinh túc số Cầu nguyện Hoà Bình Thế Giới",
+            "highlight": false
+          },
+          {
+            "time": "Nghỉ trưa",
+            "activity": "Nghỉ trưa",
+            "highlight": false
+          },
+          {
+            "time": "14:00 - 15:30",
+            "activity": "Tinh túc số Cầu nguyện Hoà Bình Thế Giới",
+            "highlight": false
+          },
+          {
+            "time": "Nghỉ giải lao",
+            "activity": "Nghỉ giải lao",
+            "highlight": false
+          },
+          {
+            "time": "16:00 - 18:00",
+            "activity": "Tinh túc số Cầu nguyện Hoà Bình Thế Giới",
+            "highlight": false
+          }
+        ]
+      },
+      "day4": {
+        "date": "01/11/2025",
+        "time": "8:00 - 18:00",
+        "title": "Ngày thực hành",
+        "activities": [
+          {
+            "time": "8:30 - 10:00",
+            "activity": "Tinh túc số Cầu nguyện Hoà Bình Thế Giới",
+            "highlight": false
+          },
+          {
+            "time": "Nghỉ giải lao",
+            "activity": "Nghỉ giải lao",
+            "highlight": false
+          },
+          {
+            "time": "10:30 - 12:00",
+            "activity": "Tinh túc số Cầu nguyện Hoà Bình Thế Giới",
+            "highlight": false
+          },
+          {
+            "time": "Nghỉ trưa",
+            "activity": "Nghỉ trưa",
+            "highlight": false
+          },
+          {
+            "time": "14:00 - 16:00",
+            "activity": "Trao truyền Tài bảo Ratna Thotrengsal",
+            "highlight": true
+          },
+          {
+            "time": "16:00 - 18:00",
+            "activity": "Tinh túc số Cầu nguyện Hoà Bình Thế Giới",
+            "highlight": false
+          }
+        ]
+      },
+      "day5": {
+        "date": "02/11/2025",
+        "time": "8:00 - 20:00",
+        "title": "Ngày bế mạc",
+        "activities": [
+          {
+            "time": "8:30 - 10:00",
+            "activity": "Tinh túc số Cầu nguyện Hoà Bình Thế Giới",
+            "highlight": false
+          },
+          {
+            "time": "Nghỉ giải lao",
+            "activity": "Nghỉ giải lao",
+            "highlight": false
+          },
+          {
+            "time": "10:30 - 12:00",
+            "activity": "Ban phước thành tựu",
+            "highlight": true
+          },
+          {
+            "time": "Nghỉ trưa",
+            "activity": "Nghỉ trưa",
+            "highlight": false
+          },
+          {
+            "time": "13:00 - 15:00",
+            "activity": "Cúng Lửa",
+            "highlight": true
+          },
+          {
+            "time": "15:30 - 18:00",
+            "activity": "Ban phước cộng đồng",
+            "highlight": true
+          }
+        ]
+      }
+    },
+    "recording_info": {
+      "title": "Thời gian ghi nhận túc số",
+      "time": "6:00 - 22:00 hàng ngày",
+      "description": "Thời gian ghi nhận: 6:00 - 22:00 hàng ngày"
+    },
+    "contact": {
+      "registration": "Đăng ký tham gia",
+      "organizer": "Tổ chức bởi: Maratika Vietnam",
+      "address": "Chùa Pháp Vân, 1299 Giải Phóng, Hà Nội",
+      "phone1": "0933.911.359 (Anh Điện)",
+      "phone2": "0972.831.882 (Bích Ngân)",
+      "email": "Maratika.hn@gmail.com",
+      "fanpage": "Fanpage chính thức"
+    }
   },
   "info": {
     "title": "Pháp Hội Monlam 2025",

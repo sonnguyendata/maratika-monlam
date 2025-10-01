@@ -151,11 +151,75 @@ export interface I18nMessages {
   };
   schedule: {
     title: string;
-    day1: string;
-    day2: string;
-    day3: string;
-    day4: string;
-    day5: string;
+    subtitle: string;
+    description: string;
+    location: string;
+    days: {
+      day1: {
+        date: string;
+        time: string;
+        title: string;
+        activities: Array<{
+          time: string;
+          activity: string;
+          highlight: boolean;
+        }>;
+      };
+      day2: {
+        date: string;
+        time: string;
+        title: string;
+        activities: Array<{
+          time: string;
+          activity: string;
+          highlight: boolean;
+        }>;
+      };
+      day3: {
+        date: string;
+        time: string;
+        title: string;
+        activities: Array<{
+          time: string;
+          activity: string;
+          highlight: boolean;
+        }>;
+      };
+      day4: {
+        date: string;
+        time: string;
+        title: string;
+        activities: Array<{
+          time: string;
+          activity: string;
+          highlight: boolean;
+        }>;
+      };
+      day5: {
+        date: string;
+        time: string;
+        title: string;
+        activities: Array<{
+          time: string;
+          activity: string;
+          highlight: boolean;
+        }>;
+      };
+    };
+    recording_info: {
+      title: string;
+      time: string;
+      description: string;
+    };
+    contact: {
+      registration: string;
+      organizer: string;
+      address: string;
+      phone1: string;
+      phone2: string;
+      email: string;
+      fanpage: string;
+    };
   };
   info: {
     title: string;
