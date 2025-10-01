@@ -11,7 +11,7 @@ export default function HomePage() {
   const [formData, setFormData] = useState<SubmissionData>({
     attendee_id: '',
     attendee_name: '',
-    quantity: 1,
+    quantity: 0,
     note: '',
     idempotency_key: uuidv4(),
     input_mode: 'direct',
@@ -155,7 +155,7 @@ export default function HomePage() {
         // Reset form
         setFormData(prev => ({
           ...prev,
-          quantity: inputMode === 'mala' ? malaCount * malaType : 1,
+          quantity: inputMode === 'mala' ? malaCount * malaType : 0,
           note: '',
           idempotency_key: uuidv4()
         }));
@@ -274,8 +274,8 @@ export default function HomePage() {
                   <div className="flex items-center space-x-3">
                     <button
                       type="button"
-                      onClick={() => setFormData(prev => ({ ...prev, quantity: Math.max(1, prev.quantity - 1) }))}
-                      className="quantity-stepper-btn"
+                      onClick={() => setFormData(prev => ({ ...prev, quantity: Math.max(0, prev.quantity - 1) }))}
+                      className="w-12 h-12 flex items-center justify-center text-golden-600 hover:text-golden-700 hover:bg-golden-50 text-2xl font-bold rounded-lg border-2 border-golden-200 hover:border-golden-300 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-golden-300"
                       aria-label="Decrease quantity"
                     >
                       −
@@ -284,16 +284,16 @@ export default function HomePage() {
                       type="number"
                       id="quantity"
                       value={formData.quantity}
-                      onChange={(e) => setFormData(prev => ({ ...prev, quantity: parseInt(e.target.value) || 1 }))}
+                      onChange={(e) => setFormData(prev => ({ ...prev, quantity: parseInt(e.target.value) || 0 }))}
                       placeholder={messages.record.quantity_placeholder}
                       className="input text-center flex-1"
-                      min="1"
+                      min="0"
                       required
                     />
                     <button
                       type="button"
-                      onClick={() => setFormData(prev => ({ ...prev, quantity: Math.max(1, prev.quantity + 1) }))}
-                      className="quantity-stepper-btn"
+                      onClick={() => setFormData(prev => ({ ...prev, quantity: Math.max(0, prev.quantity + 1) }))}
+                      className="w-12 h-12 flex items-center justify-center text-golden-600 hover:text-golden-700 hover:bg-golden-50 text-2xl font-bold rounded-lg border-2 border-golden-200 hover:border-golden-300 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-golden-300"
                       aria-label="Increase quantity"
                     >
                       +
@@ -387,33 +387,6 @@ export default function HomePage() {
                       {formData.quantity} = {malaCount} × {malaType}
                     </p>
                   </div>
-                </div>
-              )}
-              
-              {/* Quick-add chips - only show in direct input mode */}
-              {inputMode === 'direct' && (
-                <div className="mt-3 flex flex-wrap gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setFormData(prev => ({ ...prev, quantity: prev.quantity + 7 }))}
-                    className="px-3 py-1.5 text-sm font-medium bg-gradient-to-r from-lotus-100 to-sky-100 text-lotus-700 rounded-full border border-lotus-200 hover:from-lotus-200 hover:to-sky-200 transition-all duration-200 shadow-sm"
-                  >
-                    {messages.record.quick_add.add_7}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setFormData(prev => ({ ...prev, quantity: prev.quantity + 21 }))}
-                    className="px-3 py-1.5 text-sm font-medium bg-gradient-to-r from-golden-100 to-amber-100 text-golden-700 rounded-full border border-golden-200 hover:from-golden-200 hover:to-amber-200 transition-all duration-200 shadow-sm"
-                  >
-                    {messages.record.quick_add.add_21}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setFormData(prev => ({ ...prev, quantity: prev.quantity + 108 }))}
-                    className="px-3 py-1.5 text-sm font-medium bg-gradient-to-r from-monastic-100 to-red-100 text-monastic-700 rounded-full border border-monastic-200 hover:from-monastic-200 hover:to-red-200 transition-all duration-200 shadow-sm"
-                  >
-                    {messages.record.quick_add.add_108}
-                  </button>
                 </div>
               )}
             </div>
