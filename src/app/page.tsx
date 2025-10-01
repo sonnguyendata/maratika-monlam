@@ -15,12 +15,12 @@ export default function HomePage() {
     note: '',
     idempotency_key: uuidv4(),
     input_mode: 'direct',
-    mala_count: 1,
+    mala_count: 0,
     mala_type: 108
   });
   const [inputMode, setInputMode] = useState<InputMode>('direct');
   const [malaType, setMalaType] = useState<number>(108);
-  const [malaCount, setMalaCount] = useState<number>(1);
+  const [malaCount, setMalaCount] = useState<number>(0);
   const [submitting, setSubmitting] = useState(false);
   const [submitResult, setSubmitResult] = useState<{ success: boolean; message: string; dailyTotal?: number; totalCount?: number } | null>(null);
 
@@ -106,11 +106,12 @@ export default function HomePage() {
 
   // Handle mala count change
   const handleMalaCountChange = (count: number) => {
-    setMalaCount(count);
-    setFormData(prev => ({ ...prev, mala_count: count }));
+    const validCount = Math.max(0, count); // Allow 0 as minimum
+    setMalaCount(validCount);
+    setFormData(prev => ({ ...prev, mala_count: validCount }));
     
     if (inputMode === 'mala') {
-      const totalQuantity = count * malaType;
+      const totalQuantity = validCount * malaType;
       setFormData(prev => ({ ...prev, quantity: totalQuantity }));
     }
   };
@@ -352,7 +353,7 @@ export default function HomePage() {
                     <div className="flex items-center space-x-3">
                       <button
                         type="button"
-                        onClick={() => handleMalaCountChange(Math.max(1, malaCount - 1))}
+                        onClick={() => handleMalaCountChange(Math.max(0, malaCount - 1))}
                         className="quantity-stepper-btn"
                         aria-label="Decrease mala count"
                       >
@@ -361,15 +362,16 @@ export default function HomePage() {
                       <input
                         type="number"
                         id="mala_count"
-                        value={malaCount}
-                        onChange={(e) => handleMalaCountChange(parseInt(e.target.value) || 1)}
-                        className="input text-center flex-1"
-                        min="1"
+                        value={malaCount || ''}
+                        onChange={(e) => handleMalaCountChange(parseInt(e.target.value) || 0)}
+                        className="input text-center w-20"
+                        min="0"
+                        placeholder="0"
                         required
                       />
                       <button
                         type="button"
-                        onClick={() => handleMalaCountChange(Math.max(1, malaCount + 1))}
+                        onClick={() => handleMalaCountChange(malaCount + 1)}
                         className="quantity-stepper-btn"
                         aria-label="Increase mala count"
                       >
