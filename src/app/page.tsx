@@ -287,7 +287,7 @@ export default function HomePage() {
                       value={formData.quantity || ''}
                       onChange={(e) => setFormData(prev => ({ ...prev, quantity: e.target.value === '' ? 0 : parseInt(e.target.value) || 0 }))}
                       placeholder={messages.record.quantity_placeholder}
-                      className="input text-center w-48"
+                      className="input text-center w-72"
                       min="0"
                       required
                     />
@@ -350,7 +350,7 @@ export default function HomePage() {
                     <label htmlFor="mala_count" className="block text-sm font-medium text-earthy-700 mb-3">
                       {messages.record.mala_count_placeholder}
                     </label>
-                    <div className="flex items-center space-x-3">
+                    <div className="flex items-center justify-center space-x-3">
                       <button
                         type="button"
                         onClick={() => handleMalaCountChange(Math.max(0, malaCount - 1))}
@@ -364,7 +364,7 @@ export default function HomePage() {
                         id="mala_count"
                         value={malaCount || ''}
                         onChange={(e) => handleMalaCountChange(parseInt(e.target.value) || 0)}
-                        className="input text-center w-20"
+                        className="input text-center w-48"
                         min="0"
                         placeholder="0"
                         required
