@@ -276,7 +276,7 @@ export default function HomePage() {
                     <button
                       type="button"
                       onClick={() => setFormData(prev => ({ ...prev, quantity: Math.max(0, prev.quantity - 1) }))}
-                      className="w-12 h-14 flex items-center justify-center text-golden-600 hover:text-golden-700 hover:bg-golden-50 text-2xl font-bold rounded-lg border-2 border-golden-200 hover:border-golden-300 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-golden-300"
+                      className="quantity-stepper-btn"
                       aria-label="Decrease quantity"
                     >
                       −
@@ -284,8 +284,8 @@ export default function HomePage() {
                     <input
                       type="number"
                       id="quantity"
-                      value={formData.quantity}
-                      onChange={(e) => setFormData(prev => ({ ...prev, quantity: parseInt(e.target.value) || 0 }))}
+                      value={formData.quantity || ''}
+                      onChange={(e) => setFormData(prev => ({ ...prev, quantity: e.target.value === '' ? 0 : parseInt(e.target.value) || 0 }))}
                       placeholder={messages.record.quantity_placeholder}
                       className="input text-center w-48"
                       min="0"
@@ -294,7 +294,7 @@ export default function HomePage() {
                     <button
                       type="button"
                       onClick={() => setFormData(prev => ({ ...prev, quantity: Math.max(0, prev.quantity + 1) }))}
-                      className="w-28 h-14 flex items-center justify-center text-golden-600 hover:text-golden-700 hover:bg-golden-50 text-3xl font-bold rounded-lg border-2 border-golden-200 hover:border-golden-300 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-golden-300"
+                      className="quantity-stepper-btn"
                       aria-label="Increase quantity"
                     >
                       +

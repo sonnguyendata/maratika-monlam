@@ -48,7 +48,7 @@
   }
   
   .input {
-    @apply w-full px-4 border-2 border-earthy-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-golden-500 focus:border-golden-300 bg-parchment-50 transition-all duration-200 h-14 flex items-center;
+    @apply w-full px-4 py-3 border-2 border-earthy-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-golden-500 focus:border-golden-300 bg-parchment-50 transition-all duration-200 min-h-[44px];
   }
   
   .card {
