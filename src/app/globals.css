@@ -48,7 +48,7 @@
   }
   
   .input {
-    @apply w-full px-4 py-3 border-2 border-earthy-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-golden-500 focus:border-golden-300 bg-parchment-50 transition-all duration-200 min-h-[44px];
+    @apply w-full px-4 border-2 border-earthy-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-golden-500 focus:border-golden-300 bg-parchment-50 transition-all duration-200 h-14 flex items-center;
   }
   
   .card {
@@ -144,7 +144,7 @@
   }
   
   .quantity-stepper-btn {
-    @apply w-12 h-12 flex items-center justify-center text-golden-600 hover:text-golden-700 hover:bg-golden-50 text-2xl font-bold rounded-lg border-2 border-golden-200 hover:border-golden-300 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-golden-300;
+    @apply w-12 h-14 flex items-center justify-center text-golden-600 hover:text-golden-700 hover:bg-golden-50 text-2xl font-bold rounded-lg border-2 border-golden-200 hover:border-golden-300 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-golden-300;
   }
   
   .btn-info {
