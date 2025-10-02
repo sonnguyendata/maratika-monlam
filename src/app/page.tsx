@@ -287,7 +287,7 @@ export default function HomePage() {
                       value={formData.quantity}
                       onChange={(e) => setFormData(prev => ({ ...prev, quantity: parseInt(e.target.value) || 0 }))}
                       placeholder={messages.record.quantity_placeholder}
-                      className="input text-center w-40"
+                      className="input text-center w-48"
                       min="0"
                       required
                     />
