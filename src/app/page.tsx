@@ -272,7 +272,7 @@ export default function HomePage() {
                   <label htmlFor="quantity" className="block text-sm font-medium text-earthy-700 mb-3">
                     {messages.record.quantity}
                   </label>
-                  <div className="flex items-center space-x-3">
+                  <div className="flex items-center justify-center space-x-3">
                     <button
                       type="button"
                       onClick={() => setFormData(prev => ({ ...prev, quantity: Math.max(0, prev.quantity - 1) }))}
