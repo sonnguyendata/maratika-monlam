@@ -68,3 +68,11 @@ AND table_name IN ('submissions', 'idempotency_keys');
 Your Túc Số Monlam database is now ready! 🙏
 
 
+
+
+
+
+
+
+
+

@@ -57,3 +57,11 @@ Don't forget to run the database migration in Supabase:
 The Túc Số Monlam app should now deploy successfully! 🙏
 
 
+
+
+
+
+
+
+
+
