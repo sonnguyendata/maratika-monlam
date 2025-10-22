@@ -12,7 +12,8 @@ function verifyBasicAuth(request: NextRequest): boolean {
   const credentials = Buffer.from(authHeader.slice(6), 'base64').toString();
   const [username, password] = credentials.split(':');
   
-  return username === process.env.ADMIN_USER && password === process.env.ADMIN_PASS;
+  return username === process.env.ADMIN_USER && 
+         password === process.env.ADMIN_PASS;
 }
 
 export async function GET(request: NextRequest) {
@@ -54,8 +55,11 @@ export async function GET(request: NextRequest) {
 
 export async function PATCH(request: NextRequest) {
   try {
+    console.log('PATCH request received');
+    
     // Verify authentication
     if (!verifyBasicAuth(request)) {
+      console.log('Authentication failed');
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401, headers: { 'WWW-Authenticate': 'Basic' } }
@@ -63,9 +67,11 @@ export async function PATCH(request: NextRequest) {
     }
 
     const body = await request.json();
+    console.log('Request body:', body);
     const { id, flagged, reason, updates } = body;
 
     if (!id) {
+      console.log('No ID provided');
       return NextResponse.json(
         { error: 'Invalid request body - id is required' },
         { status: 400 }
@@ -74,11 +80,13 @@ export async function PATCH(request: NextRequest) {
 
     // Handle flag updates
     if (typeof flagged === 'boolean') {
+      console.log('Updating flag:', id, flagged, reason);
       await updateRecordFlag(id, flagged, reason);
     }
 
     // Handle record updates
     if (updates && typeof updates === 'object') {
+      console.log('Updating record:', id, updates);
       await updateRecord(id, updates);
     }
     
@@ -95,8 +103,11 @@ export async function PATCH(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
+    console.log('DELETE request received');
+    
     // Verify authentication
     if (!verifyBasicAuth(request)) {
+      console.log('Authentication failed');
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401, headers: { 'WWW-Authenticate': 'Basic' } }
@@ -105,14 +116,17 @@ export async function DELETE(request: NextRequest) {
 
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
+    console.log('Delete ID:', id);
 
     if (!id) {
+      console.log('No ID provided for deletion');
       return NextResponse.json(
         { error: 'Record ID is required' },
         { status: 400 }
       );
     }
 
+    console.log('Deleting record with ID:', id);
     await deleteRecord(parseInt(id));
     
     return NextResponse.json({ success: true });

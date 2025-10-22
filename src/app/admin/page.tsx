@@ -150,6 +150,7 @@ export default function AdminPage() {
     note?: string;
   }) => {
     try {
+      console.log('Updating record:', id, updates);
       const response = await fetch('/api/admin/records', {
         method: 'PATCH',
         headers: {
@@ -159,12 +160,20 @@ export default function AdminPage() {
         body: JSON.stringify({ id, updates })
       });
 
-      if (response.ok) {
-        fetchRecords();
-        setEditingRecord(null);
+      console.log('Update response status:', response.status);
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Update failed:', errorText);
+        alert(`Update failed: ${errorText}`);
+        return;
       }
+
+      fetchRecords();
+      setEditingRecord(null);
+      alert('Record updated successfully!');
     } catch (error) {
       console.error('Failed to update record:', error);
+      alert('Failed to update record: ' + error);
     }
   };
 
@@ -174,6 +183,7 @@ export default function AdminPage() {
     }
 
     try {
+      console.log('Deleting record:', id);
       const response = await fetch(`/api/admin/records?id=${id}`, {
         method: 'DELETE',
         headers: {
@@ -181,11 +191,19 @@ export default function AdminPage() {
         }
       });
 
-      if (response.ok) {
-        fetchRecords();
+      console.log('Delete response status:', response.status);
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Delete failed:', errorText);
+        alert(`Delete failed: ${errorText}`);
+        return;
       }
+
+      fetchRecords();
+      alert('Record deleted successfully!');
     } catch (error) {
       console.error('Failed to delete record:', error);
+      alert('Failed to delete record: ' + error);
     }
   };
 
