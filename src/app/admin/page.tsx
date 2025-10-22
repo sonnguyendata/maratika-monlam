@@ -536,16 +536,22 @@ export default function AdminPage() {
                               {record.flagged ? 'Bỏ đánh dấu' : 'Đánh dấu'}
                             </button>
                             <button
-                              onClick={() => setEditingRecord(record)}
+                              onClick={() => {
+                                console.log('Edit button clicked for record:', record.id);
+                                setEditingRecord(record);
+                              }}
                               className="btn btn-sm btn-secondary"
                             >
-                              {messages.admin.actions.edit_record}
+                              {messages.admin.actions.edit_record || 'Edit'}
                             </button>
                             <button
-                              onClick={() => deleteRecord(record.id)}
+                              onClick={() => {
+                                console.log('Delete button clicked for record:', record.id);
+                                deleteRecord(record.id);
+                              }}
                               className="btn btn-sm btn-danger"
                             >
-                              {messages.admin.actions.delete_record}
+                              {messages.admin.actions.delete_record || 'Delete'}
                             </button>
                           </div>
                         </td>
