@@ -326,7 +326,11 @@
     },
     "actions": {
       "export_csv": "导出CSV",
-      "mark_reviewed": "标记已审核"
+      "mark_reviewed": "标记已审核",
+      "edit_record": "编辑记录",
+      "delete_record": "删除记录",
+      "view_duplicates": "查看重复",
+      "delete_duplicate": "删除重复"
     }
   },
   "errors": {

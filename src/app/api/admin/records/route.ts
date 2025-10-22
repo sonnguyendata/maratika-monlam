@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getAdminRecords, updateRecordFlag } from '@/lib/database';
+import { getAdminRecords, updateRecordFlag, updateRecord, deleteRecord, getDuplicateRecords } from '@/lib/database';
 import { AdminFilters } from '@/types';
 
 function verifyBasicAuth(request: NextRequest): boolean {
@@ -63,23 +63,64 @@ export async function PATCH(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { id, flagged, reason } = body;
+    const { id, flagged, reason, updates } = body;
 
-    if (!id || typeof flagged !== 'boolean') {
+    if (!id) {
       return NextResponse.json(
-        { error: 'Invalid request body' },
+        { error: 'Invalid request body - id is required' },
         { status: 400 }
       );
     }
 
-    await updateRecordFlag(id, flagged, reason);
+    // Handle flag updates
+    if (typeof flagged === 'boolean') {
+      await updateRecordFlag(id, flagged, reason);
+    }
+
+    // Handle record updates
+    if (updates && typeof updates === 'object') {
+      await updateRecord(id, updates);
+    }
     
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('Update flag error:', error);
+    console.error('Update error:', error);
     
     return NextResponse.json(
-      { error: 'Failed to update flag' },
+      { error: 'Failed to update record' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  try {
+    // Verify authentication
+    if (!verifyBasicAuth(request)) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401, headers: { 'WWW-Authenticate': 'Basic' } }
+      );
+    }
+
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+
+    if (!id) {
+      return NextResponse.json(
+        { error: 'Record ID is required' },
+        { status: 400 }
+      );
+    }
+
+    await deleteRecord(parseInt(id));
+    
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('Delete error:', error);
+    
+    return NextResponse.json(
+      { error: 'Failed to delete record' },
       { status: 500 }
     );
   }

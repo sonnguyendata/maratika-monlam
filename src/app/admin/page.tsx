@@ -22,6 +22,10 @@ export default function AdminPage() {
     totalPages: 0,
     currentPage: 1
   });
+  const [editingRecord, setEditingRecord] = useState<AdminRecord | null>(null);
+  const [showDuplicates, setShowDuplicates] = useState(false);
+  const [duplicates, setDuplicates] = useState<AdminRecord[]>([]);
+  const [loadingDuplicates, setLoadingDuplicates] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -136,6 +140,94 @@ export default function AdminPage() {
       }
     } catch (error) {
       console.error('Failed to update flag:', error);
+    }
+  };
+
+  const updateRecord = async (id: number, updates: {
+    attendee_id?: string;
+    attendee_name?: string;
+    quantity?: number;
+    note?: string;
+  }) => {
+    try {
+      const response = await fetch('/api/admin/records', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Basic ${btoa(`${credentials.username}:${credentials.password}`)}`
+        },
+        body: JSON.stringify({ id, updates })
+      });
+
+      if (response.ok) {
+        fetchRecords();
+        setEditingRecord(null);
+      }
+    } catch (error) {
+      console.error('Failed to update record:', error);
+    }
+  };
+
+  const deleteRecord = async (id: number) => {
+    if (!confirm('Are you sure you want to delete this record?')) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/admin/records?id=${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Basic ${btoa(`${credentials.username}:${credentials.password}`)}`
+        }
+      });
+
+      if (response.ok) {
+        fetchRecords();
+      }
+    } catch (error) {
+      console.error('Failed to delete record:', error);
+    }
+  };
+
+  const fetchDuplicates = async () => {
+    setLoadingDuplicates(true);
+    try {
+      const response = await fetch('/api/admin/duplicates', {
+        headers: {
+          'Authorization': `Basic ${btoa(`${credentials.username}:${credentials.password}`)}`
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setDuplicates(data.duplicates);
+      }
+    } catch (error) {
+      console.error('Failed to fetch duplicates:', error);
+    } finally {
+      setLoadingDuplicates(false);
+    }
+  };
+
+  const deleteDuplicate = async (id: number) => {
+    if (!confirm('Are you sure you want to delete this duplicate record?')) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/admin/duplicates?id=${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Basic ${btoa(`${credentials.username}:${credentials.password}`)}`
+        }
+      });
+
+      if (response.ok) {
+        fetchDuplicates();
+        fetchRecords();
+      }
+    } catch (error) {
+      console.error('Failed to delete duplicate:', error);
     }
   };
 
@@ -328,6 +420,18 @@ export default function AdminPage() {
             <button onClick={() => {}} className="btn btn-info">
               {messages.admin.actions.mark_reviewed}
             </button>
+            
+            <button 
+              onClick={() => {
+                setShowDuplicates(!showDuplicates);
+                if (!showDuplicates) {
+                  fetchDuplicates();
+                }
+              }} 
+              className="btn btn-warning"
+            >
+              {messages.admin.actions.view_duplicates}
+            </button>
           </div>
         </div>
 
@@ -406,12 +510,26 @@ export default function AdminPage() {
                           )}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          <button
-                            onClick={() => updateFlag(record.id, !record.flagged, record.flagged ? undefined : 'Manual flag')}
-                            className={`btn btn-sm ${record.flagged ? 'btn-success' : 'btn-danger'}`}
-                          >
-                            {record.flagged ? 'Bỏ đánh dấu' : 'Đánh dấu'}
-                          </button>
+                          <div className="flex space-x-2">
+                            <button
+                              onClick={() => updateFlag(record.id, !record.flagged, record.flagged ? undefined : 'Manual flag')}
+                              className={`btn btn-sm ${record.flagged ? 'btn-success' : 'btn-danger'}`}
+                            >
+                              {record.flagged ? 'Bỏ đánh dấu' : 'Đánh dấu'}
+                            </button>
+                            <button
+                              onClick={() => setEditingRecord(record)}
+                              className="btn btn-sm btn-secondary"
+                            >
+                              {messages.admin.actions.edit_record}
+                            </button>
+                            <button
+                              onClick={() => deleteRecord(record.id)}
+                              className="btn btn-sm btn-danger"
+                            >
+                              {messages.admin.actions.delete_record}
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))}
@@ -446,6 +564,173 @@ export default function AdminPage() {
             </>
           )}
         </div>
+
+        {/* Duplicates Section */}
+        {showDuplicates && (
+          <div className="card mt-6">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold">Duplicate Records · Bản ghi trùng lặp</h2>
+              <div className="text-sm text-gray-500">
+                {duplicates.length} duplicate records
+              </div>
+            </div>
+            
+            {loadingDuplicates ? (
+              <div className="text-center py-8">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mx-auto"></div>
+                <p className="mt-2 text-gray-600">{messages.common.loading}</p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Thời gian · Time
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        ID
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Tên · Name
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Số lượng · Qty
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Ghi chú · Note
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Hành động · Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {duplicates.map((record) => (
+                      <tr key={record.id} className="bg-red-50">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {formatDateTime(record.ts_server)}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {record.attendee_id}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {record.attendee_name}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {record.quantity}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-900 max-w-xs truncate">
+                          {record.note}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          <button
+                            onClick={() => deleteDuplicate(record.id)}
+                            className="btn btn-sm btn-danger"
+                          >
+                            {messages.admin.actions.delete_duplicate}
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Edit Modal */}
+        {editingRecord && (
+          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+            <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+              <div className="mt-3">
+                <h3 className="text-lg font-medium text-gray-900 mb-4">
+                  Edit Record · Chỉnh sửa bản ghi
+                </h3>
+                
+                <form onSubmit={(e) => {
+                  e.preventDefault();
+                  const formData = new FormData(e.currentTarget);
+                  updateRecord(editingRecord.id, {
+                    attendee_id: formData.get('attendee_id') as string,
+                    attendee_name: formData.get('attendee_name') as string,
+                    quantity: parseInt(formData.get('quantity') as string),
+                    note: formData.get('note') as string
+                  });
+                }} className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Attendee ID
+                    </label>
+                    <input
+                      type="text"
+                      name="attendee_id"
+                      defaultValue={editingRecord.attendee_id}
+                      className="input"
+                      required
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Attendee Name
+                    </label>
+                    <input
+                      type="text"
+                      name="attendee_name"
+                      defaultValue={editingRecord.attendee_name}
+                      className="input"
+                      required
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Quantity
+                    </label>
+                    <input
+                      type="number"
+                      name="quantity"
+                      defaultValue={editingRecord.quantity}
+                      className="input"
+                      required
+                      min="0"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Note
+                    </label>
+                    <textarea
+                      name="note"
+                      defaultValue={editingRecord.note || ''}
+                      className="input"
+                      rows={3}
+                    />
+                  </div>
+                  
+                  <div className="flex space-x-3">
+                    <button
+                      type="submit"
+                      className="btn btn-primary flex-1"
+                    >
+                      {messages.common.save}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setEditingRecord(null)}
+                      className="btn btn-secondary flex-1"
+                    >
+                      {messages.common.cancel}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );

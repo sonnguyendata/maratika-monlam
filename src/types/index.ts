@@ -253,6 +253,10 @@ export interface I18nMessages {
     actions: {
       export_csv: string;
       mark_reviewed: string;
+      edit_record: string;
+      delete_record: string;
+      view_duplicates: string;
+      delete_duplicate: string;
     };
   };
   errors: {

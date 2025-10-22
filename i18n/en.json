@@ -326,7 +326,11 @@
     },
     "actions": {
       "export_csv": "Export CSV",
-      "mark_reviewed": "Mark reviewed"
+      "mark_reviewed": "Mark reviewed",
+      "edit_record": "Edit Record",
+      "delete_record": "Delete Record",
+      "view_duplicates": "View Duplicates",
+      "delete_duplicate": "Delete Duplicate"
     }
   },
   "errors": {

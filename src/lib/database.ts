@@ -238,3 +238,45 @@ export async function updateRecordFlag(id: number, flagged: boolean, reason?: st
     throw new Error(`Database error: ${error.message}`);
   }
 }
+
+export async function updateRecord(id: number, updates: {
+  attendee_id?: string;
+  attendee_name?: string;
+  quantity?: number;
+  note?: string;
+}) {
+  const { error } = await supabase
+    .from('submissions')
+    .update(updates)
+    .eq('id', id);
+
+  if (error) {
+    throw new Error(`Database error: ${error.message}`);
+  }
+}
+
+export async function deleteRecord(id: number) {
+  const { error } = await supabase
+    .from('submissions')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    throw new Error(`Database error: ${error.message}`);
+  }
+}
+
+export async function getDuplicateRecords(): Promise<AdminRecord[]> {
+  const { data, error } = await supabase
+    .from('submissions')
+    .select('*')
+    .eq('flagged', true)
+    .eq('flag_reason', 'DupKey')
+    .order('ts_server', { ascending: false });
+
+  if (error) {
+    throw new Error(`Database error: ${error.message}`);
+  }
+
+  return data || [];
+}

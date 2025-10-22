@@ -326,7 +326,11 @@
     },
     "actions": {
       "export_csv": "Xuất CSV",
-      "mark_reviewed": "Đánh dấu đã xem"
+      "mark_reviewed": "Đánh dấu đã xem",
+      "edit_record": "Chỉnh sửa bản ghi",
+      "delete_record": "Xóa bản ghi",
+      "view_duplicates": "Xem trùng lặp",
+      "delete_duplicate": "Xóa trùng lặp"
     }
   },
   "errors": {
