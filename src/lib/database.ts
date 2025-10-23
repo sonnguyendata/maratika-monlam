@@ -10,6 +10,24 @@ export const supabase = createClient(
   process.env.SUPABASE_ANON_KEY
 );
 
+// Create admin client with service role key if available
+export const supabaseAdmin = process.env.SUPABASE_SERVICE_ROLE_KEY 
+  ? createClient(
+      process.env.SUPABASE_URL,
+      process.env.SUPABASE_SERVICE_ROLE_KEY,
+      {
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false
+        }
+      }
+    )
+  : supabase;
+
+// For now, let's use the regular supabase client and see if we can make it work
+// The issue might be with RLS policies
+export const adminClient = supabase;
+
 export async function submitTucSo(data: SubmissionData, ipHash: string, uaHash: string) {
   // Create timestamp in GMT+7 timezone
   const now = new Date();
@@ -245,28 +263,47 @@ export async function updateRecord(id: number, updates: {
   quantity?: number;
   note?: string;
 }) {
-  const { error } = await supabase
+  console.log('updateRecord called with:', id, updates);
+  
+  // Use the same client as getAdminRecords since that works
+  const { data, error } = await supabase
     .from('submissions')
     .update(updates)
-    .eq('id', id);
+    .eq('id', id)
+    .select();
+
+  console.log('updateRecord result:', { data, error });
 
   if (error) {
+    console.error('updateRecord error:', error);
     throw new Error(`Database error: ${error.message}`);
   }
+
+  console.log('updateRecord successful:', data);
 }
 
 export async function deleteRecord(id: number) {
-  const { error } = await supabase
+  console.log('deleteRecord called with:', id);
+  
+  // Use the same client as getAdminRecords since that works
+  const { data, error } = await supabase
     .from('submissions')
     .delete()
-    .eq('id', id);
+    .eq('id', id)
+    .select();
+
+  console.log('deleteRecord result:', { data, error });
 
   if (error) {
+    console.error('deleteRecord error:', error);
     throw new Error(`Database error: ${error.message}`);
   }
+
+  console.log('deleteRecord successful:', data);
 }
 
 export async function getDuplicateRecords(): Promise<AdminRecord[]> {
+  // Use the same client as getAdminRecords since that works
   const { data, error } = await supabase
     .from('submissions')
     .select('*')
