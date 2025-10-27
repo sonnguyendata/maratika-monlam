@@ -1,6 +1,16 @@
 -- Add updated_at and deleted_at fields to submissions table
 -- Fix foreign key constraint for cascade delete
 
+-- Add updated_at column if it doesn't exist
+DO $$ 
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                   WHERE table_name = 'submissions' 
+                   AND column_name = 'updated_at') THEN
+        ALTER TABLE public.submissions ADD COLUMN updated_at TIMESTAMPTZ DEFAULT NOW();
+    END IF;
+END $$;
+
 -- Add deleted_at column for soft deletes
 DO $$ 
 BEGIN
@@ -43,6 +53,13 @@ CREATE TRIGGER update_submissions_updated_at
     EXECUTE FUNCTION update_updated_at_column();
 
 -- Set updated_at for existing records (if not already set)
-UPDATE public.submissions 
-SET updated_at = COALESCE(updated_at, created_at) 
-WHERE updated_at IS NULL;
+DO $$ 
+BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.columns 
+               WHERE table_name = 'submissions' 
+               AND column_name = 'updated_at') THEN
+        UPDATE public.submissions 
+        SET updated_at = COALESCE(updated_at, created_at) 
+        WHERE updated_at IS NULL;
+    END IF;
+END $$;
