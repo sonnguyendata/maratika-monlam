@@ -76,15 +76,15 @@ export default function ReportPage() {
                 {/* KPIs */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="kpi-card">
-                    <div className="kpi-value">{reportData.totals.all_time.toLocaleString()}</div>
+                    <div className="kpi-value">{reportData.totals?.all_time?.toLocaleString() || '0'}</div>
                     <div className="kpi-label">{messages.report.kpi_total}</div>
                   </div>
                   <div className="kpi-card">
-                    <div className="kpi-value">{reportData.totals.today.toLocaleString()}</div>
+                    <div className="kpi-value">{reportData.totals?.today?.toLocaleString() || '0'}</div>
                     <div className="kpi-label">{messages.report.kpi_today}</div>
                   </div>
                   <div className="kpi-card">
-                    <div className="kpi-value">{reportData.totals.unique_ids.toLocaleString()}</div>
+                    <div className="kpi-value">{reportData.totals?.unique_ids?.toLocaleString() || '0'}</div>
                     <div className="kpi-label">{messages.report.kpi_unique}</div>
                   </div>
                 </div>
@@ -92,9 +92,10 @@ export default function ReportPage() {
                 {/* Chart */}
                 <div className="card">
                   <h2 className="text-xl font-serif font-semibold mb-4 text-monastic-600">{messages.report.daily_chart}</h2>
-                  <div className="h-64">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={reportData.by_day}>
+                  {reportData.by_day && reportData.by_day.length > 0 ? (
+                    <div className="h-64">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart data={reportData.by_day}>
                         <CartesianGrid strokeDasharray="3 3" stroke="#f59e0b" opacity={0.3} />
                         <XAxis 
                           dataKey="date" 
@@ -123,31 +124,37 @@ export default function ReportPage() {
                             <stop offset="100%" stopColor="#d97706" />
                           </linearGradient>
                         </defs>
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </div>
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+                  ) : (
+                    <div className="h-64 flex items-center justify-center text-earthy-500">
+                      <p>No data available yet</p>
+                    </div>
+                  )}
                 </div>
 
                 {/* Leaderboard */}
                 <div className="card">
                   <h2 className="text-xl font-serif font-semibold mb-4 text-monastic-600">{messages.report.top10}</h2>
-                  <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-earthy-200">
-                      <thead className="table-header">
-                        <tr>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-earthy-700 uppercase tracking-wider">
-                            {messages.report.rank}
-                          </th>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-earthy-700 uppercase tracking-wider">
-                            {messages.report.name}
-                          </th>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-earthy-700 uppercase tracking-wider">
-                            {messages.report.total}
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className="bg-parchment-50 divide-y divide-earthy-200">
-                        {reportData.top10.map((participant, index) => (
+                  {reportData.top10 && reportData.top10.length > 0 ? (
+                    <div className="overflow-x-auto">
+                      <table className="min-w-full divide-y divide-earthy-200">
+                        <thead className="table-header">
+                          <tr>
+                            <th className="px-4 py-3 text-left text-xs font-semibold text-earthy-700 uppercase tracking-wider">
+                              {messages.report.rank}
+                            </th>
+                            <th className="px-4 py-3 text-left text-xs font-semibold text-earthy-700 uppercase tracking-wider">
+                              {messages.report.name}
+                            </th>
+                            <th className="px-4 py-3 text-left text-xs font-semibold text-earthy-700 uppercase tracking-wider">
+                              {messages.report.total}
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody className="bg-parchment-50 divide-y divide-earthy-200">
+                          {reportData.top10.map((participant, index) => (
                           <tr key={participant.id} className={`table-row ${index === 0 ? 'table-row-top' : ''}`}>
                             <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-earthy-900">
                               <div className="flex items-center space-x-2">
@@ -166,10 +173,15 @@ export default function ReportPage() {
                               </span>
                             </td>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  ) : (
+                    <div className="py-8 text-center text-earthy-500">
+                      <p>No data available yet</p>
+                    </div>
+                  )}
                 </div>
               </>
             ) : (
