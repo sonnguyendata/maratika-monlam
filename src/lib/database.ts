@@ -97,7 +97,8 @@ export async function getDailyTotalForUser(attendeeId: string): Promise<number> 
     .eq('attendee_id', attendeeId)
     .gte('ts_server', `${today}T00:00:00+07:00`)
     .lt('ts_server', `${today}T23:59:59+07:00`)
-    .eq('flagged', false);
+    .eq('flagged', false)
+    .is('deleted_at', null);
 
   if (error) {
     throw new Error(`Database error: ${error.message}`);
@@ -111,7 +112,8 @@ export async function getTotalCountForUser(attendeeId: string): Promise<number> 
     .from('submissions')
     .select('quantity')
     .eq('attendee_id', attendeeId)
-    .eq('flagged', false);
+    .eq('flagged', false)
+    .is('deleted_at', null);
 
   if (error) {
     throw new Error(`Database error: ${error.message}`);
@@ -195,6 +197,9 @@ export async function getAdminRecords(filters: AdminFilters): Promise<AdminRespo
   let query = supabase
     .from('submissions')
     .select('*', { count: 'exact' });
+
+  // Exclude soft-deleted records
+  query = query.is('deleted_at', null);
 
   // Apply filters
   if (filters.date_from) {

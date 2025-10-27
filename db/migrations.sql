@@ -15,7 +15,8 @@ CREATE TABLE IF NOT EXISTS public.submissions (
   flag_reason TEXT,
   idempotency_key UUID,
   created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW()
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  deleted_at TIMESTAMPTZ
 );
 
 -- Add idempotency_key column if it doesn't exist
@@ -31,7 +32,7 @@ END $$;
 -- Idempotency keys table to prevent duplicate submissions
 CREATE TABLE IF NOT EXISTS public.idempotency_keys (
   key UUID PRIMARY KEY,
-  submission_id BIGINT REFERENCES public.submissions(id),
+  submission_id BIGINT REFERENCES public.submissions(id) ON DELETE CASCADE,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
@@ -52,7 +53,7 @@ SELECT
   DATE(ts_server AT TIME ZONE 'Asia/Ho_Chi_Minh') as date,
   SUM(quantity) as total
 FROM public.submissions
-WHERE flagged = FALSE
+WHERE flagged = FALSE AND deleted_at IS NULL
 GROUP BY DATE(ts_server AT TIME ZONE 'Asia/Ho_Chi_Minh')
 ORDER BY DATE(ts_server AT TIME ZONE 'Asia/Ho_Chi_Minh');
 
@@ -63,7 +64,7 @@ SELECT
   SUM(quantity) as total,
   COUNT(*) as submission_count
 FROM public.submissions
-WHERE flagged = FALSE
+WHERE flagged = FALSE AND deleted_at IS NULL
 GROUP BY attendee_id, attendee_name
 ORDER BY total DESC
 LIMIT 10;
@@ -77,7 +78,8 @@ SELECT
   SUM(CASE WHEN DATE(ts_server AT TIME ZONE 'Asia/Ho_Chi_Minh') = (CURRENT_DATE AT TIME ZONE 'Asia/Ho_Chi_Minh')::DATE THEN quantity ELSE 0 END) as today_count,
   COUNT(CASE WHEN DATE(ts_server AT TIME ZONE 'Asia/Ho_Chi_Minh') = (CURRENT_DATE AT TIME ZONE 'Asia/Ho_Chi_Minh')::DATE THEN 1 END) as today_submissions,
   COUNT(CASE WHEN flagged = TRUE THEN 1 END) as flagged_count
-FROM public.submissions;
+FROM public.submissions
+WHERE deleted_at IS NULL;
 
 -- Function to update updated_at timestamp
 CREATE OR REPLACE FUNCTION update_updated_at_column()
