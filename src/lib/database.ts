@@ -280,6 +280,7 @@ export async function updateRecord(id: number, updates: {
   }
 
   console.log('updateRecord successful:', data);
+  return data;
 }
 
 export async function deleteRecord(id: number) {
@@ -300,6 +301,7 @@ export async function deleteRecord(id: number) {
   }
 
   console.log('deleteRecord successful:', data);
+  return data;
 }
 
 export async function getDuplicateRecords(): Promise<AdminRecord[]> {

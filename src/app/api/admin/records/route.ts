@@ -87,15 +87,21 @@ export async function PATCH(request: NextRequest) {
     // Handle record updates
     if (updates && typeof updates === 'object') {
       console.log('Updating record:', id, updates);
-      await updateRecord(id, updates);
+      const result = await updateRecord(id, updates);
+      console.log('Update result:', result);
     }
     
     return NextResponse.json({ success: true });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Update error:', error);
+    console.error('Error message:', error?.message);
+    console.error('Error stack:', error?.stack);
     
     return NextResponse.json(
-      { error: 'Failed to update record' },
+      { 
+        error: 'Failed to update record',
+        details: error?.message || 'Unknown error'
+      },
       { status: 500 }
     );
   }
@@ -127,14 +133,20 @@ export async function DELETE(request: NextRequest) {
     }
 
     console.log('Deleting record with ID:', id);
-    await deleteRecord(parseInt(id));
+    const result = await deleteRecord(parseInt(id));
+    console.log('Delete result:', result);
     
-    return NextResponse.json({ success: true });
-  } catch (error) {
+    return NextResponse.json({ success: true, result });
+  } catch (error: any) {
     console.error('Delete error:', error);
+    console.error('Error message:', error?.message);
+    console.error('Error stack:', error?.stack);
     
     return NextResponse.json(
-      { error: 'Failed to delete record' },
+      { 
+        error: 'Failed to delete record',
+        details: error?.message || 'Unknown error'
+      },
       { status: 500 }
     );
   }

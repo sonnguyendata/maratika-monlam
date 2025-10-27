@@ -162,9 +162,9 @@ export default function AdminPage() {
 
       console.log('Update response status:', response.status);
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Update failed:', errorText);
-        alert(`Update failed: ${errorText}`);
+        const errorData = await response.json();
+        console.error('Update failed:', errorData);
+        alert(`Update failed: ${errorData.error}\nDetails: ${errorData.details || 'No details'}`);
         return;
       }
 
@@ -193,9 +193,9 @@ export default function AdminPage() {
 
       console.log('Delete response status:', response.status);
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Delete failed:', errorText);
-        alert(`Delete failed: ${errorText}`);
+        const errorData = await response.json();
+        console.error('Delete failed:', errorData);
+        alert(`Delete failed: ${errorData.error}\nDetails: ${errorData.details || 'No details'}`);
         return;
       }
 
