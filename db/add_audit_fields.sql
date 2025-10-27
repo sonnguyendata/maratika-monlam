@@ -59,7 +59,7 @@ BEGIN
                WHERE table_name = 'submissions' 
                AND column_name = 'updated_at') THEN
         UPDATE public.submissions 
-        SET updated_at = COALESCE(updated_at, created_at) 
+        SET updated_at = NOW() 
         WHERE updated_at IS NULL;
     END IF;
 END $$;
