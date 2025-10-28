@@ -61,13 +61,6 @@ export function Header() {
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-golden-500 transition-all duration-300 group-hover:w-full"></span>
               </Link>
               <Link 
-                href="/info" 
-                className="text-earthy-600 hover:text-monastic-600 transition-colors font-medium relative group"
-              >
-                {messages.nav.info}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-golden-500 transition-all duration-300 group-hover:w-full"></span>
-              </Link>
-              <Link 
                 href="/admin" 
                 className="text-earthy-600 hover:text-monastic-600 transition-colors font-medium relative group"
               >
@@ -136,13 +129,6 @@ export function Header() {
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {messages.nav.schedule}
-              </Link>
-              <Link 
-                href="/info" 
-                className="text-earthy-600 hover:text-monastic-600 transition-colors font-medium py-2 border-b border-golden-100"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {messages.nav.info}
               </Link>
               <Link 
                 href="/admin" 
