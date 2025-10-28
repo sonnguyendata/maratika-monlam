@@ -126,63 +126,73 @@ export async function getReportSummary(): Promise<ReportSummary> {
   console.log('Getting report summary...');
   
   try {
-    // Get totals
-    console.log('Fetching summary data...');
-    const { data: summaryData, error: summaryError } = await supabase
-      .from('v_summary')
+    // Query submissions table directly to ensure fresh data
+    const { data: allSubmissions, error: submissionsError } = await supabase
+      .from('submissions')
       .select('*')
-      .single();
+      .eq('flagged', false)
+      .is('deleted_at', null);
 
-    if (summaryError) {
-      console.error('Summary error:', summaryError);
-      throw new Error(`Database error: ${summaryError.message}`);
+    if (submissionsError) {
+      console.error('Submissions error:', submissionsError);
+      throw new Error(`Database error: ${submissionsError.message}`);
     }
 
-    console.log('Summary data:', summaryData);
+    console.log('All submissions:', allSubmissions?.length);
 
-    // Get daily breakdown
-    console.log('Fetching daily data...');
-    const { data: dailyData, error: dailyError } = await supabase
-      .from('v_totals_by_day')
-      .select('*')
-      .order('date');
+    // Calculate totals
+    const now = new Date();
+    const gmt7Offset = 7 * 60; // GMT+7 in minutes
+    const localTime = new Date(now.getTime() + (gmt7Offset * 60 * 1000));
+    const today = localTime.toISOString().split('T')[0];
 
-    if (dailyError) {
-      console.error('Daily error:', dailyError);
-      throw new Error(`Database error: ${dailyError.message}`);
-    }
+    const totalCount = allSubmissions?.reduce((sum, record) => sum + record.quantity, 0) || 0;
+    const todayCount = allSubmissions?.filter(record => 
+      record.ts_server.startsWith(today)
+    ).reduce((sum, record) => sum + record.quantity, 0) || 0;
+    const uniqueIds = new Set(allSubmissions?.map(record => record.attendee_id)).size || 0;
 
-    console.log('Daily data:', dailyData);
+    // Calculate daily breakdown
+    const dailyMap = new Map<string, number>();
+    allSubmissions?.forEach(record => {
+      const date = record.ts_server.split('T')[0];
+      dailyMap.set(date, (dailyMap.get(date) || 0) + record.quantity);
+    });
+    
+    const byDay = Array.from(dailyMap.entries())
+      .map(([date, total]) => ({ date, total }))
+      .sort((a, b) => a.date.localeCompare(b.date));
 
-    // Get top 10
-    console.log('Fetching top10 data...');
-    const { data: top10Data, error: top10Error } = await supabase
-      .from('v_top10')
-      .select('*');
+    // Calculate top 10
+    const userMap = new Map<string, { name: string, total: number, count: number }>();
+    allSubmissions?.forEach(record => {
+      const key = record.attendee_id;
+      const existing = userMap.get(key) || { name: record.attendee_name, total: 0, count: 0 };
+      userMap.set(key, {
+        name: record.attendee_name,
+        total: existing.total + record.quantity,
+        count: existing.count + 1
+      });
+    });
 
-    if (top10Error) {
-      console.error('Top10 error:', top10Error);
-      throw new Error(`Database error: ${top10Error.message}`);
-    }
-
-    console.log('Top10 data:', top10Data);
+    const top10 = Array.from(userMap.entries())
+      .map(([id, data]) => ({
+        id,
+        name: data.name,
+        total: data.total,
+        submission_count: data.count
+      }))
+      .sort((a, b) => b.total - a.total)
+      .slice(0, 10);
 
     const result = {
       totals: {
-        all_time: summaryData?.total_count || 0,
-        today: summaryData?.today_count || 0,
-        unique_ids: summaryData?.unique_participants || 0
+        all_time: totalCount,
+        today: todayCount,
+        unique_ids: uniqueIds
       },
-      by_day: (dailyData || []).map(d => ({
-        date: d.date,
-        total: d.total
-      })),
-      top10: (top10Data || []).map((d, index) => ({
-        id: d.attendee_id,
-        name: d.attendee_name,
-        total: d.total,
-        submission_count: d.submission_count
-      }))
+      by_day: byDay,
+      top10: top10
     };
 
     console.log('Final result:', result);
@@ -291,10 +301,10 @@ export async function updateRecord(id: number, updates: {
 export async function deleteRecord(id: number) {
   console.log('deleteRecord called with:', id);
   
-  // Use the same client as getAdminRecords since that works
+  // Use soft delete instead of hard delete to preserve data integrity
   const { data, error } = await supabase
     .from('submissions')
-    .delete()
+    .update({ deleted_at: new Date().toISOString() })
     .eq('id', id)
     .select();
 
