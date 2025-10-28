@@ -12,13 +12,37 @@ export default function ReportPage() {
   const [loadingReport, setLoadingReport] = useState(true);
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
 
-  const fetchReportData = async () => {
+  const fetchReportData = async (forceRefresh = false) => {
     try {
-      const response = await fetch('/api/report/summary');
+      // Add cache-busting timestamp and random parameter
+      const timestamp = Date.now();
+      const random = Math.random().toString(36).substring(7);
+      const url = `/api/report/summary?_t=${timestamp}&_r=${random}`;
+      
+      console.log('Fetching report data:', { timestamp, forceRefresh });
+      
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0',
+        },
+        // Force no caching
+        cache: 'no-store',
+      });
+      
       if (response.ok) {
         const data = await response.json();
+        console.log('Report data received:', { 
+          totalRecords: data.totals?.all_time || 0,
+          todayRecords: data.totals?.today || 0,
+          timestamp: new Date().toISOString()
+        });
         setReportData(data);
         setLastUpdated(new Date());
+      } else {
+        console.error('Failed to fetch report data - Response not OK:', response.status);
       }
     } catch (error) {
       console.error('Failed to fetch report data:', error);
@@ -30,9 +54,31 @@ export default function ReportPage() {
   useEffect(() => {
     fetchReportData();
     
-    // Auto-refresh every 15 seconds
-    const interval = setInterval(fetchReportData, 15000);
-    return () => clearInterval(interval);
+    // Auto-refresh every 30 seconds (increased from 15 to reduce server load)
+    const interval = setInterval(() => fetchReportData(), 30000);
+    
+    // Refresh when page becomes visible (user switches back to tab)
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        console.log('Page became visible, refreshing data...');
+        fetchReportData(true);
+      }
+    };
+    
+    // Refresh when user focuses on the window
+    const handleFocus = () => {
+      console.log('Window focused, refreshing data...');
+      fetchReportData(true);
+    };
+    
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('focus', handleFocus);
+    
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('focus', handleFocus);
+    };
   }, []);
 
   if (loading || !messages) {
@@ -56,9 +102,28 @@ export default function ReportPage() {
           <h1 className="hero-title">
             {messages.report.title}
           </h1>
-          <p className="text-sm text-earthy-500">
-            Cập nhật lần cuối: {lastUpdated.toLocaleString()}
-          </p>
+          <div className="flex items-center justify-center space-x-4 mt-4">
+            <p className="text-sm text-earthy-500">
+              Cập nhật lần cuối: {lastUpdated.toLocaleString()}
+            </p>
+            <button
+              onClick={() => {
+                setLoadingReport(true);
+                fetchReportData(true);
+              }}
+              disabled={loadingReport}
+              className="btn btn-sm btn-secondary"
+            >
+              {loadingReport ? (
+                <div className="flex items-center space-x-2">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-earthy-600"></div>
+                  <span>Đang tải...</span>
+                </div>
+              ) : (
+                '🔄 Làm mới'
+              )}
+            </button>
+          </div>
         </div>
 
         {/* Main Content Grid */}
