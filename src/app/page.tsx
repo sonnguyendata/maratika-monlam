@@ -191,8 +191,8 @@ export default function HomePage() {
     <div className="min-h-screen bg-parchment-50">
       <Header />
       
-      <main className="max-w-2xl mx-auto px-4 py-12">
-        <div className="text-center mb-12">
+      <main className="max-w-2xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+        <div className="text-center mb-8 sm:mb-12">
           <h1 className="hero-title">
             {messages.record.title}
           </h1>
@@ -205,7 +205,7 @@ export default function HomePage() {
         </div>
 
         <div className="card">
-          <form onSubmit={handleSubmit} className="space-y-8">
+          <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
             <div>
               <label htmlFor="attendee_id" className="block text-sm font-medium text-earthy-700 mb-3">
                 {messages.record.phone} — {messages.record.phone_placeholder}
@@ -242,11 +242,11 @@ export default function HomePage() {
               </label>
               
               {/* Input Mode Selection */}
-              <div className="flex space-x-2 mb-4">
+              <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 mb-4">
                 <button
                   type="button"
                   onClick={() => handleInputModeChange('direct')}
-                  className={`flex-1 py-2 px-4 rounded-lg border-2 transition-all duration-200 ${
+                  className={`flex-1 py-3 px-4 rounded-lg border-2 transition-all duration-200 min-h-[48px] touch-manipulation ${
                     inputMode === 'direct'
                       ? 'border-golden-500 bg-golden-50 text-golden-700'
                       : 'border-earthy-200 bg-parchment-50 text-earthy-600 hover:border-golden-300'
@@ -257,7 +257,7 @@ export default function HomePage() {
                 <button
                   type="button"
                   onClick={() => handleInputModeChange('mala')}
-                  className={`flex-1 py-2 px-4 rounded-lg border-2 transition-all duration-200 ${
+                  className={`flex-1 py-3 px-4 rounded-lg border-2 transition-all duration-200 min-h-[48px] touch-manipulation ${
                     inputMode === 'mala'
                       ? 'border-golden-500 bg-golden-50 text-golden-700'
                       : 'border-earthy-200 bg-parchment-50 text-earthy-600 hover:border-golden-300'
@@ -272,7 +272,7 @@ export default function HomePage() {
                   <label htmlFor="quantity" className="block text-sm font-medium text-earthy-700 mb-3">
                     {messages.record.quantity}
                   </label>
-                  <div className="flex items-center justify-center space-x-3">
+                  <div className="flex items-center justify-center space-x-2 sm:space-x-3">
                     <button
                       type="button"
                       onClick={() => setFormData(prev => ({ ...prev, quantity: Math.max(0, prev.quantity - 1) }))}
@@ -287,7 +287,7 @@ export default function HomePage() {
                       value={formData.quantity || ''}
                       onChange={(e) => setFormData(prev => ({ ...prev, quantity: e.target.value === '' ? 0 : parseInt(e.target.value) || 0 }))}
                       placeholder={messages.record.quantity_placeholder}
-                      className="input text-center w-72"
+                      className="input text-center flex-1 max-w-[200px] sm:max-w-[280px]"
                       min="0"
                       required
                     />
@@ -308,11 +308,11 @@ export default function HomePage() {
                     <label className="block text-sm font-medium text-earthy-700 mb-3">
                       {messages.record.select_mala_type}
                     </label>
-                    <div className="flex space-x-2">
+                    <div className="grid grid-cols-3 gap-2 sm:flex sm:space-x-2">
                       <button
                         type="button"
                         onClick={() => handleMalaTypeChange(21)}
-                        className={`flex-1 py-3 px-4 rounded-lg border-2 transition-all duration-200 ${
+                        className={`flex-1 py-3 px-4 rounded-lg border-2 transition-all duration-200 min-h-[48px] touch-manipulation ${
                           malaType === 21
                             ? 'border-golden-500 bg-golden-50 text-golden-700'
                             : 'border-earthy-200 bg-parchment-50 text-earthy-600 hover:border-golden-300'
@@ -323,7 +323,7 @@ export default function HomePage() {
                       <button
                         type="button"
                         onClick={() => handleMalaTypeChange(54)}
-                        className={`flex-1 py-3 px-4 rounded-lg border-2 transition-all duration-200 ${
+                        className={`flex-1 py-3 px-4 rounded-lg border-2 transition-all duration-200 min-h-[48px] touch-manipulation ${
                           malaType === 54
                             ? 'border-golden-500 bg-golden-50 text-golden-700'
                             : 'border-earthy-200 bg-parchment-50 text-earthy-600 hover:border-golden-300'
@@ -334,7 +334,7 @@ export default function HomePage() {
                       <button
                         type="button"
                         onClick={() => handleMalaTypeChange(108)}
-                        className={`flex-1 py-3 px-4 rounded-lg border-2 transition-all duration-200 ${
+                        className={`flex-1 py-3 px-4 rounded-lg border-2 transition-all duration-200 min-h-[48px] touch-manipulation ${
                           malaType === 108
                             ? 'border-golden-500 bg-golden-50 text-golden-700'
                             : 'border-earthy-200 bg-parchment-50 text-earthy-600 hover:border-golden-300'
@@ -350,7 +350,7 @@ export default function HomePage() {
                     <label htmlFor="mala_count" className="block text-sm font-medium text-earthy-700 mb-3">
                       {messages.record.mala_count_placeholder}
                     </label>
-                    <div className="flex items-center justify-center space-x-3">
+                    <div className="flex items-center justify-center space-x-2 sm:space-x-3">
                       <button
                         type="button"
                         onClick={() => handleMalaCountChange(Math.max(0, malaCount - 1))}
@@ -364,7 +364,7 @@ export default function HomePage() {
                         id="mala_count"
                         value={malaCount || ''}
                         onChange={(e) => handleMalaCountChange(parseInt(e.target.value) || 0)}
-                        className="input text-center w-48"
+                        className="input text-center flex-1 max-w-[140px] sm:max-w-[180px]"
                         min="0"
                         placeholder="0"
                         required
@@ -410,7 +410,7 @@ export default function HomePage() {
             <button
               type="submit"
               disabled={submitting}
-              className="w-full btn btn-primary py-4 text-lg font-semibold"
+              className="w-full btn btn-primary py-4 text-base sm:text-lg font-semibold min-h-[56px]"
             >
               {submitting ? (
                 <div className="flex items-center justify-center space-x-2">

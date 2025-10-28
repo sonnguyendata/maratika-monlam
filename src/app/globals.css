@@ -24,7 +24,7 @@
 
 @layer components {
   .btn {
-    @apply px-6 py-3 rounded-xl font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 min-h-[44px] flex items-center justify-center;
+    @apply px-4 sm:px-6 py-3 rounded-xl font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 min-h-[44px] flex items-center justify-center touch-manipulation;
   }
   
   .btn-sm {
@@ -52,11 +52,11 @@
   }
   
   .input {
-    @apply w-full px-4 border-2 border-earthy-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-golden-500 focus:border-golden-300 bg-parchment-50 transition-all duration-200 h-14 flex items-center;
+    @apply w-full px-3 sm:px-4 border-2 border-earthy-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-golden-500 focus:border-golden-300 bg-parchment-50 transition-all duration-200 h-12 sm:h-14 flex items-center text-base;
   }
   
   .card {
-    @apply bg-parchment-50 rounded-2xl shadow-sacred border-2 border-golden-200 p-8 relative overflow-hidden;
+    @apply bg-parchment-50 rounded-2xl shadow-sacred border-2 border-golden-200 p-4 sm:p-8 relative overflow-hidden;
   }
   
   .card::before {
@@ -148,7 +148,7 @@
   }
   
   .quantity-stepper-btn {
-    @apply w-48 h-14 flex items-center justify-center text-golden-600 hover:text-golden-700 hover:bg-golden-50 text-2xl font-bold rounded-lg border-2 border-golden-200 hover:border-golden-300 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-golden-300;
+    @apply w-12 sm:w-16 h-12 sm:h-14 flex items-center justify-center text-golden-600 hover:text-golden-700 hover:bg-golden-50 text-xl sm:text-2xl font-bold rounded-lg border-2 border-golden-200 hover:border-golden-300 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-golden-300 touch-manipulation;
   }
   
   .btn-info {
