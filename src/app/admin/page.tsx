@@ -61,6 +61,8 @@ export default function AdminPage() {
         }
       });
 
+      console.log('Fetching records with params:', params.toString());
+
       const response = await fetch(`/api/admin/records?${params}`, {
         headers: {
           'Authorization': `Basic ${btoa(`${credentials.username}:${credentials.password}`)}`
