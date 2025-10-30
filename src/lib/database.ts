@@ -261,6 +261,9 @@ export async function getAdminRecords(filters: AdminFilters): Promise<AdminRespo
   }
 
   console.log('Query successful, returned', data?.length || 0, 'records');
+  if (data && data.length > 0 && sortBy === 'quantity') {
+    console.log('First 3 quantity values:', data.slice(0, 3).map(r => ({ id: r.id, qty: r.quantity })));
+  }
 
   return {
     records: data || [],
