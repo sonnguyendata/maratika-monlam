@@ -423,45 +423,59 @@ export default function HomePage() {
             </button>
           </form>
 
-          {submitResult && (
-            <div className={`mt-8 p-6 rounded-2xl border-2 ${
-              submitResult.success 
-                ? 'bg-gradient-to-r from-lotus-50 to-sky-50 border-lotus-200 text-lotus-800' 
-                : 'bg-gradient-to-r from-monastic-50 to-red-50 border-monastic-200 text-monastic-800'
-            }`}>
-              {submitResult.success && (
-                <div className="flex items-center space-x-3 mb-3">
-                  <div className="lotus-icon success-animation">🌸</div>
-                  <p className="font-semibold text-lg">{submitResult.message}</p>
-                </div>
-              )}
-              {!submitResult.success && (
-                <div className="flex items-center space-x-3 mb-3">
-                  <div className="w-8 h-8 text-monastic-500">⚠️</div>
-                  <p className="font-semibold text-lg">{submitResult.message}</p>
-                </div>
-              )}
-              {submitResult.success && (submitResult.dailyTotal !== undefined || submitResult.totalCount !== undefined) && (
-                <div className="mt-4 space-y-2">
+          {/* Error message (only show if not success) */}
+          {submitResult && !submitResult.success && (
+            <div className="mt-8 p-6 rounded-2xl border-2 bg-gradient-to-r from-monastic-50 to-red-50 border-monastic-200 text-monastic-800">
+              <div className="flex items-center space-x-3">
+                <div className="w-8 h-8 text-monastic-500">⚠️</div>
+                <p className="font-semibold text-lg">{submitResult.message}</p>
+              </div>
+            </div>
+          )}
+        </div>
+        {/* Success Modal */}
+        {submitResult && submitResult.success && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" onClick={() => setSubmitResult(null)}>
+            <div className="bg-white rounded-2xl p-8 max-w-md w-full shadow-xl" onClick={(e) => e.stopPropagation()}>
+              <div className="text-center">
+                <div className="text-6xl mb-4">✨</div>
+                <h2 className="text-2xl font-bold text-earthy-800 mb-4">
+                  {submitResult.message}
+                </h2>
+                
+                <div className="space-y-4 mb-6">
                   {submitResult.dailyTotal !== undefined && (
-                    <div className="p-3 bg-golden-50 rounded-lg border border-golden-200">
-                      <p className="text-sm text-earthy-600">
-                        {messages.record.todayTotal.replace('{{n}}', submitResult.dailyTotal.toString())}
+                    <div className="p-4 bg-golden-50 rounded-lg border border-golden-200">
+                      <p className="text-sm text-earthy-600 mb-1">
+                        📅 {messages.record.todayTotal.split('{{n}}')[0].trim()}
+                      </p>
+                      <p className="text-3xl font-bold text-golden-700">
+                        {submitResult.dailyTotal}
                       </p>
                     </div>
                   )}
                   {submitResult.totalCount !== undefined && (
-                    <div className="p-3 bg-lotus-50 rounded-lg border border-lotus-200">
-                      <p className="text-sm text-earthy-600">
-                        {messages.record.totalCount.replace('{{n}}', submitResult.totalCount.toString())}
+                    <div className="p-4 bg-lotus-50 rounded-lg border border-lotus-200">
+                      <p className="text-sm text-earthy-600 mb-1">
+                        🌸 {messages.record.totalCount.split('{{n}}')[0].trim()}
+                      </p>
+                      <p className="text-3xl font-bold text-lotus-700">
+                        {submitResult.totalCount}
                       </p>
                     </div>
                   )}
                 </div>
-              )}
+
+                <button
+                  onClick={() => setSubmitResult(null)}
+                  className="w-full btn btn-primary"
+                >
+                  {messages.common.close}
+                </button>
+              </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </main>
     </div>
   );
