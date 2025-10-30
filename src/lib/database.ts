@@ -243,6 +243,7 @@ export async function getAdminRecords(filters: AdminFilters): Promise<AdminRespo
   const sortBy = filters.sort_by || 'ts_server';
   const sortOrder = filters.sort_order || 'desc';
   
+  console.log('Admin records sorting by:', sortBy, sortOrder);
   query = query.order(sortBy, { ascending: sortOrder === 'asc' });
 
   // Apply pagination
@@ -255,8 +256,11 @@ export async function getAdminRecords(filters: AdminFilters): Promise<AdminRespo
   const { data, error, count } = await query;
 
   if (error) {
+    console.error('Database query error:', error);
     throw new Error(`Database error: ${error.message}`);
   }
+
+  console.log('Query successful, returned', data?.length || 0, 'records');
 
   return {
     records: data || [],

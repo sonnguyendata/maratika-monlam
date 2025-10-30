@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS public.idempotency_keys (
 -- Indexes for performance
 CREATE INDEX IF NOT EXISTS idx_submissions_ts_server ON public.submissions (ts_server);
 CREATE INDEX IF NOT EXISTS idx_submissions_attendee_id ON public.submissions (attendee_id);
+CREATE INDEX IF NOT EXISTS idx_submissions_quantity ON public.submissions (quantity);
 CREATE INDEX IF NOT EXISTS idx_submissions_flagged ON public.submissions (flagged);
 CREATE INDEX IF NOT EXISTS idx_submissions_idempotency ON public.submissions (idempotency_key);
 
