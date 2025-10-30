@@ -43,7 +43,9 @@ export async function GET(request: NextRequest) {
       limit: searchParams.get('limit') ? parseInt(searchParams.get('limit')!) : 50
     };
 
+    console.log('API: Fetching records with filters:', JSON.stringify(filters));
     const result = await getAdminRecords(filters);
+    console.log('API: Successfully fetched', result.records.length, 'records');
     
     return NextResponse.json(result);
   } catch (error) {
