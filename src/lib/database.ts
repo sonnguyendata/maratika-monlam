@@ -204,7 +204,7 @@ export async function getReportSummary(): Promise<ReportSummary> {
 }
 
 export async function getAdminRecords(filters: AdminFilters): Promise<AdminResponse> {
-  let query = supabase
+  let query = supabaseAdmin
     .from('submissions')
     .select('*', { count: 'exact' });
 
