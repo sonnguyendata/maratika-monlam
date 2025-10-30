@@ -75,9 +75,14 @@ export default function AdminPage() {
           totalPages: data.total_pages,
           currentPage: data.page
         });
+      } else {
+        const errorData = await response.json();
+        console.error('Failed to fetch records:', errorData);
+        alert(`Failed to fetch records: ${errorData.error}`);
       }
     } catch (error) {
       console.error('Failed to fetch records:', error);
+      alert('Failed to fetch records: ' + error);
     } finally {
       setLoadingRecords(false);
     }
