@@ -60,8 +60,11 @@ export interface AdminFilters {
   quantity_min?: number;
   quantity_max?: number;
   flagged_only?: boolean;
+  duplicate_only?: boolean;
   page?: number;
   limit?: number;
+  sort_by?: 'ts_server' | 'attendee_id' | 'attendee_name' | 'quantity' | 'created_at';
+  sort_order?: 'asc' | 'desc';
 }
 
 export interface AdminResponse {

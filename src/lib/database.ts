@@ -233,15 +233,24 @@ export async function getAdminRecords(filters: AdminFilters): Promise<AdminRespo
   if (filters.flagged_only) {
     query = query.eq('flagged', true);
   }
+  if (filters.duplicate_only) {
+    // Filter for records where the same attendee_id appears multiple times with same quantity
+    // This is a complex filter that needs to be done via a subquery or post-processing
+    query = query.eq('flag_reason', 'DupKey');
+  }
+
+  // Apply sorting
+  const sortBy = filters.sort_by || 'ts_server';
+  const sortOrder = filters.sort_order || 'desc';
+  
+  query = query.order(sortBy, { ascending: sortOrder === 'asc' });
 
   // Apply pagination
   const page = filters.page || 1;
   const limit = filters.limit || 50;
   const offset = (page - 1) * limit;
 
-  query = query
-    .order('ts_server', { ascending: false })
-    .range(offset, offset + limit - 1);
+  query = query.range(offset, offset + limit - 1);
 
   const { data, error, count } = await query;
 

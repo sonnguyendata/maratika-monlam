@@ -36,6 +36,9 @@ export async function GET(request: NextRequest) {
       quantity_min: searchParams.get('quantity_min') ? parseInt(searchParams.get('quantity_min')!) : undefined,
       quantity_max: searchParams.get('quantity_max') ? parseInt(searchParams.get('quantity_max')!) : undefined,
       flagged_only: searchParams.get('flagged_only') === 'true',
+      duplicate_only: searchParams.get('duplicate_only') === 'true',
+      sort_by: searchParams.get('sort_by') as any || 'ts_server',
+      sort_order: searchParams.get('sort_order') as 'asc' | 'desc' || 'desc',
       page: searchParams.get('page') ? parseInt(searchParams.get('page')!) : 1,
       limit: searchParams.get('limit') ? parseInt(searchParams.get('limit')!) : 50
     };

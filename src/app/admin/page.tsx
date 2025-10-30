@@ -15,7 +15,9 @@ export default function AdminPage() {
   const [loadingRecords, setLoadingRecords] = useState(false);
   const [filters, setFilters] = useState<AdminFilters>({
     page: 1,
-    limit: 50
+    limit: 50,
+    sort_by: 'ts_server',
+    sort_order: 'desc'
   });
   const [pagination, setPagination] = useState({
     total: 0,
@@ -82,7 +84,14 @@ export default function AdminPage() {
   }, [filters, credentials.username, credentials.password]);
 
   const handleFilterChange = (key: keyof AdminFilters, value: any) => {
-    setFilters(prev => ({ ...prev, [key]: value, page: 1 }));
+    setFilters(prev => {
+      const newFilters = { ...prev, [key]: value };
+      // Reset to page 1 when filters change
+      if (key !== 'page') {
+        newFilters.page = 1;
+      }
+      return newFilters;
+    });
   };
 
   const applyFilters = () => {
@@ -90,7 +99,7 @@ export default function AdminPage() {
   };
 
   const clearFilters = () => {
-    setFilters({ page: 1, limit: 50 });
+    setFilters({ page: 1, limit: 50, sort_by: 'ts_server', sort_order: 'desc' });
   };
 
   const exportCSV = async () => {
@@ -412,7 +421,7 @@ export default function AdminPage() {
             </div>
           </div>
           
-          <div className="flex items-center space-x-4 mt-4">
+          <div className="flex flex-wrap items-center space-x-4 mt-4">
             <label className="flex items-center">
               <input
                 type="checkbox"
@@ -422,6 +431,40 @@ export default function AdminPage() {
               />
               {messages.admin.filters.flags_only}
             </label>
+            
+            <label className="flex items-center">
+              <input
+                type="checkbox"
+                checked={filters.duplicate_only || false}
+                onChange={(e) => handleFilterChange('duplicate_only', e.target.checked)}
+                className="mr-2"
+              />
+              Duplicate Only
+            </label>
+
+            <div className="flex items-center space-x-2">
+              <label className="text-sm font-medium text-gray-700">Sort by:</label>
+              <select
+                value={filters.sort_by || 'ts_server'}
+                onChange={(e) => handleFilterChange('sort_by', e.target.value)}
+                className="input"
+              >
+                <option value="ts_server">Time</option>
+                <option value="attendee_id">ID</option>
+                <option value="attendee_name">Name</option>
+                <option value="quantity">Quantity</option>
+                <option value="created_at">Created At</option>
+              </select>
+              
+              <select
+                value={filters.sort_order || 'desc'}
+                onChange={(e) => handleFilterChange('sort_order', e.target.value)}
+                className="input"
+              >
+                <option value="desc">↓ Desc</option>
+                <option value="asc">↑ Asc</option>
+              </select>
+            </div>
             
             <button onClick={applyFilters} className="btn btn-primary">
               Áp dụng
@@ -433,10 +476,6 @@ export default function AdminPage() {
             
             <button onClick={exportCSV} className="btn btn-success">
               {messages.admin.actions.export_csv}
-            </button>
-            
-            <button onClick={() => {}} className="btn btn-info">
-              {messages.admin.actions.mark_reviewed}
             </button>
             
             <button 
