@@ -11,14 +11,14 @@ export async function GET(request: NextRequest) {
     console.log('Is supabaseAdmin different from supabase?', isAdminClient);
     console.log('SUPABASE_SERVICE_ROLE_KEY exists?', !!process.env.SUPABASE_SERVICE_ROLE_KEY);
     
-    // Test query with admin client
+    // Test query with admin client - get ALL records, not just 5
     console.log('Querying with supabaseAdmin...');
     const { data: adminData, error: adminError } = await supabaseAdmin
       .from('submissions')
-      .select('id, quantity, ts_server, attendee_id, flagged')
+      .select('id, quantity, ts_server, attendee_id, flagged, deleted_at')
       .eq('flagged', false)
       .is('deleted_at', null)
-      .limit(5);
+      .order('ts_server', { ascending: false });
     
     console.log('Admin client results:', { count: adminData?.length || 0, error: adminError });
     
