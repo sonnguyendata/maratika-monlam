@@ -124,10 +124,11 @@ export async function getTotalCountForUser(attendeeId: string): Promise<number> 
 
 export async function getReportSummary(): Promise<ReportSummary> {
   console.log('Getting report summary...');
+  console.log('Using supabaseAdmin client to bypass RLS');
   
   try {
-    // Query submissions table directly to ensure fresh data
-    const { data: allSubmissions, error: submissionsError } = await supabase
+    // Query submissions table directly to ensure fresh data using admin client
+    const { data: allSubmissions, error: submissionsError } = await supabaseAdmin
       .from('submissions')
       .select('*')
       .eq('flagged', false)
