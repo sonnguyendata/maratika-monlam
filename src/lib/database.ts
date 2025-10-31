@@ -146,7 +146,13 @@ export async function getReportSummary(): Promise<ReportSummary> {
     }
 
     console.log('All submissions fetched:', allSubmissions?.length);
-    console.log('Sample submission:', allSubmissions?.[0]);
+    if (allSubmissions && allSubmissions.length > 0) {
+      console.log('Sample submission:', allSubmissions[0]);
+      console.log('First submission timestamp:', allSubmissions[0].ts_server);
+      console.log('Last submission timestamp:', allSubmissions[allSubmissions.length - 1].ts_server);
+    } else {
+      console.log('⚠️ No submissions returned!');
+    }
 
     // Calculate totals
     const now = new Date();
@@ -205,6 +211,7 @@ export async function getReportSummary(): Promise<ReportSummary> {
 
     console.log('Final result - all_time:', totalCount, 'today:', todayCount, 'unique:', uniqueIds);
     console.log('Top 10 names:', top10.map(u => u.name));
+    console.log('=== REPORT SUMMARY COMPLETE ===');
     return result;
   } catch (error) {
     console.error('getReportSummary error:', error);
