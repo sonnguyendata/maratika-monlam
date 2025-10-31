@@ -22,14 +22,14 @@ export async function GET(request: NextRequest) {
     
     console.log('Admin client results:', { count: adminData?.length || 0, error: adminError });
     
-    // Test query with regular client for comparison
+    // Test query with regular client for comparison - get ALL records  
     console.log('Querying with supabase (anon)...');
     const { data: anonData, error: anonError } = await supabase
       .from('submissions')
-      .select('id, quantity, ts_server, attendee_id, flagged')
+      .select('id, quantity, ts_server, attendee_id, flagged, deleted_at')
       .eq('flagged', false)
       .is('deleted_at', null)
-      .limit(5);
+      .order('ts_server', { ascending: false });
     
     console.log('Anon client results:', { count: anonData?.length || 0, error: anonError });
     
