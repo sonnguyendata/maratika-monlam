@@ -24,9 +24,8 @@ export const supabaseAdmin = process.env.SUPABASE_SERVICE_ROLE_KEY
     )
   : (console.warn('⚠️ SUPABASE_SERVICE_ROLE_KEY not set! Falling back to anon key. This may cause RLS/cache issues.'), supabase);
 
-// For now, let's use the regular supabase client and see if we can make it work
-// The issue might be with RLS policies
-export const adminClient = supabase;
+// Legacy export, deprecated - all operations should use supabaseAdmin
+export const adminClient = supabaseAdmin;
 
 export async function submitTucSo(data: SubmissionData, ipHash: string, uaHash: string) {
   // Create timestamp in GMT+7 timezone
@@ -125,10 +124,13 @@ export async function getTotalCountForUser(attendeeId: string): Promise<number> 
 }
 
 export async function getReportSummary(): Promise<ReportSummary> {
+  const hasServiceRoleKey = !!process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const usingAdminClient = supabaseAdmin !== supabase;
+  
   console.log('Getting report summary...');
-  console.log('Using supabaseAdmin client to bypass RLS');
   console.log('Environment check - SUPABASE_URL:', process.env.SUPABASE_URL ? 'Set' : 'Missing');
-  console.log('Environment check - SUPABASE_SERVICE_ROLE_KEY:', process.env.SUPABASE_SERVICE_ROLE_KEY ? 'Set' : 'Missing');
+  console.log('Environment check - SUPABASE_SERVICE_ROLE_KEY:', hasServiceRoleKey ? 'Set' : 'Missing');
+  console.log('Using admin client:', usingAdminClient, '(should be true for fresh data)');
   
   try {
     // Query submissions table directly to ensure fresh data using admin client
