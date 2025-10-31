@@ -40,12 +40,14 @@ export async function GET(request: NextRequest) {
       results: {
         adminClient: {
           count: adminData?.length || 0,
-          sample: adminData?.slice(0, 2),
+          sample: adminData?.slice(0, 3),
+          allDates: adminData?.map((r: any) => r.ts_server).slice(0, 10),
           error: adminError?.message
         },
         anonClient: {
           count: anonData?.length || 0,
-          sample: anonData?.slice(0, 2),
+          sample: anonData?.slice(0, 3),
+          allDates: anonData?.map((r: any) => r.ts_server).slice(0, 10),
           error: anonError?.message
         }
       }
