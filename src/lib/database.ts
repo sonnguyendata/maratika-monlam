@@ -134,11 +134,13 @@ export async function getReportSummary(): Promise<ReportSummary> {
   
   try {
     // Query submissions table directly to ensure fresh data using admin client
+    // Need to fetch all records, so use a large range limit
     const { data: allSubmissions, error: submissionsError } = await supabaseAdmin
       .from('submissions')
       .select('*')
       .eq('flagged', false)
-      .is('deleted_at', null);
+      .is('deleted_at', null)
+      .range(0, 999999); // Fetch all records
 
     if (submissionsError) {
       console.error('Submissions error:', submissionsError);
