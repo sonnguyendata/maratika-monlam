@@ -22,7 +22,7 @@ export const supabaseAdmin = process.env.SUPABASE_SERVICE_ROLE_KEY
         }
       }
     )
-  : supabase;
+  : (console.warn('⚠️ SUPABASE_SERVICE_ROLE_KEY not set! Falling back to anon key. This may cause RLS/cache issues.'), supabase);
 
 // For now, let's use the regular supabase client and see if we can make it work
 // The issue might be with RLS policies
