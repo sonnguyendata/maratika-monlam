@@ -280,7 +280,8 @@ export async function getAdminRecords(filters: AdminFilters): Promise<AdminRespo
 }
 
 export async function updateRecordFlag(id: number, flagged: boolean, reason?: string) {
-  const { error } = await supabase
+  // Use supabaseAdmin to bypass RLS and ensure consistency
+  const { error } = await supabaseAdmin
     .from('submissions')
     .update({
       flagged,
@@ -301,8 +302,8 @@ export async function updateRecord(id: number, updates: {
 }) {
   console.log('updateRecord called with:', id, updates);
   
-  // Use the same client as getAdminRecords since that works
-  const { data, error } = await supabase
+  // Use supabaseAdmin to bypass RLS and ensure consistency
+  const { data, error } = await supabaseAdmin
     .from('submissions')
     .update(updates)
     .eq('id', id)
@@ -323,7 +324,8 @@ export async function deleteRecord(id: number) {
   console.log('deleteRecord called with:', id);
   
   // Use soft delete instead of hard delete to preserve data integrity
-  const { data, error } = await supabase
+  // Use supabaseAdmin to bypass RLS and ensure consistency
+  const { data, error } = await supabaseAdmin
     .from('submissions')
     .update({ deleted_at: new Date().toISOString() })
     .eq('id', id)
@@ -341,8 +343,8 @@ export async function deleteRecord(id: number) {
 }
 
 export async function getDuplicateRecords(): Promise<AdminRecord[]> {
-  // Use the same client as getAdminRecords since that works
-  const { data, error } = await supabase
+  // Use supabaseAdmin to bypass RLS and ensure consistency
+  const { data, error } = await supabaseAdmin
     .from('submissions')
     .select('*')
     .eq('flagged', true)
