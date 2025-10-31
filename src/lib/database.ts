@@ -91,7 +91,8 @@ export async function getDailyTotalForUser(attendeeId: string): Promise<number> 
   const localTime = new Date(now.getTime() + (gmt7Offset * 60 * 1000));
   const today = localTime.toISOString().split('T')[0];
   
-  const { data, error } = await supabase
+  // Use supabaseAdmin to bypass RLS and ensure fresh data
+  const { data, error } = await supabaseAdmin
     .from('submissions')
     .select('quantity')
     .eq('attendee_id', attendeeId)
@@ -108,7 +109,8 @@ export async function getDailyTotalForUser(attendeeId: string): Promise<number> 
 }
 
 export async function getTotalCountForUser(attendeeId: string): Promise<number> {
-  const { data, error } = await supabase
+  // Use supabaseAdmin to bypass RLS and ensure fresh data
+  const { data, error } = await supabaseAdmin
     .from('submissions')
     .select('quantity')
     .eq('attendee_id', attendeeId)
