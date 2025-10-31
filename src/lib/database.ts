@@ -125,6 +125,8 @@ export async function getTotalCountForUser(attendeeId: string): Promise<number> 
 export async function getReportSummary(): Promise<ReportSummary> {
   console.log('Getting report summary...');
   console.log('Using supabaseAdmin client to bypass RLS');
+  console.log('Environment check - SUPABASE_URL:', process.env.SUPABASE_URL ? 'Set' : 'Missing');
+  console.log('Environment check - SUPABASE_SERVICE_ROLE_KEY:', process.env.SUPABASE_SERVICE_ROLE_KEY ? 'Set' : 'Missing');
   
   try {
     // Query submissions table directly to ensure fresh data using admin client
@@ -139,7 +141,8 @@ export async function getReportSummary(): Promise<ReportSummary> {
       throw new Error(`Database error: ${submissionsError.message}`);
     }
 
-    console.log('All submissions:', allSubmissions?.length);
+    console.log('All submissions fetched:', allSubmissions?.length);
+    console.log('Sample submission:', allSubmissions?.[0]);
 
     // Calculate totals
     const now = new Date();
@@ -196,7 +199,8 @@ export async function getReportSummary(): Promise<ReportSummary> {
       top10: top10
     };
 
-    console.log('Final result:', result);
+    console.log('Final result - all_time:', totalCount, 'today:', todayCount, 'unique:', uniqueIds);
+    console.log('Top 10 names:', top10.map(u => u.name));
     return result;
   } catch (error) {
     console.error('getReportSummary error:', error);
