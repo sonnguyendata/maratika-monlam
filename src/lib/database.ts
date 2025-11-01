@@ -134,62 +134,76 @@ export async function getReportSummary(): Promise<ReportSummary> {
   
   try {
     // Query submissions table directly to ensure fresh data using admin client
-    // Need to fetch all records, so use a large range limit
-    const { data: allSubmissions, error: submissionsError } = await supabaseAdmin
-      .from('submissions')
-      .select('*')
-      .eq('flagged', false)
-      .is('deleted_at', null)
-      .range(0, 999999); // Fetch all records
+    // Fetch all records using pagination to avoid PostgREST row limits
+    const pageSize = 1000;
+    let page = 0;
+    let fetchedInLastPage = 0;
+    let processedCount = 0;
 
-    if (submissionsError) {
-      console.error('Submissions error:', submissionsError);
-      throw new Error(`Database error: ${submissionsError.message}`);
-    }
+    const userMap = new Map<string, { name: string, total: number, count: number }>();
+    const dailyMap = new Map<string, number>();
+    const uniqueIds = new Set<string>();
 
-    console.log('All submissions fetched:', allSubmissions?.length);
-    if (allSubmissions && allSubmissions.length > 0) {
-      console.log('Sample submission:', allSubmissions[0]);
-      console.log('First submission timestamp:', allSubmissions[0].ts_server);
-      console.log('Last submission timestamp:', allSubmissions[allSubmissions.length - 1].ts_server);
-    } else {
-      console.log('⚠️ No submissions returned!');
-    }
-
-    // Calculate totals
+    // Calculate current day string once (GMT+7)
     const now = new Date();
     const gmt7Offset = 7 * 60; // GMT+7 in minutes
     const localTime = new Date(now.getTime() + (gmt7Offset * 60 * 1000));
     const today = localTime.toISOString().split('T')[0];
+    let totalCount = 0;
+    let todayCount = 0;
 
-    const totalCount = allSubmissions?.reduce((sum, record) => sum + record.quantity, 0) || 0;
-    const todayCount = allSubmissions?.filter(record => 
-      record.ts_server.startsWith(today)
-    ).reduce((sum, record) => sum + record.quantity, 0) || 0;
-    const uniqueIds = new Set(allSubmissions?.map(record => record.attendee_id)).size || 0;
+    do {
+      const from = page * pageSize;
+      const to = from + pageSize - 1;
 
-    // Calculate daily breakdown
-    const dailyMap = new Map<string, number>();
-    allSubmissions?.forEach(record => {
-      const date = record.ts_server.split('T')[0];
-      dailyMap.set(date, (dailyMap.get(date) || 0) + record.quantity);
-    });
-    
+      const { data, error } = await supabaseAdmin
+        .from('submissions')
+        .select('id, attendee_id, attendee_name, quantity, ts_server')
+        .eq('flagged', false)
+        .is('deleted_at', null)
+        .order('id', { ascending: true })
+        .range(from, to);
+
+      if (error) {
+        console.error('Submissions error on page', page, error);
+        throw new Error(`Database error: ${error.message}`);
+      }
+
+      fetchedInLastPage = data?.length || 0;
+      processedCount += fetchedInLastPage;
+
+      console.log(`Fetched page ${page} with ${fetchedInLastPage} records (processed ${processedCount} total)`);
+
+      data?.forEach(record => {
+        const recordDate = record.ts_server.split('T')[0];
+
+        totalCount += record.quantity;
+        if (record.ts_server.startsWith(today)) {
+          todayCount += record.quantity;
+        }
+
+        uniqueIds.add(record.attendee_id);
+        dailyMap.set(recordDate, (dailyMap.get(recordDate) || 0) + record.quantity);
+
+        const existing = userMap.get(record.attendee_id) || { name: record.attendee_name, total: 0, count: 0 };
+        userMap.set(record.attendee_id, {
+          name: record.attendee_name,
+          total: existing.total + record.quantity,
+          count: existing.count + 1
+        });
+      });
+
+      page += 1;
+    } while (fetchedInLastPage === pageSize);
+
+    console.log('All submissions fetched via pagination:', processedCount);
+    if (processedCount === 0) {
+      console.log('⚠️ No submissions returned!');
+    }
+
     const byDay = Array.from(dailyMap.entries())
       .map(([date, total]) => ({ date, total }))
       .sort((a, b) => a.date.localeCompare(b.date));
-
-    // Calculate top 10
-    const userMap = new Map<string, { name: string, total: number, count: number }>();
-    allSubmissions?.forEach(record => {
-      const key = record.attendee_id;
-      const existing = userMap.get(key) || { name: record.attendee_name, total: 0, count: 0 };
-      userMap.set(key, {
-        name: record.attendee_name,
-        total: existing.total + record.quantity,
-        count: existing.count + 1
-      });
-    });
 
     const top10 = Array.from(userMap.entries())
       .map(([id, data]) => ({
@@ -205,7 +219,7 @@ export async function getReportSummary(): Promise<ReportSummary> {
       totals: {
         all_time: totalCount,
         today: todayCount,
-        unique_ids: uniqueIds
+        unique_ids: uniqueIds.size
       },
       by_day: byDay,
       top10: top10
