@@ -12,13 +12,37 @@ export default function ReportPage() {
   const [loadingReport, setLoadingReport] = useState(true);
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
 
-  const fetchReportData = async () => {
+  const fetchReportData = async (forceRefresh = false) => {
     try {
-      const response = await fetch('/api/report/summary');
+      // Add cache-busting timestamp and random parameter
+      const timestamp = Date.now();
+      const random = Math.random().toString(36).substring(7);
+      const url = `/api/report/summary?_t=${timestamp}&_r=${random}`;
+      
+      console.log('Fetching report data:', { timestamp, forceRefresh });
+      
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0',
+        },
+        // Force no caching
+        cache: 'no-store',
+      });
+      
       if (response.ok) {
         const data = await response.json();
+        console.log('Report data received:', { 
+          totalRecords: data.totals?.all_time || 0,
+          todayRecords: data.totals?.today || 0,
+          timestamp: new Date().toISOString()
+        });
         setReportData(data);
         setLastUpdated(new Date());
+      } else {
+        console.error('Failed to fetch report data - Response not OK:', response.status);
       }
     } catch (error) {
       console.error('Failed to fetch report data:', error);

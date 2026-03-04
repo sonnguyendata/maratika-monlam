@@ -10,6 +10,20 @@ export const supabase = createClient(
   process.env.SUPABASE_ANON_KEY
 );
 
+// Create admin client with service role key if available
+export const supabaseAdmin = process.env.SUPABASE_SERVICE_ROLE_KEY 
+  ? createClient(
+      process.env.SUPABASE_URL,
+      process.env.SUPABASE_SERVICE_ROLE_KEY,
+      {
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false
+        }
+      }
+    )
+  : (console.warn('⚠️ SUPABASE_SERVICE_ROLE_KEY not set! Falling back to anon key. This may cause RLS/cache issues.'), supabase);
+
 export async function submitTucSo(data: SubmissionData, ipHash: string, uaHash: string) {
   // Create timestamp in GMT+7 timezone
   const now = new Date();
@@ -73,7 +87,8 @@ export async function getDailyTotalForUser(attendeeId: string): Promise<number> 
   const localTime = new Date(now.getTime() + (gmt7Offset * 60 * 1000));
   const today = localTime.toISOString().split('T')[0];
   
-  const { data, error } = await supabase
+  // Use supabaseAdmin to bypass RLS and ensure fresh data
+  const { data, error } = await supabaseAdmin
     .from('submissions')
     .select('quantity')
     .eq('attendee_id', attendeeId)
@@ -89,7 +104,8 @@ export async function getDailyTotalForUser(attendeeId: string): Promise<number> 
 }
 
 export async function getTotalCountForUser(attendeeId: string): Promise<number> {
-  const { data, error } = await supabase
+  // Use supabaseAdmin to bypass RLS and ensure fresh data
+  const { data, error } = await supabaseAdmin
     .from('submissions')
     .select('quantity')
     .eq('attendee_id', attendeeId)
@@ -103,12 +119,18 @@ export async function getTotalCountForUser(attendeeId: string): Promise<number> 
 }
 
 export async function getReportSummary(): Promise<ReportSummary> {
+  const hasServiceRoleKey = !!process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const usingAdminClient = supabaseAdmin !== supabase;
+  
   console.log('Getting report summary...');
+  console.log('Environment check - SUPABASE_URL:', process.env.SUPABASE_URL ? 'Set' : 'Missing');
+  console.log('Environment check - SUPABASE_SERVICE_ROLE_KEY:', hasServiceRoleKey ? 'Set' : 'Missing');
+  console.log('Using admin client:', usingAdminClient, '(should be true for fresh data)');
   
   try {
     // Get totals
     console.log('Fetching summary data...');
-    const { data: summaryData, error: summaryError } = await supabase
+    const { data: summaryData, error: summaryError } = await supabaseAdmin
       .from('v_summary')
       .select('*')
       .single();
@@ -122,7 +144,7 @@ export async function getReportSummary(): Promise<ReportSummary> {
 
     // Get daily breakdown
     console.log('Fetching daily data...');
-    const { data: dailyData, error: dailyError } = await supabase
+    const { data: dailyData, error: dailyError } = await supabaseAdmin
       .from('v_totals_by_day')
       .select('*')
       .order('date');
@@ -136,7 +158,7 @@ export async function getReportSummary(): Promise<ReportSummary> {
 
     // Get top 10
     console.log('Fetching top10 data...');
-    const { data: top10Data, error: top10Error } = await supabase
+    const { data: top10Data, error: top10Error } = await supabaseAdmin
       .from('v_top10')
       .select('*');
 
@@ -174,7 +196,7 @@ export async function getReportSummary(): Promise<ReportSummary> {
 }
 
 export async function getAdminRecords(filters: AdminFilters): Promise<AdminResponse> {
-  let query = supabase
+  let query = supabaseAdmin
     .from('submissions')
     .select('*', { count: 'exact' });
 
@@ -226,7 +248,7 @@ export async function getAdminRecords(filters: AdminFilters): Promise<AdminRespo
 }
 
 export async function updateRecordFlag(id: number, flagged: boolean, reason?: string) {
-  const { error } = await supabase
+  const { error } = await supabaseAdmin
     .from('submissions')
     .update({
       flagged,

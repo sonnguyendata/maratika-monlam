@@ -23,6 +23,8 @@ export default function HomePage() {
   const [malaCount, setMalaCount] = useState<number>(0);
   const [submitting, setSubmitting] = useState(false);
   const [submitResult, setSubmitResult] = useState<{ success: boolean; message: string; dailyTotal?: number; totalCount?: number } | null>(null);
+  const [submissionsAllowed, setSubmissionsAllowed] = useState<boolean | null>(null);
+  const [statusMessage, setStatusMessage] = useState<string>('');
 
   useEffect(() => {
     // Load saved data from localStorage
@@ -31,6 +33,19 @@ export default function HomePage() {
     
     if (savedId) setFormData(prev => ({ ...prev, attendee_id: savedId }));
     if (savedName) setFormData(prev => ({ ...prev, attendee_name: savedName }));
+
+    // Check if submissions are allowed
+    fetch('/api/submit/status')
+      .then(res => res.json())
+      .then(data => {
+        setSubmissionsAllowed(data.allowed);
+        setStatusMessage(data.message);
+      })
+      .catch(err => {
+        console.error('Error checking submission status:', err);
+        setSubmissionsAllowed(false);
+        setStatusMessage('Unable to check submission status');
+      });
   }, []);
 
   // Function to normalize phone number
@@ -118,6 +133,16 @@ export default function HomePage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Block submission if event has ended
+    if (submissionsAllowed === false) {
+      setSubmitResult({
+        success: false,
+        message: statusMessage || 'Event has ended. Submissions are no longer accepted.'
+      });
+      return;
+    }
+    
     setSubmitting(true);
     setSubmitResult(null);
 
@@ -134,6 +159,17 @@ export default function HomePage() {
       });
 
       const result = await response.json();
+
+      // Handle event ended error
+      if (response.status === 403 && !result.ok) {
+        setSubmitResult({
+          success: false,
+          message: result.error || 'Event has ended. Submissions are no longer accepted.'
+        });
+        setSubmissionsAllowed(false);
+        setStatusMessage(result.error || 'Event has ended. Submissions are no longer accepted.');
+        return;
+      }
 
       if (result.ok) {
         // Save to localStorage
@@ -205,6 +241,18 @@ export default function HomePage() {
         </div>
 
         <div className="card">
+          {submissionsAllowed === false && (
+            <div className="mb-8 p-6 rounded-2xl border-2 bg-gradient-to-r from-monastic-50 to-red-50 border-monastic-200 text-monastic-800">
+              <div className="flex items-center space-x-3">
+                <div className="w-8 h-8 text-monastic-500 text-2xl">🚫</div>
+                <div>
+                  <p className="font-semibold text-lg mb-1">Event has ended</p>
+                  <p className="text-sm">{statusMessage || 'Submissions are no longer accepted.'}</p>
+                </div>
+              </div>
+            </div>
+          )}
+          
           <form onSubmit={handleSubmit} className="space-y-8">
             <div>
               <label htmlFor="attendee_id" className="block text-sm font-medium text-earthy-700 mb-3">
@@ -409,8 +457,12 @@ export default function HomePage() {
 
             <button
               type="submit"
-              disabled={submitting}
-              className="w-full btn btn-primary py-4 text-lg font-semibold"
+              disabled={submitting || submissionsAllowed === false}
+              className={`w-full btn py-4 text-lg font-semibold ${
+                submissionsAllowed === false 
+                  ? 'btn-disabled bg-earthy-300 cursor-not-allowed' 
+                  : 'btn-primary'
+              }`}
             >
               {submitting ? (
                 <div className="flex items-center justify-center space-x-2">
