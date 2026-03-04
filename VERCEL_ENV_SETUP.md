@@ -21,8 +21,8 @@ The `vercel.json` file has been updated to remove non-existent secret references
 | `ADMIN_USER` | `admin` | Admin username |
 | `ADMIN_PASS` | `M@ratika2025` | Admin password |
 | `HASH_SALT` | `M@ratika` | Security salt for hashing |
-| `EVENT_START` | `2025-10-29` | Event start date |
-| `EVENT_END` | `2025-11-02` | Event end date |
+| `EVENT_START` | `2026-03-13` | Event start date |
+| `EVENT_END` | `2026-03-18` | Event end date |
 
 ## Steps to Add Variables
 

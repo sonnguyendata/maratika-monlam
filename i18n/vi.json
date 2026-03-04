@@ -31,9 +31,9 @@
     "info": "Thông tin"
   },
   "app": {
-    "title": "Pháp Hội Monlam 2025",
+    "title": "Pháp Hội Monlam 2026",
     "subtitle": "Túc số ghi nhận trực tiếp",
-    "event_dates": "29/10 – 02/11/2025"
+    "event_dates": "13/03 – 18/03/2026"
   },
   "record": {
     "title": "Ghi nhận túc số",
@@ -77,10 +77,10 @@
     "title": "Lịch trình",
     "subtitle": "Pháp Hội Monlam Cầu Nguyện Hòa Bình Thế Giới",
     "description": "Trì tụng 100 triệu biến chân ngôn Liên Hoa Sinh Tam Thân",
-    "location": "Chùa Pháp Vân, Hà Nội, Việt Nam",
+    "location": "Nepal",
     "days": {
       "day1": {
-        "date": "29/10/2025",
+        "date": "13/03/2026",
         "time": "8:00 - 18:00",
         "title": "Ngày khai mạc",
         "activities": [
@@ -122,7 +122,7 @@
         ]
       },
       "day2": {
-        "date": "30/10/2025",
+        "date": "14/03/2026",
         "time": "8:00 - 18:00",
         "title": "Ngày thực hành",
         "activities": [
@@ -164,7 +164,7 @@
         ]
       },
       "day3": {
-        "date": "31/10/2025",
+        "date": "15/03/2026",
         "time": "8:00 - 18:00",
         "title": "Ngày thực hành",
         "activities": [
@@ -206,7 +206,7 @@
         ]
       },
       "day4": {
-        "date": "01/11/2025",
+        "date": "16/03/2026",
         "time": "8:00 - 18:00",
         "title": "Ngày thực hành",
         "activities": [
@@ -243,7 +243,7 @@
         ]
       },
       "day5": {
-        "date": "02/11/2025",
+        "date": "17/03/2026",
         "time": "8:00 - 20:00",
         "title": "Ngày bế mạc",
         "activities": [
@@ -278,6 +278,23 @@
             "highlight": true
           }
         ]
+      },
+      "day6": {
+        "date": "18/03/2026",
+        "time": "8:00 - 18:00",
+        "title": "Ngày cuối cùng",
+        "activities": [
+          {
+            "time": "8:00 - 12:00",
+            "activity": "Lễ bế mạc",
+            "highlight": true
+          },
+          {
+            "time": "14:00 - 18:00",
+            "activity": "Chào tạm biệt & Hồi hướng công đức",
+            "highlight": false
+          }
+        ]
       }
     },
     "recording_info": {
@@ -287,8 +304,8 @@
     },
     "contact": {
       "registration": "Đăng ký tham gia",
-      "organizer": "Tổ chức bởi: Maratika Vietnam",
-      "address": "Chùa Pháp Vân, 1299 Giải Phóng, Hà Nội",
+      "organizer": "Tổ chức bởi: Maratika",
+      "address": "Nepal",
       "phone1": "0933.911.359 (Anh Điện)",
       "phone2": "0972.831.882 (Bích Ngân)",
       "email": "Maratika.hn@gmail.com",
@@ -296,9 +313,9 @@
     }
   },
   "info": {
-    "title": "Pháp Hội Monlam 2025",
+    "title": "Pháp Hội Monlam 2026",
     "purpose": "Tụng niệm tập thể thần chú Tam Thân của Đức Liên Hoa Sinh, cầu nguyện cho hòa bình thế giới.",
-    "dates_place": "29/10 – 02/11/2025 · Chùa Pháp Vân, 1299 Giải Phóng, Hà Nội",
+    "dates_place": "13/03 – 18/03/2026 · Nepal",
     "contact": "Liên hệ",
     "register": "Đăng ký"
   },

@@ -35,8 +35,8 @@ ADMIN_PASS=your_secure_password
 HASH_SALT=your_random_salt_string
 
 # Event Configuration
-EVENT_START=2025-10-29
-EVENT_END=2025-11-02
+EVENT_START=2026-03-13
+EVENT_END=2026-03-18
 ```
 
 ### 3. Deploy to Vercel
@@ -81,8 +81,8 @@ Set these in your Vercel project dashboard:
 | `ADMIN_USER` | Admin username | `admin` |
 | `ADMIN_PASS` | Admin password | `secure_password_123` |
 | `HASH_SALT` | Random salt for hashing | `random_salt_string_here` |
-| `EVENT_START` | Event start date | `2025-10-29` |
-| `EVENT_END` | Event end date | `2025-11-02` |
+| `EVENT_START` | Event start date | `2026-03-13` |
+| `EVENT_END` | Event end date | `2026-03-18` |
 
 ## Database Providers
 

@@ -31,29 +31,33 @@ export function generateIdempotencyKey(): string {
 }
 
 export function validateEventDates(): boolean {
-  // For development/testing, always allow submissions
-  if (process.env.NODE_ENV === 'development') {
-    console.log('Development mode: allowing all submissions');
-    return true;
+  // Check if submissions are disabled via environment variable
+  if (process.env.DISABLE_SUBMISSIONS === 'true') {
+    console.log('Submissions disabled via DISABLE_SUBMISSIONS environment variable');
+    return false;
   }
   
-  // Get current time in GMT+7
+  // Get current time in GMT+7 (Asia/Ho_Chi_Minh timezone)
   const now = new Date();
   const gmt7Offset = 7 * 60; // GMT+7 in minutes
   const localTime = new Date(now.getTime() + (gmt7Offset * 60 * 1000));
   const today = new Date(localTime.getFullYear(), localTime.getMonth(), localTime.getDate());
   
   // Parse event dates in GMT+7
-  const eventStart = new Date(process.env.EVENT_START || '2025-01-01');
-  const eventEnd = new Date(process.env.EVENT_END || '2025-11-02');
+  const eventStart = new Date(process.env.EVENT_START || '2026-03-13');
+  const eventEnd = new Date(process.env.EVENT_END || '2026-03-18');
   
-  // Set to end of day for event end
+  // Set to end of day for event end (23:59:59.999)
   eventEnd.setHours(23, 59, 59, 999);
+  
+  // Set to start of day for event start (00:00:00.000)
+  eventStart.setHours(0, 0, 0, 0);
   
   console.log('Event validation:', {
     NODE_ENV: process.env.NODE_ENV,
     EVENT_START: process.env.EVENT_START,
     EVENT_END: process.env.EVENT_END,
+    DISABLE_SUBMISSIONS: process.env.DISABLE_SUBMISSIONS,
     now: now.toISOString(),
     today: today.toISOString(), 
     eventStart: eventStart.toISOString(),
@@ -61,8 +65,9 @@ export function validateEventDates(): boolean {
     isActive: today >= eventStart && today <= eventEnd
   });
   
+  // Check if current date is within event date range
   const isValid = today >= eventStart && today <= eventEnd;
-  console.log('Event validation result:', isValid);
+  console.log('Event validation result:', isValid, isValid ? 'Event is active' : 'Event has ended');
   
   return isValid;
 }

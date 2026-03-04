@@ -58,8 +58,8 @@ export default function InfoPage() {
                   <span className="text-golden-600">📅</span>
                 </div>
                 <div>
-                  <p className="text-earthy-700 font-medium">29/10 – 02/11/2025</p>
-                  <p className="text-earthy-600 text-sm">October 29 – November 2, 2025</p>
+                  <p className="text-earthy-700 font-medium">13/03 – 18/03/2026</p>
+                  <p className="text-earthy-600 text-sm">March 13 – 18, 2026</p>
                 </div>
               </div>
               
@@ -68,8 +68,8 @@ export default function InfoPage() {
                   <span className="text-golden-600">📍</span>
                 </div>
                 <div>
-                  <p className="text-earthy-700 font-medium">Chùa Pháp Vân, 1299 Giải Phóng, Hà Nội</p>
-                  <p className="text-earthy-600 text-sm">Phap Van Pagoda, 1299 Giai Phong, Hanoi</p>
+                  <p className="text-earthy-700 font-medium">Nepal</p>
+                  <p className="text-earthy-600 text-sm">Nepal</p>
                 </div>
               </div>
             </div>

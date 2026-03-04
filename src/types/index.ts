@@ -205,6 +205,16 @@ export interface I18nMessages {
           highlight: boolean;
         }>;
       };
+      day6: {
+        date: string;
+        time: string;
+        title: string;
+        activities: Array<{
+          time: string;
+          activity: string;
+          highlight: boolean;
+        }>;
+      };
     };
     recording_info: {
       title: string;

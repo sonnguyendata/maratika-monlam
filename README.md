@@ -1,6 +1,6 @@
 # Túc Số Monlam
 
-A bilingual web application for recording and reporting túc số counts for the Monlam Dharma Festival 2025 at Ha Noi (October 29 - November 2, 2025).
+A bilingual web application for recording and reporting túc số counts for the Monlam Dharma Festival 2026 in Nepal (March 13 - 18, 2026).
 
 ## Features
 
@@ -61,8 +61,8 @@ A bilingual web application for recording and reporting túc số counts for the
    HASH_SALT=your_random_salt_string
    
    # Event Configuration
-   EVENT_START=2025-10-29
-   EVENT_END=2025-11-02
+   EVENT_START=2026-03-13
+   EVENT_END=2026-03-18
    ```
 
 3. **Set up the database**:

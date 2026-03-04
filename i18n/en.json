@@ -31,9 +31,9 @@
     "info": "Info"
   },
   "app": {
-    "title": "Monlam Dharma Festival 2025",
+    "title": "Monlam Dharma Festival 2026",
     "subtitle": "Mantra recording",
-    "event_dates": "October 29 – November 2, 2025"
+    "event_dates": "March 13 – 18, 2026"
   },
   "record": {
     "title": "Tally your recitation",
@@ -77,10 +77,10 @@
     "title": "Schedule",
     "subtitle": "Maratika World Peace Monlam",
     "description": "Recitation of 100 Million Mantras of Guru Padmasambhava's Three Kayas",
-    "location": "Phap Van Pagoda, Hanoi, Vietnam",
+    "location": "Nepal",
     "days": {
       "day1": {
-        "date": "Oct 29, 2025",
+        "date": "Mar 13, 2026",
         "time": "8:00 - 18:00",
         "title": "Opening Day",
         "activities": [
@@ -122,7 +122,7 @@
         ]
       },
       "day2": {
-        "date": "Oct 30, 2025",
+        "date": "Mar 14, 2026",
         "time": "8:00 - 18:00",
         "title": "Practice Day",
         "activities": [
@@ -164,7 +164,7 @@
         ]
       },
       "day3": {
-        "date": "Oct 31, 2025",
+        "date": "Mar 15, 2026",
         "time": "8:00 - 18:00",
         "title": "Practice Day",
         "activities": [
@@ -206,7 +206,7 @@
         ]
       },
       "day4": {
-        "date": "Nov 1, 2025",
+        "date": "Mar 16, 2026",
         "time": "8:00 - 18:00",
         "title": "Practice Day",
         "activities": [
@@ -243,7 +243,7 @@
         ]
       },
       "day5": {
-        "date": "Nov 2, 2025",
+        "date": "Mar 17, 2026",
         "time": "8:00 - 20:00",
         "title": "Closing Day",
         "activities": [
@@ -278,6 +278,23 @@
             "highlight": true
           }
         ]
+      },
+      "day6": {
+        "date": "Mar 18, 2026",
+        "time": "8:00 - 18:00",
+        "title": "Final Day",
+        "activities": [
+          {
+            "time": "8:00 - 12:00",
+            "activity": "Closing Ceremony",
+            "highlight": true
+          },
+          {
+            "time": "14:00 - 18:00",
+            "activity": "Farewell & Merit Dedication",
+            "highlight": false
+          }
+        ]
       }
     },
     "recording_info": {
@@ -287,8 +304,8 @@
     },
     "contact": {
       "registration": "Registration",
-      "organizer": "Organized by: Maratika Vietnam",
-      "address": "Phap Van Pagoda, 1299 Giai Phong, Hanoi",
+      "organizer": "Organized by: Maratika",
+      "address": "Nepal",
       "phone1": "0933.911.359 (Mr. Điện)",
       "phone2": "0972.831.882 (Ms. Ngân)",
       "email": "Maratika.hn@gmail.com",
@@ -296,9 +313,9 @@
     }
   },
   "info": {
-    "title": "Monlam Dharma Festival 2025",
+    "title": "Monlam Dharma Festival 2026",
     "purpose": "Collective recitation of Guru Padmasambhava's Three Kāyas mantra, dedicated to world peace.",
-    "dates_place": "Oct 29 – Nov 2, 2025 · Phap Van Pagoda, 1299 Giai Phong, Hanoi",
+    "dates_place": "Mar 13 – 18, 2026 · Nepal",
     "contact": "Contact",
     "register": "Register"
   },

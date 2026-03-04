@@ -63,8 +63,8 @@ REDIS_URL=redis://default:password@host:port
 ADMIN_USER=admin
 ADMIN_PASS=your_secure_password
 HASH_SALT=your_random_salt_string
-EVENT_START=2025-10-29
-EVENT_END=2025-11-02
+EVENT_START=2026-03-13
+EVENT_END=2026-03-18
 ```
 
 ## ✅ Post-Deployment Checklist

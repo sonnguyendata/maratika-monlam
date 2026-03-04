@@ -22,10 +22,11 @@ export default function SchedulePage() {
     messages.schedule.days.day2,
     messages.schedule.days.day3,
     messages.schedule.days.day4,
-    messages.schedule.days.day5
+    messages.schedule.days.day5,
+    messages.schedule.days.day6
   ];
 
-  const dayLabels = ['day1', 'day2', 'day3', 'day4', 'day5'];
+  const dayLabels = ['day1', 'day2', 'day3', 'day4', 'day5', 'day6'];
 
   return (
     <div className="min-h-screen bg-parchment-50">

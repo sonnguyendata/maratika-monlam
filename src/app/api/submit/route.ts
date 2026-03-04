@@ -39,10 +39,15 @@ export async function POST(request: NextRequest) {
     console.log('Event validation result:', isEventActive);
     
     if (!isEventActive) {
-      console.log('Event dates validation failed');
+      console.log('Event dates validation failed - submissions are blocked');
+      const eventEnd = process.env.EVENT_END || '2026-03-18';
       return NextResponse.json(
-        { ok: false, error: 'Event is not currently active' },
-        { status: 400 }
+        { 
+          ok: false, 
+          error: 'Event has ended. Submissions are no longer accepted.',
+          event_end: eventEnd
+        },
+        { status: 403 }
       );
     }
 

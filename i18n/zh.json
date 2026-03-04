@@ -31,9 +31,9 @@
     "info": "信息"
   },
   "app": {
-    "title": "祈愿法会 2025",
+    "title": "祈愿法会 2026",
     "subtitle": "咒语计数记录",
-    "event_dates": "2025年10月29日 – 11月2日"
+    "event_dates": "2026年3月13日 – 3月18日"
   },
   "record": {
     "title": "记录您的念诵",
@@ -77,10 +77,10 @@
     "title": "日程安排",
     "subtitle": "玛拉蒂卡世界和平祈愿法会",
     "description": "念诵莲花生大师三身咒一亿遍",
-    "location": "法云寺，越南河内",
+    "location": "尼泊尔",
     "days": {
       "day1": {
-        "date": "2025年10月29日",
+        "date": "2026年3月13日",
         "time": "8:00 - 18:00",
         "title": "开幕日",
         "activities": [
@@ -122,7 +122,7 @@
         ]
       },
       "day2": {
-        "date": "2025年10月30日",
+        "date": "2026年3月14日",
         "time": "8:00 - 18:00",
         "title": "修行日",
         "activities": [
@@ -164,7 +164,7 @@
         ]
       },
       "day3": {
-        "date": "2025年10月31日",
+        "date": "2026年3月15日",
         "time": "8:00 - 18:00",
         "title": "修行日",
         "activities": [
@@ -206,7 +206,7 @@
         ]
       },
       "day4": {
-        "date": "2025年11月1日",
+        "date": "2026年3月16日",
         "time": "8:00 - 18:00",
         "title": "修行日",
         "activities": [
@@ -243,7 +243,7 @@
         ]
       },
       "day5": {
-        "date": "2025年11月2日",
+        "date": "2026年3月17日",
         "time": "8:00 - 20:00",
         "title": "闭幕日",
         "activities": [
@@ -278,6 +278,23 @@
             "highlight": true
           }
         ]
+      },
+      "day6": {
+        "date": "2026年3月18日",
+        "time": "8:00 - 18:00",
+        "title": "最后一天",
+        "activities": [
+          {
+            "time": "8:00 - 12:00",
+            "activity": "闭幕仪式",
+            "highlight": true
+          },
+          {
+            "time": "14:00 - 18:00",
+            "activity": "告别与回向功德",
+            "highlight": false
+          }
+        ]
       }
     },
     "recording_info": {
@@ -287,8 +304,8 @@
     },
     "contact": {
       "registration": "报名参与",
-      "organizer": "主办：玛拉蒂卡越南",
-      "address": "法云寺，河内解放路1299号",
+      "organizer": "主办：玛拉蒂卡",
+      "address": "尼泊尔",
       "phone1": "0933.911.359 (电先生)",
       "phone2": "0972.831.882 (碧玉女士)",
       "email": "Maratika.hn@gmail.com",
@@ -296,9 +313,9 @@
     }
   },
   "info": {
-    "title": "祈愿法会 2025",
+    "title": "祈愿法会 2026",
     "purpose": "集体念诵莲花生大师三身咒，祈愿世界和平。",
-    "dates_place": "2025年10月29日 – 11月2日 · 法云寺，河内解放路1299号",
+    "dates_place": "2026年3月13日 – 3月18日 · 尼泊尔",
     "contact": "联系",
     "register": "注册"
   },

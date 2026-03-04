@@ -1,5 +1,5 @@
 -- Túc Số Monlam Database Schema
--- Event: October 29 - November 2, 2025
+-- Event: March 13 - 18, 2026 (Nepal)
 
 -- Main submissions table
 CREATE TABLE IF NOT EXISTS public.submissions (
@@ -74,8 +74,8 @@ SELECT
   COUNT(DISTINCT attendee_id) as unique_participants,
   SUM(quantity) as total_count,
   COUNT(*) as total_submissions,
-  SUM(CASE WHEN DATE(ts_server AT TIME ZONE 'Asia/Ho_Chi_Minh') = (CURRENT_DATE AT TIME ZONE 'Asia/Ho_Chi_Minh')::DATE THEN quantity ELSE 0 END) as today_count,
-  COUNT(CASE WHEN DATE(ts_server AT TIME ZONE 'Asia/Ho_Chi_Minh') = (CURRENT_DATE AT TIME ZONE 'Asia/Ho_Chi_Minh')::DATE THEN 1 END) as today_submissions,
+  SUM(CASE WHEN DATE(ts_server AT TIME ZONE 'Asia/Ho_Chi_Minh') = (CURRENT_DATE AT TIME ZONE 'Asia/Ho_Chi_Minh')::DATE AND flagged = FALSE THEN quantity ELSE 0 END) as today_count,
+  COUNT(CASE WHEN DATE(ts_server AT TIME ZONE 'Asia/Ho_Chi_Minh') = (CURRENT_DATE AT TIME ZONE 'Asia/Ho_Chi_Minh')::DATE AND flagged = FALSE THEN 1 END) as today_submissions,
   COUNT(CASE WHEN flagged = TRUE THEN 1 END) as flagged_count
 FROM public.submissions;
 
