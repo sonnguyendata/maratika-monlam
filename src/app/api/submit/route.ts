@@ -18,8 +18,8 @@ import {
 } from '@/lib/utils';
 
 const submitSchema = z.object({
-  attendee_id: z.string().min(1, 'ID is required'),
-  attendee_name: z.string().min(1, 'Name is required'),
+  attendee_id: z.string(),
+  attendee_name: z.string(),
   quantity: z.number().int().min(0, 'Quantity must be at least 0'),
   note: z.string().optional(),
   idempotency_key: z.string().uuid('Invalid idempotency key')
