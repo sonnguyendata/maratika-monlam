@@ -33,32 +33,13 @@ export default function HomePage() {
     if (savedName) setFormData(prev => ({ ...prev, attendee_name: savedName }));
   }, []);
 
-  // Function to normalize phone number
-  const normalizePhoneNumber = (phone: string): string => {
-    // Remove all non-digit characters
-    const digits = phone.replace(/\D/g, '');
-    
-    // Handle Vietnamese phone numbers
-    if (digits.startsWith('84')) {
-      return digits;
-    } else if (digits.startsWith('0')) {
-      return '84' + digits.substring(1);
-    } else if (digits.length >= 9) {
-      return '84' + digits;
-    }
-    
-    return digits;
-  };
-
-  // Function to load name by phone number
-  const loadNameByPhone = async (phone: string) => {
-    if (!phone || phone.length < 9) return;
-    
-    const normalizedPhone = normalizePhoneNumber(phone);
+  // Function to load name by attendee ID
+  const loadNameByAttendeeId = async (attendeeId: string) => {
+    if (!attendeeId?.trim()) return;
     
     try {
       // Check localStorage first
-      const savedName = localStorage.getItem(`name_${normalizedPhone}`);
+      const savedName = localStorage.getItem(`name_${attendeeId.trim()}`);
       if (savedName) {
         setFormData(prev => ({ ...prev, attendee_name: savedName }));
         return;
@@ -72,9 +53,9 @@ export default function HomePage() {
   };
 
   // Handle phone number change
-  const handlePhoneChange = (phone: string) => {
-    setFormData(prev => ({ ...prev, attendee_id: phone }));
-    loadNameByPhone(phone);
+  const handleAttendeeIdChange = (attendeeId: string) => {
+    setFormData(prev => ({ ...prev, attendee_id: attendeeId }));
+    loadNameByAttendeeId(attendeeId);
   };
 
   // Handle input mode change
@@ -140,10 +121,10 @@ export default function HomePage() {
         localStorage.setItem('attendee_id', formData.attendee_id);
         localStorage.setItem('attendee_name', formData.attendee_name);
         
-        // Save phone number and name mapping
-        const normalizedPhone = normalizePhoneNumber(formData.attendee_id);
-        if (normalizedPhone && formData.attendee_name) {
-          localStorage.setItem(`name_${normalizedPhone}`, formData.attendee_name);
+        // Save attendee ID and name mapping without restricting the input format
+        const attendeeIdKey = formData.attendee_id.trim();
+        if (attendeeIdKey && formData.attendee_name) {
+          localStorage.setItem(`name_${attendeeIdKey}`, formData.attendee_name);
         }
         
         setSubmitResult({
@@ -211,13 +192,12 @@ export default function HomePage() {
                 {messages.record.phone} — {messages.record.phone_placeholder}
               </label>
               <input
-                type="tel"
+                type="text"
                 id="attendee_id"
                 value={formData.attendee_id}
-                onChange={(e) => handlePhoneChange(e.target.value)}
+                onChange={(e) => handleAttendeeIdChange(e.target.value)}
                 placeholder={messages.record.phone_placeholder}
                 className="input"
-                required
               />
             </div>
 
@@ -232,7 +212,6 @@ export default function HomePage() {
                 onChange={(e) => setFormData(prev => ({ ...prev, attendee_name: e.target.value }))}
                 placeholder={messages.record.name_placeholder}
                 className="input"
-                required
               />
             </div>
 
