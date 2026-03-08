@@ -1,13 +1,10 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import './globals.css';
 import { LanguageProvider } from '@/components/LanguageProvider';
 
-const inter = Inter({ subsets: ['latin'] });
-
 export const metadata: Metadata = {
-  title: 'Túc Số Monlam',
-  description: 'Record túc số counts for Monlam Dharma Festival',
+  title: 'Monlam Dharma Festival 2026',
+  description: 'Monlam Dharma Festival 2026 in Nepal (13 March - 18 March)',
 };
 
 export default function RootLayout({
@@ -17,7 +14,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="vi">
-      <body className={inter.className}>
+      <body>
         <LanguageProvider>
           {children}
         </LanguageProvider>

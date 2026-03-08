@@ -1,35 +1,45 @@
 import { Redis } from '@upstash/redis';
 
-if (!process.env.REDIS_URL) {
-  throw new Error('REDIS_URL environment variable is required');
+const redisUrlRaw = process.env.REDIS_URL;
+let redis: Redis | null = null;
+
+if (redisUrlRaw) {
+  try {
+    // Parse Redis URL to extract token and convert to HTTPS
+    const redisUrl = new URL(redisUrlRaw);
+    const token = redisUrl.password;
+    const httpsUrl = `https://${redisUrl.hostname}`;
+
+    console.log('Redis configuration:', {
+      hostname: redisUrl.hostname,
+      httpsUrl,
+      hasToken: !!token,
+      tokenLength: token?.length
+    });
+
+    redis = new Redis({
+      url: httpsUrl,
+      token: token
+    });
+  } catch (error) {
+    console.warn('⚠️ Invalid REDIS_URL format. Redis features will be disabled.', error);
+  }
+} else {
+  console.warn('⚠️ REDIS_URL is missing. Redis features will be disabled.');
 }
 
-// Parse Redis URL to extract token and convert to HTTPS
-const redisUrl = new URL(process.env.REDIS_URL);
-const token = redisUrl.password;
-const httpsUrl = `https://${redisUrl.hostname}`;
-
-console.log('Redis configuration:', {
-  originalUrl: process.env.REDIS_URL,
-  hostname: redisUrl.hostname,
-  httpsUrl,
-  hasToken: !!token,
-  tokenLength: token?.length
-});
-
-export const redis = new Redis({
-  url: httpsUrl,
-  token: token
-});
+export { redis };
 
 export async function rateLimit(key: string, limit: number, window: number): Promise<boolean> {
+  if (!redis) return true;
+
   try {
     const current = await redis.incr(key);
-    
+
     if (current === 1) {
       await redis.expire(key, window);
     }
-    
+
     return current <= limit;
   } catch (error) {
     console.error('Redis rate limit error:', error);
@@ -61,30 +71,36 @@ export async function checkIPRateLimit(ipHash: string, timeWindow: number = 60):
 }
 
 export async function queueSubmission(data: any): Promise<void> {
+  if (!redis) return;
+
   const queueKey = 'submission_queue';
   await redis.lpush(queueKey, JSON.stringify(data));
 }
 
 export async function getQueueLength(): Promise<number> {
+  if (!redis) return 0;
+
   const queueKey = 'submission_queue';
   return await redis.llen(queueKey);
 }
 
 export async function processQueue(): Promise<any[]> {
+  if (!redis) return [];
+
   const queueKey = 'submission_queue';
   const batchSize = 10;
   const results = [];
-  
+
   for (let i = 0; i < batchSize; i++) {
     const item = await redis.rpop(queueKey);
     if (!item) break;
-    
+
     try {
       results.push(JSON.parse(item));
     } catch (error) {
       console.error('Failed to parse queue item:', error);
     }
   }
-  
+
   return results;
 }
