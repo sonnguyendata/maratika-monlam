@@ -1,19 +1,22 @@
 import { createClient } from '@supabase/supabase-js';
 import { SubmissionData, AdminRecord, AdminFilters, AdminResponse, ReportSummary } from '@/types';
 
+const supabaseUrl = process.env.SUPABASE_URL || 'https://placeholder.supabase.co';
+const supabaseAnonKey = process.env.SUPABASE_ANON_KEY || 'placeholder-anon-key';
+
 if (!process.env.SUPABASE_URL || !process.env.SUPABASE_ANON_KEY) {
-  throw new Error('SUPABASE_URL and SUPABASE_ANON_KEY environment variables are required');
+  console.warn('⚠️ SUPABASE_URL or SUPABASE_ANON_KEY is missing. Using placeholder values during build/runtime setup.');
 }
 
 export const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_ANON_KEY
+  supabaseUrl,
+  supabaseAnonKey
 );
 
 // Create admin client with service role key if available
 export const supabaseAdmin = process.env.SUPABASE_SERVICE_ROLE_KEY 
   ? createClient(
-      process.env.SUPABASE_URL,
+      supabaseUrl,
       process.env.SUPABASE_SERVICE_ROLE_KEY,
       {
         auth: {
