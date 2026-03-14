@@ -22,7 +22,7 @@ export function useLanguage() {
 }
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [language, setLanguageState] = useState<Language>('vi');
+  const [language, setLanguageState] = useState<Language>('en');
   const [messages, setMessages] = useState<I18nMessages | null>(null);
   const [loading, setLoading] = useState(true);
 

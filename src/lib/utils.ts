@@ -31,39 +31,39 @@ export function generateIdempotencyKey(): string {
 }
 
 export function validateEventDates(): boolean {
-  // For development/testing, always allow submissions
-  if (process.env.NODE_ENV === 'development') {
-    console.log('Development mode: allowing all submissions');
+  // Default behavior: do not block submissions by event window.
+  // Enable strict date enforcement only when explicitly configured.
+  if (process.env.ENFORCE_EVENT_DATES !== 'true') {
+    console.log('Event date enforcement disabled: allowing submissions');
     return true;
   }
-  
+
   // Get current time in GMT+7
   const now = new Date();
   const gmt7Offset = 7 * 60; // GMT+7 in minutes
   const localTime = new Date(now.getTime() + (gmt7Offset * 60 * 1000));
   const today = new Date(localTime.getFullYear(), localTime.getMonth(), localTime.getDate());
-  
+
   // Parse event dates in GMT+7
-  const eventStart = new Date(process.env.EVENT_START || '2025-01-01');
-  const eventEnd = new Date(process.env.EVENT_END || '2025-11-02');
-  
+  const eventStart = new Date(process.env.EVENT_START || '2026-03-13');
+  const eventEnd = new Date(process.env.EVENT_END || '2026-03-18');
+
   // Set to end of day for event end
   eventEnd.setHours(23, 59, 59, 999);
-  
+
+  const isValid = today >= eventStart && today <= eventEnd;
+
   console.log('Event validation:', {
-    NODE_ENV: process.env.NODE_ENV,
+    ENFORCE_EVENT_DATES: process.env.ENFORCE_EVENT_DATES,
     EVENT_START: process.env.EVENT_START,
     EVENT_END: process.env.EVENT_END,
     now: now.toISOString(),
-    today: today.toISOString(), 
+    today: today.toISOString(),
     eventStart: eventStart.toISOString(),
     eventEnd: eventEnd.toISOString(),
-    isActive: today >= eventStart && today <= eventEnd
+    isActive: isValid
   });
-  
-  const isValid = today >= eventStart && today <= eventEnd;
-  console.log('Event validation result:', isValid);
-  
+
   return isValid;
 }
 

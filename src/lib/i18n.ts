@@ -21,10 +21,10 @@ export async function loadMessages(language: Language): Promise<I18nMessages> {
 }
 
 export function getLanguageFromStorage(): Language {
-  if (typeof window === 'undefined') return 'vi';
+  if (typeof window === 'undefined') return 'en';
   
   const stored = localStorage.getItem('language');
-  return (stored === 'en' || stored === 'vi' || stored === 'zh') ? stored : 'vi';
+  return (stored === 'en' || stored === 'vi' || stored === 'zh') ? stored : 'en';
 }
 
 export function saveLanguageToStorage(language: Language): void {
@@ -34,9 +34,9 @@ export function saveLanguageToStorage(language: Language): void {
 }
 
 export function getLanguageFromHeader(acceptLanguage?: string): Language {
-  if (!acceptLanguage) return 'vi';
+  if (!acceptLanguage) return 'en';
   
-  // Simple language detection - prioritize Vietnamese
+  // Simple language detection with English default
   if (acceptLanguage.includes('vi') || acceptLanguage.includes('vn')) {
     return 'vi';
   }
